@@ -16,6 +16,10 @@ logs
 # Brainstorm logs
 brainstorms/
 
+# Staging bundles for the PRIVATE brainstorms repo — must never land in this public repo
+snhbrainstormsstarter.zip
+snhhubplanning.zip
+
 # SNH research — committed; only the generated paper corpus (large PDFs + SQLite db) is ignored
 research/research_library/paper-corpus/
 
