@@ -46,8 +46,13 @@ RELATED_REPOS.md           single source of truth for sibling repos and external
 |---|---|---|
 | 1 | "What is this project?" | `/plan.md` — the summary |
 | 2 | "What should the org be doing?" | `plans/` + `plans/ORG-TASKS.md` |
-| 3 | "Where is this repo headed?" | that repo's `docs/roadmap.md` |
+| 3 | "Where is this repo headed?" | that repo's `docs/roadmap.md` — including [this one](docs/roadmap.md) |
 | 4 | "What's in flight?" | that repo's GitHub issues + active branches |
+
+This repo has its own layer-3 work (website, research docs, presentations) in
+`docs/roadmap.md`. It has historically used **no issue tracker** — website work is a
+see-it-live loop and a day of copy editing is often several small PRs. That's deliberate;
+durable work goes in the roadmap rather than into issues.
 
 **Layer 2 is org-only.** A task actionable inside one existing repo belongs in that repo's
 roadmap or issues, never in `ORG-TASKS.md`. Org tasks may link down (`PNT#55`, `prm#66`,

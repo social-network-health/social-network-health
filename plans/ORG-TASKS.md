@@ -4,41 +4,73 @@ The live **org-level** task list — planning layer 2. Cross-repo work, and work
 repo yet. Anything actionable inside a single existing repo belongs in that repo's roadmap
 or issues instead; see [`README.md`](README.md) for the four layers.
 
+*Reconciled against every org repo 2026-08-03. Items that turned out to be repo-level were
+filed down and now appear only under [Watching](#watching).*
+
 ## Active
 
-- [ ] **[web] Redo the SNH website** - clear "what this is" at the top, rewrite copy, reorganize (`public/socialnetwork-health.html`). Inactive discussion list already dropped (2026-07-25, `4d55fce`). NOTE: homepage deep-links files in `research/` — the plan/research restructure below changes paths, so update links + redeploy together
-- [ ] **[web] Redo the DWebCamp talk as a video** - first delivery surfaced the gaps; video comes out better (deck: `presentations/dwebcamp-berlin-2026/`)
-- [ ] **[org] Restructure the plan + research/ layout** - move `research/plan.md` → repo root; merge the two egocentric measurement docs; new `positioning/` folder (move `social_cohesion.md` there); recast plan steps as processes-with-milestones; full punch list in `plans/2026-07-24-cowork-session-notes.md` (Claude Code job)
-- [ ] **[org] Write the positioning / vision doc** - so collaborators orient to Rich's focus; supportive of other directions, clear about his own
-- [ ] **[org] Formally archive prt — harvest first** - pre-meeting-review idea → prm; import-pipeline sophistication → prm; scan 19 issues for PNT bits; add "prm is the successor" to README; then archive on GitHub (list in session notes)
-- [ ] **[community] Write the collaborator ask** - not funding: OSS orgs doing the same research + community members for weekly test-and-build sessions
-- [ ] **[community] Pick a lower-friction discussion venue** - Signal group is the leading candidate (open source, API — signal-cli bots could capture meeting minutes to feed weekly planning); Bluesky / Matrix as alternatives
-- [ ] **[community] Ship SNH newsletter #1** - weekly cadence target thereafter
-- [ ] **[community] Weekly YouTube check-in** - recurring; sync with the video editor on updates
-- [ ] **[infra] Create the private brainstorms repo** - uncurated/sensitive brainstorms + gitignored-sync stuff only; starter bundle ready. Name TBD ("snh-brainstorms" is the placeholder); expect several categories of dev-group-private material, not just brainstorms
-- [ ] **[infra] Move the toolkit MediaWiki to DigitalOcean** - `socialnetwork_toolkit` + `snhtoolkitmw` reactivation (dormant since 2024)
-- [ ] **[infra] Make MediaWiki Claude-editable and administrable** - agent-run wiki ops; big speedup for toolkit content (follows the move)
-- [ ] **[designs] Dogfood PRM; get it to "usable"** - a few features away; make it the daily contact manager, use it for project outreach
-- [ ] **[designs] Fellows calendaring — design the events registry** - EHF board request (2026-07-22); privacy-preserving global event calendar in fellows_local_db; centralized-first-decentralize-later OK; brief in session notes; design starts ~2026-08-01 (post-vacation)
-- [ ] **[designs] Scope Vault** - simplest reference design: OpenClaw-assisted SaaS export backup + the "Exit/Interop Manual" wiki; includes exploring how to SECURE OpenClaw/AI-OS-automation behavior
-- [ ] **[research] Recast M1/M2/M3 as processes with milestones** - they're ongoing processes that hit milestones, not one-shot deliverables; define the milestone tests + process cadences (M1: fellows in real use + PRM usable + Vault started; M2: needs ≥1 community on step-1 tools)
+### community
+
+- [ ] **Write the collaborator ask** - not funding: OSS orgs doing the same research + community members for weekly test-and-build sessions
+- [ ] **Pick a lower-friction discussion venue** - Signal group is the leading candidate (open source, API — signal-cli bots could capture meeting minutes to feed weekly planning); Bluesky / Matrix as alternatives
+- [ ] **Ship SNH newsletter #1** - weekly cadence target thereafter
+- [ ] **Weekly YouTube check-in** - recurring; sync with the video editor on updates
+
+### org
+
+- [ ] **Write the positioning / vision doc** - so collaborators orient to Rich's focus; supportive of other directions, clear about his own. Deliverable lands in the hub repo's new `positioning/` folder — see [`../docs/roadmap.md`](../docs/roadmap.md)
+- [ ] **Formally archive prt — harvest first** - three harvest passes, not one: (1) **the open issues** — ~7 of 19 carry real concept material, strongest are prt#147 (CRT/PRT notification protocol, unbuilt and captured nowhere else), prt#145 (small models can't chain bespoke per-lookup tools — give them one general SQL tool), prt#69 (confirm a new relationship against a rendered diagram of it), prt#37 (the decision record for rejecting SQLCipher); (2) **the code** — import-pipeline sophistication is *not* in the backlog, every import issue is closed; it lives in `prt_src/google_takeout.py`, `prt_src/google_contacts.py`, `cli_modules/services/import_google.py` + the Google People schema docs; (3) **`ROADMAP.md`** — self-declared obsolete but its "FUN FACTORS" section is transcribed brainstorm material worth mining. Then add a "PRM is the natural successor" note to the README and archive on GitHub. Substantive work stopped 2026-01-12
+- [ ] **Repo-by-repo consistency review** - walk each live repo with Rich: are its roadmap and issues current and mutually consistent? Then prioritize across the org. Known drift going in: PNT's `docs/roadmap.md` snapshot is dated 2026-06-27 and misses the July waves; `fellows_local_db/ROADMAP.md` is 4 dead lines while real planning lives in its `plans/`; root-`ROADMAP.md`-vs-`docs/roadmap.md` is inconsistent across the org (both root ones are dead, both `docs/` ones are alive)
+
+### infra
+
+- [ ] **Create the private repo** - uncurated/sensitive brainstorms + formerly-gitignored files that need to sync between machines. Name TBD ("snh-brainstorms" is the placeholder); expect several categories of dev-group-private material, not just brainstorms. **Not optional:** PNT's public `docs/roadmap.md` already links three brainstorm files (`2026-06-14-pnt-direction-grill.md`, `2026-06-05-pnt-positioning.md`, `2026-06-07-pnt-scope-roadmap.md`) that exist on no checked-in machine — its strategic reasoning currently dead-ends. Starter bundle ready
+- [ ] **Rotate the wiki credentials** - `socialnetwork_toolkit` has plaintext live credentials in its README (database, wiki admin, cPanel, FTP, a named developer's account) plus the production IP and SSH usernames; more in `C2_S3_Config/` (restic password, S3/B2 keys) and both `LocalSettings.php` files (`$wgDBpassword`, `$wgSecretKey`, `$wgUpgradeKey`). All of it is in git history on every branch, so deleting files achieves nothing — this is rotation, not scrubbing. ~2 years exposed. Order: **rotate → verify services → retire the repo**. The repo stays private; "make it public" is off the table
+- [ ] **Replace the credential-sharing channel with the MediaWiki developer** - the secrets were checked in precisely to share them with the developer who built the MediaWiki mods. Needs a real mechanism (shared secret store / age-encrypted file / password manager sharing) before or alongside rotation, or the same thing happens again
+- [ ] **Rebuild the toolkit wiki on DigitalOcean** - `socialnetwork_toolkit` + `snhtoolkitmw` reactivation (dormant since 2024-08-06). Significant cost saving over the current host. Neither repo has ever contained provisioning automation — `.gitmodules.safe` (61 submodules: 55 extensions, 4 skins, vendor) plus a manual README procedure is the whole deploy story, and `C2_S3_Config/backup.sh` is the only script. This repo's own Ansible + Caddy setup in `ops/` is the obvious template. `snhtoolkitmw` is already the sanitized successor, so the payload/secrets split is done — retire `socialnetwork_toolkit` rather than refactor it
+- [ ] **Make the wiki Claude-editable and administrable** - agent-run wiki ops; big speedup for toolkit content. Follows the move
+- [ ] **Point remaining doc links at the org** - local git remotes were fixed 2026-08-03, but in-repo markdown across several repos still says `github.com/richbodo/...`. Redirects cover it; clean it up before collaborators arrive
+
+### designs
+
+- [ ] **Dogfood PRM; get it to "usable"** - make it the daily contact manager and use it for project outreach. The feature gap is filed as a PRM issue — see [Watching](#watching)
+- [ ] **Scope Vault** - the simplest reference design, and the only Step-1 use case with no repo yet. SaaS export backup with an OpenClaw-assisted export plugin, plus the "Exit/Interop Manual" wiki (how to export and back up each SaaS, how to replace functionality or not, how to interoperate). Research edge: AI-OS automation for fast SaaS export, **and how to secure OpenClaw's behavior** — largely unexplored. Shares a feature set with PRM's contact-research work (dedupe, unify, enrich from public sources) — expect to develop them alongside each other
 
 ## Waiting On
 
-- [ ] **PRM v0.2 merge → PNT graduation wave** - in final testing since 2026-06-27; unblocks the data-floor trio + EX-H7 fail-closed + AI-write tiers upstream (PNT roadmap Tier 1)
+*(nothing — the PRM v0.2 → PNT graduation wave cleared when PRM v0.2 shipped; it's now tracked in PNT)*
 
 ## Someday
 
 - [ ] **[community] Weekly-prep automation** - Cowork scheduled task: prep newsletter, YouTube check-in, outreach + a low-stress agenda for the weekly meeting (initially Rich + 1–2 helpers); feed it Signal meeting minutes via signal-cli bots. Set up once the meeting/venue exists
 - [ ] **[community] EHF yearly fellows newsletter** - opt-in; gauge interest by contacting all fellows; run it if enough opt in
-- [ ] **[designs] Improve SNHDB** - multi-perspective research summaries (snhdb#3), corpus repair plan, toolkit-site AI search
-- [ ] **[toolkit] PNT Tier 2 surfaces** - `/pna-evaluate` audit UX (PNT#55), plain-language validator (PNT#62), papers → publication, ref-drift lint
 - [ ] **[org] Ideas repo: public or private?** - then create it
-- [ ] **[infra] Secret hygiene on the wiki repos → make them public**
+- [ ] **[infra] Toolkit-site AI search** - `snhdb` powering search on toolkit.socialnetwork.health; depends on the wiki move
+
+## Watching
+
+*Repo-level work that the org cares about. The repo is the source of truth for status — these
+are links, deliberately without status claims. Do not restate progress here.*
+
+| What | Where |
+|---|---|
+| PNT graduation wave — the three PRM spec riders | PNT#64 |
+| PNT graduation wave — data-floor trio + EX-H7 fail-closed | *(to be filed)* |
+| `/pna-evaluate` audit UX | PNT#55 |
+| Plain-language validator for the Visual Validator | PNT#62 |
+| Papers → publication; ref-drift lint | PNT `docs/roadmap.md` Tier 2 |
+| PRM daily-driver gap (native desktop app + AI contact research) | *(to be filed)* |
+| Fellows calendaring / EHF events registry | *(to be filed)* |
+| snhdb multi-perspective research summaries | snhdb#3 |
+| snhdb corpus-repair Phase 5 guardrails | *(to be filed)* |
+| Hub repo: website redo, research restructure, M1/M2/M3 recast, talk video | [`../docs/roadmap.md`](../docs/roadmap.md) |
 
 ## Done
 
 - [x] ~~Decide where org planning lives~~ (2026-07-24 — public, in the hub repo; brainstorms stay private)
 - [x] ~~Full org review: repos, roadmaps, issues + reMarkable dump synthesis~~ (2026-07-24, Cowork)
 - [x] ~~Deliver the DWeb Camp Berlin 2026 talk~~ (2026-07 — deck + PDF in `presentations/dwebcamp-berlin-2026/`)
-- [x] ~~**[infra]** Add planning files to the hub repo (public)~~ (2026-08-03 — `plans/` + `plans/TASKS.md`, this bundle)
+- [x] ~~**[infra]** Add planning files to the hub repo (public)~~ (2026-08-03 — `plans/` + `plans/ORG-TASKS.md`)
+- [x] ~~**[org]** Establish the four planning layers~~ (2026-08-03 — `plan.md` to root, `docs/roadmap.md` for the hub, org tasks reconciled against every repo)
+- [x] ~~**[org]** Move `research/plan.md` → repo root~~ (2026-08-03 — redirect stub left behind for the delivered deck's links)
+- [x] ~~**[infra]** Point all local git remotes at the `social-network-health` org~~ (2026-08-03 — 5 repos were still on `richbodo/*`)
