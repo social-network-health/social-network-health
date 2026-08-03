@@ -60,22 +60,32 @@ The software (PNA toolkit, PRM, reference designs) lives in sibling repos — se
 [`RELATED_REPOS.md`](RELATED_REPOS.md) for the map. Convention: all related repos are checked out
 side by side, one level up from this repo root.
 
-## Org upkeep
+## Org upkeep — what's automated here
 
-Some things have to stay identical across all eight repos — the shared `CLAUDE.md` block and the
-org's Claude Code skills. Each has a command that checks it, because a sync rule nobody can
-verify is a wish. Run these from this repo:
+A few things have to stay identical across all eight repos. Those are machine-checked, so you
+don't have to remember them. **Run `just check-org`** — it verifies what can be verified and
+prints what it deliberately doesn't.
 
-| Command | |
+| | |
 |---|---|
-| `just check-org` | run every check — the one to use when you're not sure |
-| `just check-conventions` | is the shared `CLAUDE.md` block identical in all eight repos? |
-| `just sync-conventions` | propagate the canonical block after editing it |
-| `just check-skills` | are the org skills symlinked, current, and unshadowed? |
-| `just install-skills` | create/repair the `~/.claude/skills` symlinks — **run once per workstation** |
+| **Checked** | the shared `CLAUDE.md` block, on disk **and** on each repo's `origin/main` |
+| **Checked** | org Claude Code skills — symlinked, current, unshadowed (this workstation) |
+| **Not checked — the PR is the gate** | `prime.md` updated when a load-bearing doc lands; users guide updated for user-visible changes; dated `plans/` files left alone |
+| **Not checkable — habits** | see the shared block in any repo's `CLAUDE.md` |
 
-**New workstation?** Clone the repos side by side, then `just install-skills && just check-org`.
+```bash
+just check-org           # everything, plus the boundary of what it covers
+just check-conventions   # the shared block: disk AND main
+just sync-conventions    # propagate the canonical block after editing it
+just check-skills        # org skills on this workstation
+just install-skills      # once per workstation
+```
 
-Full procedure, and the reasoning behind symlinking skills rather than copying them:
-[`docs/org-upkeep.md`](docs/org-upkeep.md). `just` on its own lists every recipe, including the
-site deploy and provisioning ones.
+**New workstation:** clone the repos side by side, then `just install-skills && just check-org`.
+
+**If a check fails, it means something real** — these catch drift that is invisible any other
+way. Investigate rather than working around it; a check that has become brittle is a bug worth
+fixing, not noise.
+
+Full map and the reasoning: [`docs/org-upkeep.md`](docs/org-upkeep.md). `just` on its own lists
+every recipe, including site deploy and provisioning.

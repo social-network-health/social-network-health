@@ -1,91 +1,114 @@
-# Org upkeep — keeping eight repos consistent
+# Org upkeep — what's guaranteed, and what's on you
 
-Developer documentation for the things that have to stay the same across every repo in the
-organization: the shared `CLAUDE.md` block, and the shared Claude Code skills.
+Eight repos, one or two developers, a lot of agents. This is the whole maintenance story.
 
-**Everything here is one `just` command.** Run `just check-org` if you don't know which you
-need — it runs all of them.
+**If you read one line:** run `just check-org`. It verifies what can be verified and prints
+what it deliberately doesn't.
 
-## The rule
+## The design: three kinds of rule, three kinds of guard
 
-> **A sync rule without a mechanical check is a wish.**
->
-> Every convention in this org that must hold in more than one repo ships with a command
-> that verifies it, and the rule names that command. If you can't name the check, the
-> convention will drift and nobody will notice.
+Every process convention in this org fails in one of three ways, and the failure mode — not
+the importance of the rule — decides what guards it. Getting this wrong in either direction
+is expensive: automating a habit produces brittle machinery that checks nothing, and trusting
+memory for cross-repo state produces silent drift.
 
-This is the cross-repo sibling of the rule each app repo already has — *"any change a user
-would notice MUST update the users-guide in the same PR."* That one works because a human
-reviewing the PR sees the missing doc change: the check is social, and it's local to one
-repo and one diff.
+| | Failure mode | Guard | Examples |
+|---|---|---|---|
+| **A** | Invisible across repos. No single file or diff reveals it. | **A command.** Human attention doesn't scale to eight repos. | shared `CLAUDE.md` block; org skills installed and unshadowed |
+| **B** | Visible in one diff. A reviewer can see the omission. | **The PR.** | `prime.md` not updated for a new load-bearing doc; users guide not updated for a UX change; a dated `plans/` file edited |
+| **C** | No artifact at all. The rule shapes an action or it doesn't. | **`CLAUDE.md`, and nothing else.** | `--body-file` over inline `--body`; triage reds before shipping; upstream `main` beats local plans; fail loudly |
 
-Cross-repo rules get no such help. Nobody eyeballs eight repos, and the failure is silent —
-you fix something in one repo, forget the others, and find out weeks later when an agent
-follows stale guidance. That's the pattern this document exists to stop.
+**Do not build checks for C.** There is nothing to observe. A check that cannot fail is worse
+than no check — it manufactures confidence.
 
-So the checks below are deliberately cheap: no CI, no hooks, no pre-commit. Just commands
-short enough to run casually.
-
-## The shared CLAUDE.md block
-
-Every repo's `CLAUDE.md` carries an identical block between
-`<!-- BEGIN SHARED: org-conventions vN -->` and the matching `END` marker. It holds only what
-is true in *every* repo — the org and sibling convention, the four planning layers, and the
-cross-repo working rules.
-
-The canonical copy is [`docs/shared/org-conventions.md`](shared/org-conventions.md) in this
-repo. Every other copy is generated from it.
+## A — the commands
 
 ```bash
-just check-conventions    # all eight identical to canonical?
-just sync-conventions     # propagate canonical into every repo
+just check-org           # everything, plus what it doesn't cover
+just check-conventions   # the shared block: on disk AND on origin/main
+just sync-conventions    # propagate the canonical block to working trees
+just check-skills        # org skills on this workstation
+just install-skills      # create/repair the symlinks — once per workstation
 ```
 
-### To change a convention
+### Why the block check reads `main`, not just disk
 
-1. **Edit `docs/shared/org-conventions.md` only.** Never a repo's copy — editing in place is
-   exactly how the improvement-in-one-repo, regression-in-another pattern starts.
-2. Bump the version in *both* markers (`v2` → `v3`).
-3. `just sync-conventions` — rewrites the block in all eight.
-4. `just check-conventions` — confirm.
-5. Commit and open **one PR per repo**. They're separate repos; there's no way around this.
+They answer different questions, and only one of them is the truth:
 
-### What does not go in the block
+- **disk** — "are my working copies consistent right now?" Useful before opening PRs.
+- **main** — "is what actually *shipped* consistent?" This is the real state of the org.
 
-Anything repo-specific: ports, `just` recipes, worktree helper scripts, language conventions,
-the local documentation map. Those live in that repo's own `CLAUDE.md` sections, outside the
-markers, and `sync-conventions` never touches them.
+Checking only disk is how propagated-but-never-merged work hides. Not hypothetical: the block
+was synced locally and PRs were opened, but several merged *before* the follow-up commits
+were pushed to their branches — and GitHub does not reopen a merged PR when new commits
+arrive on it. Disk stayed green while `main` sat a version behind, invisibly, across seven
+repos.
 
-## Shared skills
+The check reports both, and names the states:
 
-Claude Code has user-level and repo-level skills. It has **no org level**, so an org skill is
-built out of one of those — and the choice matters:
+| State | Meaning |
+|---|---|
+| `ok` | disk and main both match canonical |
+| `UNSHIPPED` | correct on disk, not on main — PR open, or **stranded behind an already-merged PR** |
+| `BEHIND` | this repo hasn't taken the current version — run `sync-conventions` |
+| `EDITED` | the copy was edited in place, which is never correct |
+| `MISSING` | no block in that `CLAUDE.md` |
+
+`check-skills` is **workstation-scoped** — skills install to `~/.claude/skills`, so there is
+no `main` to compare against. Green means *your* machine is set up; it says nothing about a
+teammate's.
+
+### Changing a convention
+
+1. Edit **`docs/shared/org-conventions.md`** only. Never a repo's copy.
+2. Bump the version in *both* markers (`v4` → `v5`).
+3. `just sync-conventions` — rewrites every working tree.
+4. Commit and open **one PR per repo**. They're separate repos; there's no way around it.
+5. **After merging, run `just check-conventions` again.** `--write` only touches disk, and
+   disk being right is not the same as it having shipped.
+
+Anything repo-specific — ports, `just` recipes, worktree scripts, language conventions —
+stays outside the markers in that repo's own sections. `sync-conventions` never touches it.
+
+## B — what the PR is the gate for
+
+No command catches these, because each is visible in the diff of the change that breaks it:
+
+- **`prime.md` updated when a load-bearing document or module lands.** Prime is bespoke per
+  repo, so no checksum applies — but a prime that misses the file where the invariants live
+  sends every future session searching for it.
+- **The users guide updated when user-visible behavior changes.** Each app repo already
+  states this; accepting the PR accepts the doc change with it.
+- **Dated files under `plans/` left alone.** They're append-only thinking artifacts; a diff to
+  an old one is the violation, and it's visible.
+
+## C — what lives only in CLAUDE.md
+
+The cross-repo working rules in the shared block. They're there because a committed file is
+the only channel that reaches every worktree and every concurrent agent — agent memory is
+keyed to the working directory, so a worktree at a different path starts empty.
+
+## Shared skills: symlink, never copy
+
+Claude Code has user-level and repo-level skills. There is **no org level**, so an org skill
+is built from one of those:
 
 | Mechanism | Drifts? | Use for |
 |---|---|---|
-| **Symlink** `~/.claude/skills/<name>` → the owning repo | never — it *is* upstream | **the default for every org skill** |
-| **Vendored copy** in a repo's `.claude/skills/` | silently, and fast | only with a pinned commit and a deliberate re-sync plan |
+| **Symlink** `~/.claude/skills/<name>` → the owning repo | never — it *is* upstream | **the default** |
+| **Vendored copy** in a repo's `.claude/skills/` | silently, and fast | only with a pinned commit and a re-sync plan |
 
-We learned this the expensive way: `fellows_local_db` vendored the PNA Toolkit skill with an
-honest provenance note predicting it would drift. It did — a rename and several flows behind
-upstream, which meant a fellows session offered two skills with near-identical trigger text,
-one of them stale. The model could pick either.
+Learned the expensive way: `fellows_local_db` vendored the PNA Toolkit skill with a provenance
+note honestly predicting drift. It drifted — ten commits behind, a rename behind, and a whole
+flow behind — so a session there offered two skills with near-identical trigger text, one
+stale, and nothing said which to prefer.
 
-```bash
-just install-skills    # create/repair the symlinks (once per workstation)
-just check-skills      # symlinked, current, and unshadowed?
-```
+The registry and the rename aliases are at the top of
+[`tools/org/org_skills.py`](../tools/org/org_skills.py). Add a row when the org publishes a
+skill, or renames one. **Claude Code discovers skills at session start — restart after
+installing.**
 
-`check-skills` also flags vendored copies that duplicate an org skill, and recognizes former
-names so a renamed copy is caught rather than reported as something unrelated.
-
-The registry lives at the top of [`tools/org/org_skills.py`](../tools/org/org_skills.py) —
-add a row when the org publishes a new shared skill, and a row to `ALIASES` when one is
-renamed.
-
-**Claude Code discovers skills at session start.** Restart after installing.
-
-### Onboarding a workstation
+## Onboarding a workstation
 
 ```bash
 git clone <the org repos>   # all at one filesystem level — see RELATED_REPOS.md
@@ -94,26 +117,23 @@ just install-skills
 just check-org
 ```
 
-## What is deliberately *not* shared
+## When a check fails
 
-**`prime`.** Each repo's `.claude/commands/prime.md` is bespoke and should stay that way.
-`CLAUDE.md` is loaded on every session unconditionally, so it holds what is always true and
-must stay short. Priming is opt-in and costs tokens, so it holds the *reading list* — which
-files to read to get oriented here, in what order, and which to only skim. Those lists differ
-per repo because the repos differ.
-
-Prime is expensive; not priming is more expensive.
+**Investigate it.** These checks exist because the drift they catch is otherwise invisible, so
+a failure is information you cannot get another way. If one becomes noisy, brittle, or starts
+failing for a reason you don't understand, that's a bug in the check worth fixing — not a
+reason to stop running it or to work around it.
 
 ## When to automate further
 
-Not yet. For two developers with rare convention changes, these commands are enough — the
-problem was never that changes were hard to make, it was that drift was invisible.
+Not yet. For one or two developers with rare convention changes, these commands are enough.
+The problem was never that changes were hard to make; it was that drift was invisible.
 
-The natural next steps, in order, when they start to hurt:
+If it starts to hurt, in order: `check-org` in CI (awkward — it needs sibling checkouts), a
+pre-push hook in the hub, then a bot that opens the per-repo PRs. Each adds maintenance and
+failure modes of its own.
 
-1. `just check-org` in each repo's CI (needs sibling checkouts in CI, which is the awkward part)
-2. A pre-push hook in the hub
-3. A bot that opens the eight PRs for you
-
-Each adds maintenance and failure modes of its own. Don't reach for them until the manual
-loop is genuinely annoying.
+One note from experience: when you find you've broken a rule you had already written down, the
+fix is usually a check, not more words in the rule. Adding emphasis to a sentence nobody
+re-read at the critical moment changes nothing. That is how the `main` comparison came to
+exist.

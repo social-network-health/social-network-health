@@ -35,6 +35,10 @@ them: `research/threat_modelling/threat_catalog.md`, `research/measurement/*.md`
   research file breaks the live site silently. Update the HTML and redeploy in the same change.
 - **`../socialnetwork_toolkit` has live credentials in its git history.** Never copy, quote, or
   summarize its contents anywhere. `../prt` is mid-archive — don't start work there.
+- **Org consistency is machine-checked.** `just check-org` verifies the shared `CLAUDE.md`
+  block (on disk *and* on each repo's `origin/main`) and the org skills, then prints what it
+  doesn't cover. Run it if the task touches shared conventions, or if you're unsure what's in
+  place. A failure there is a real signal.
 
 ## Before summarizing
 Give one short paragraph: what this repo is, which sibling repos are present locally, which

@@ -12,6 +12,12 @@ several flows behind).
 Also flags vendored copies inside repos that SHADOW an org skill, because two skills
 with near-identical trigger text is worse than one — the model may pick the stale one.
 
+SCOPE — this checks THIS WORKSTATION, not what shipped. Skills are installed per
+machine (~/.claude/skills), so there is no origin/main equivalent to compare against;
+green here means your machine is set up, not that a teammate's is. Each developer runs
+`just install-skills` once. The vendored-copy scan reads working trees, so it can miss a
+copy that exists on main but not locally.
+
 Stdlib only.
 """
 
@@ -137,8 +143,10 @@ def main() -> int:
     if not ok:
         print("Fix what's flagged, then re-run. `--install` handles the symlinks.")
         print("Note: Claude Code discovers skills at session start — restart after installing.")
+        print("A failing check here is a real signal — investigate rather than route around it.")
         return 1
-    print("All org skills are symlinked and unshadowed.")
+    print("All org skills are symlinked and unshadowed ON THIS WORKSTATION.")
+    print("(Per-machine setup — this says nothing about anyone else's checkout.)")
     return 0
 
 
