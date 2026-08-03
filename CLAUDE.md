@@ -11,30 +11,16 @@ sibling repositories.
 There is no web framework, no package manager, and **no test runner** here — don't claim tests
 pass; there are none. (A TanStack/Bun app used to live here; it was removed in commit `749f3d9`.)
 
-## The organization — eight repos, one filesystem level
+## Repos needing special care
 
-Everything lives under the **[social-network-health](https://github.com/social-network-health)**
-GitHub org. A developer working on this project normally has **all eight checked out side by
-side in one parent directory**, so from any repo root every other repo is at `../<name>`.
-Cross-repo paths are written relative to the repo root, never absolute — the parent directory
-differs per host.
+Not a repo list — [`RELATED_REPOS.md`](RELATED_REPOS.md) owns that. These are the two
+hazards worth knowing before you touch a sibling:
 
-| Repo | | Role |
-|---|---|---|
-| `social-network-health` | public | this repo — hub, website, research docs, presentations |
-| `personal_network_toolkit` | public | the PNA Toolkit: spec, contracts, conformance suite, skill |
-| `prm` | public | Personal Relationship Manager — PNA reference design |
-| `fellows_local_db` | public | EHF Fellows directory — the first reference design, real users |
-| `snhdb` | public | the research-paper corpus + its search skill |
-| `prt` | public | earlier-generation relationship toolkit — **being archived**, harvest first |
-| `snhtoolkitmw` | private | MediaWiki extension bundle + config for the toolkit wiki |
-| `socialnetwork_toolkit` | private | older MediaWiki install repo — **secrets in git history, being retired** |
+- **`../socialnetwork_toolkit`** — live credentials in git history on every branch. Never
+  copy, quote, or summarize its contents anywhere, and never make it public.
+- **`../prt`** — being archived, with a harvest pass still pending. Don't start new work there.
 
-`RELATED_REPOS.md` is the single source of truth for this map and for non-repo resources
-(the wiki, the paper corpus on Drive, the video archive). It's fine to read and operate on
-sibling repos locally when a task calls for it.
-
-A ninth repo, `richbodo/pnt-workshop`, is outside the org and a candidate for archiving.
+A ninth repo, `richbodo/pnt-workshop`, sits outside the org and is a candidate for archiving.
 
 ## Layout
 
@@ -64,32 +50,75 @@ research/plan.md           STUB ONLY — plan.md moved to the repo root (Aug 202
 RELATED_REPOS.md           single source of truth for sibling repos and external resources
 ```
 
-## Planning has four layers — don't mix them
+<!-- BEGIN SHARED: org-conventions v1 -->
+<!-- Canonical copy: social-network-health/docs/shared/org-conventions.md
+     Do not edit this block in place. Edit the canonical copy and propagate. -->
+
+## The organization
+
+Eight repos under the **[social-network-health](https://github.com/social-network-health)**
+GitHub org. A developer normally has them **all checked out side by side in one parent
+directory**, so from any repo root every other repo is at `../<name>`. Write cross-repo paths
+relative to the repo root, never absolute — the parent directory differs per host.
+
+**[`RELATED_REPOS.md`](https://github.com/social-network-health/social-network-health/blob/main/RELATED_REPOS.md)**
+in the hub repo is the single source of truth for what those repos are and what each is for.
+Don't restate the list in a repo's own docs — a second copy is a second thing to forget.
+
+## Planning has four layers
 
 | # | Question | Lives in |
 |---|---|---|
-| 1 | "What is the software program?" | [`/plan.md`](plan.md) — the summary |
-| 2 | "What should the org be doing?" | `plans/` + [`plans/ORG-TASKS.md`](plans/ORG-TASKS.md) |
-| 3 | "Where is this repo headed?" | that repo's `docs/roadmap.md` — including [this one](docs/roadmap.md) |
-| 4 | "What's in flight?" | that repo's GitHub issues + active branches |
+| 1 | "What is the software program?" | hub [`plan.md`](https://github.com/social-network-health/social-network-health/blob/main/plan.md) — the M1/M2/M3 summary |
+| 2 | "What should the org be doing?" | hub [`plans/`](https://github.com/social-network-health/social-network-health/tree/main/plans) + `plans/ORG-TASKS.md` |
+| 3 | "Where is this repo headed?" | **this repo's** `docs/roadmap.md` |
+| 4 | "What's in flight?" | **this repo's** GitHub issues and active branches |
 
-**Layer 1 is narrower than the org.** `plan.md`'s M1/M2/M3 steps summarize the **software and
-research program** — the reference designs, the measurement work, the protocols. The org does
-more than that: community building, the newsletter, the toolkit wiki, educational materials,
-the collaborator search. None of that is in `plan.md`, and it shouldn't be added there — it
-lives at layer 2. Don't read `plan.md` as a complete picture of what the organization is doing.
+Record a thought at the layer matching its scope.
+
+**Layer 2 is org-only.** Work actionable inside one existing repo belongs in that repo;
+`ORG-TASKS.md` links down to it rather than restating its status. **Layer 1 is narrower than
+the organization** — `plan.md` summarizes the software and research program, not community
+building, the toolkit wiki, or educational materials.
+
+Dated files under `plans/` are append-only thinking artifacts. Never update one; write a new
+one. `ORG-TASKS.md` is the sole exception — it is kept current.
+
+## Cross-repo working rules
+
+Each of these was learned the hard way in one repo. They apply in all of them.
+
+- **PR and issue bodies via `--body-file`, never an inline `--body`.** Backticks and `$(…)`
+  get shell-interpreted and silently drop content — a commit hash has been lost this way.
+- **After a PR merges, verify every intended commit actually landed.** A dropped commit is
+  silent; recover it in a follow-up rather than assuming the merge was faithful.
+- **Triage every test failure as pre-existing or newly-introduced before shipping.** Stash
+  and re-run against the base to tell which. Never absorb a pre-existing red into unrelated
+  work, and never claim green while a known red stands.
+- **Upstream `main` beats local staging plans.** In a multi-agent setup another agent may
+  have already filed, merged, or evolved a cross-repo contribution. Check the upstream repo's
+  `main` before developing one further — local `plans/` lag.
+- **Fail loudly.** Convert an absent guarantee into a red test or a lint failure, never a
+  silent pass. Deferrals carry an honest status marker — a strict-xfail, an `Open`/`partial`
+  attestation, a documented "⏳ next" — never a bare `TODO` claiming a property the code
+  doesn't deliver.
+- **One source of truth per fact.** Restating a fact in a second document creates a drift
+  surface. Put it in the doc that owns the category and link from the others.
+- **Orient without moving; branch only to work.** Reading and priming never need a branch
+  change — in a multi-worktree setup `main` is often checked out elsewhere, so a checkout
+  fails or strands uncommitted work. Run `git worktree list` before starting. Repo-specific
+  worktree setup and port serialization live in that repo's own sections.
+
+<!-- END SHARED: org-conventions v1 -->
 
 This repo has its own layer-3 work (website, research docs, presentations) in
-`docs/roadmap.md`. It has historically used **no issue tracker** — website work is a
-see-it-live loop and a day of copy editing is often several small PRs. That's deliberate;
-durable work goes in the roadmap rather than into issues.
+[`docs/roadmap.md`](docs/roadmap.md). It has historically used **no issue tracker** — website
+work is a see-it-live loop and a day of copy editing is often several small PRs. That's
+deliberate; durable work goes in the roadmap rather than into issues.
 
-**Layer 2 is org-only.** A task actionable inside one existing repo belongs in that repo's
-roadmap or issues, never in `ORG-TASKS.md`. Org tasks may link down (`PNT#55`, `prm#66`,
-`fellows#296`), but the repo stays the source of truth for its own status.
-
-Never "update" a dated plan file — write a new one. `ORG-TASKS.md` is the sole exception:
-it is kept current.
+The canonical copy of the shared block above lives here, in
+[`docs/shared/org-conventions.md`](docs/shared/org-conventions.md). Edit it there and
+propagate — never edit a copy in place.
 
 ## The website
 
@@ -122,14 +151,7 @@ See `tools/paper-resolver/usage.md` for validated invocations. The essentials:
 - Needs network access (sandbox off for the call) and PyMuPDF for `--extract`.
 - State lives in `research/research_library/paper-corpus/resolver.db` (gitignored, idempotent cache + corpus index).
 
-## Cross-repo work
-
-See the org table above for the eight repos and the sibling-checkout convention.
-
-**`../socialnetwork_toolkit` has live credentials committed to its git history on every
-branch** — database, wiki admin, cPanel, FTP, a developer account, plus the production IP and
-SSH usernames. Never copy, quote, or summarize its contents anywhere, and never make it public.
-Rotation is tracked in `plans/ORG-TASKS.md`.
+## Session orientation
 
 A `/prime` command (`.claude/commands/prime.md`) exists for deeper session orientation — it reads
 the key research docs and confirms which sibling repos are present on the current host.

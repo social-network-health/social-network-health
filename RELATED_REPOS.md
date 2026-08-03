@@ -49,6 +49,21 @@ history under `presentations/pnt-workshop/`:
 | snhtoolkitmw | `../snhtoolkitmw` | github.com/social-network-health/snhtoolkitmw | MediaWiki extension bundle/config for the SNH toolkit wiki (https://toolkit.socialnetwork.health). Dormant since 2024; reactivating July 2026. |
 | socialnetwork_toolkit | `../socialnetwork_toolkit` | github.com/social-network-health/socialnetwork_toolkit | MediaWiki install/config + content for the toolkit wiki. **Its README warns secrets are checked in — treat as sensitive, never mirror publicly.** Dormant since 2024; reactivating July 2026. |
 
+## Localhost port registry
+
+Each app repo pins a fixed local port and documents its own serialization rules. This table
+exists so a **new** repo doesn't claim one that's already taken — check here before picking.
+
+| Port | Claimed by | What runs on it |
+|---|---|---|
+| 8765 | `fellows_local_db` | the app server (fixed by convention — do not change) |
+| 8770 | `prm` | the workspace server (`just serve`) |
+| 8791 | `personal_network_toolkit` | Visual Validator test server (`just test-viewer`, opt-in) |
+| 8009 | `personal_network_toolkit` | report viewer (`just view-reports`, opt-in) |
+
+Within a repo, worktrees isolate the filesystem but **not** these ports — server-based runs
+must be serialized across worktrees. See that repo's `CLAUDE.md` for its specifics.
+
 ## Non-repo resources
 
 - **Toolkit wiki (live):** https://toolkit.socialnetwork.health — MediaWiki of best practices and research findings; the primary body of published SNH work.
