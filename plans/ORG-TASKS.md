@@ -1,7 +1,8 @@
-# Tasks
+# Org tasks
 
-The live org-level task list. Cross-repo and long-horizon only — see [`README.md`](README.md)
-for what belongs here versus in a repo's roadmap or issues.
+The live **org-level** task list — planning layer 2. Cross-repo work, and work that has no
+repo yet. Anything actionable inside a single existing repo belongs in that repo's roadmap
+or issues instead; see [`README.md`](README.md) for the four layers.
 
 ## Active
 

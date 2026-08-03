@@ -31,23 +31,30 @@ presentations/             one folder per talk; the PDF at a talk's top level IS
                            dwebcamp-berlin-2026/ (delivered 2026-07). Run a deck with
                            `just slides <folder>` (default: dwebcamp-berlin-2026/deck).
                            The old pnt-workshop deck lives in richbodo/pnt-workshop + git history.
-plans/                     ORG-LEVEL planning: TASKS.md (the live cross-repo task list) plus
-                           dated, append-only planning dumps (`YYYY-MM-DD-<topic>.md`).
+plan.md                    the project's summary plan (M1/M2/M3 steps) — planning layer 1
+plans/                     ORG-LEVEL planning: ORG-TASKS.md (the live cross-repo task list)
+                           plus dated, append-only planning dumps (`YYYY-MM-DD-<topic>.md`).
                            Read plans/README.md before adding anything.
 drafts/                    STUB ONLY — redirect README for old deep links; don't add content here
+research/plan.md           STUB ONLY — plan.md moved to the repo root (Aug 2026)
 RELATED_REPOS.md           single source of truth for sibling repos and external resources
 ```
 
-## Planning lives in three layers — don't mix them
+## Planning has four layers — don't mix them
 
-- `plans/` (this repo) — **cross-repo, org-level, long-horizon**. `plans/TASKS.md` is the live
-  list; the dated files are append-only thinking artifacts that nobody keeps current.
-- **A repo's own roadmap** — where that one repo is headed.
-- **A repo's GitHub issues** — the next concrete unit of work.
+| # | Question | Lives in |
+|---|---|---|
+| 1 | "What is this project?" | `/plan.md` — the summary |
+| 2 | "What should the org be doing?" | `plans/` + `plans/ORG-TASKS.md` |
+| 3 | "Where is this repo headed?" | that repo's `docs/roadmap.md` |
+| 4 | "What's in flight?" | that repo's GitHub issues + active branches |
 
-When a task is only actionable inside one repo, it belongs in that repo's issues, not in
-`plans/TASKS.md`. Org-level tasks link down to repo work (`PNT#55`, `prm#66`, `fellows#296`).
-Never "update" a dated plan file — write a new one.
+**Layer 2 is org-only.** A task actionable inside one existing repo belongs in that repo's
+roadmap or issues, never in `ORG-TASKS.md`. Org tasks may link down (`PNT#55`, `prm#66`,
+`fellows#296`), but the repo stays the source of truth for its own status.
+
+Never "update" a dated plan file — write a new one. `ORG-TASKS.md` is the sole exception:
+it is kept current.
 
 ## The website
 
