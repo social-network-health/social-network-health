@@ -6,12 +6,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The **organizing hub for the Social Network Health (SNH) research program**, plus the small static
 website at https://socialnetwork.health. The actual software (PNA toolkit, PRM, etc.) lives in
-sibling repositories — **read `RELATED_REPOS.md`** for the full map and the convention that all
-related repos are checked out at `../<name>` relative to this repo root (same layout on every
-workstation).
+sibling repositories.
 
 There is no web framework, no package manager, and **no test runner** here — don't claim tests
 pass; there are none. (A TanStack/Bun app used to live here; it was removed in commit `749f3d9`.)
+
+## The organization — eight repos, one filesystem level
+
+Everything lives under the **[social-network-health](https://github.com/social-network-health)**
+GitHub org. A developer working on this project normally has **all eight checked out side by
+side in one parent directory**, so from any repo root every other repo is at `../<name>`.
+Cross-repo paths are written relative to the repo root, never absolute — the parent directory
+differs per host.
+
+| Repo | | Role |
+|---|---|---|
+| `social-network-health` | public | this repo — hub, website, research docs, presentations |
+| `personal_network_toolkit` | public | the PNA Toolkit: spec, contracts, conformance suite, skill |
+| `prm` | public | Personal Relationship Manager — PNA reference design |
+| `fellows_local_db` | public | EHF Fellows directory — the first reference design, real users |
+| `snhdb` | public | the research-paper corpus + its search skill |
+| `prt` | public | earlier-generation relationship toolkit — **being archived**, harvest first |
+| `snhtoolkitmw` | private | MediaWiki extension bundle + config for the toolkit wiki |
+| `socialnetwork_toolkit` | private | older MediaWiki install repo — **secrets in git history, being retired** |
+
+`RELATED_REPOS.md` is the single source of truth for this map and for non-repo resources
+(the wiki, the paper corpus on Drive, the video archive). It's fine to read and operate on
+sibling repos locally when a task calls for it.
+
+A ninth repo, `richbodo/pnt-workshop`, is outside the org and a candidate for archiving.
 
 ## Layout
 
@@ -31,7 +54,8 @@ presentations/             one folder per talk; the PDF at a talk's top level IS
                            dwebcamp-berlin-2026/ (delivered 2026-07). Run a deck with
                            `just slides <folder>` (default: dwebcamp-berlin-2026/deck).
                            The old pnt-workshop deck lives in richbodo/pnt-workshop + git history.
-plan.md                    the project's summary plan (M1/M2/M3 steps) — planning layer 1
+plan.md                    summary plan for the SOFTWARE program (M1/M2/M3) — planning layer 1
+docs/roadmap.md            where THIS repo is headed — planning layer 3
 plans/                     ORG-LEVEL planning: ORG-TASKS.md (the live cross-repo task list)
                            plus dated, append-only planning dumps (`YYYY-MM-DD-<topic>.md`).
                            Read plans/README.md before adding anything.
@@ -44,10 +68,16 @@ RELATED_REPOS.md           single source of truth for sibling repos and external
 
 | # | Question | Lives in |
 |---|---|---|
-| 1 | "What is this project?" | `/plan.md` — the summary |
-| 2 | "What should the org be doing?" | `plans/` + `plans/ORG-TASKS.md` |
+| 1 | "What is the software program?" | [`/plan.md`](plan.md) — the summary |
+| 2 | "What should the org be doing?" | `plans/` + [`plans/ORG-TASKS.md`](plans/ORG-TASKS.md) |
 | 3 | "Where is this repo headed?" | that repo's `docs/roadmap.md` — including [this one](docs/roadmap.md) |
 | 4 | "What's in flight?" | that repo's GitHub issues + active branches |
+
+**Layer 1 is narrower than the org.** `plan.md`'s M1/M2/M3 steps summarize the **software and
+research program** — the reference designs, the measurement work, the protocols. The org does
+more than that: community building, the newsletter, the toolkit wiki, educational materials,
+the collaborator search. None of that is in `plan.md`, and it shouldn't be added there — it
+lives at layer 2. Don't read `plan.md` as a complete picture of what the organization is doing.
 
 This repo has its own layer-3 work (website, research docs, presentations) in
 `docs/roadmap.md`. It has historically used **no issue tracker** — website work is a
@@ -94,9 +124,12 @@ See `tools/paper-resolver/usage.md` for validated invocations. The essentials:
 
 ## Cross-repo work
 
-Sibling repos are at `../<name>` (see `RELATED_REPOS.md`). It's fine to read and operate on them
-locally when a task calls for it. `../socialnetwork_toolkit` has secrets checked in — never copy
-its contents anywhere public.
+See the org table above for the eight repos and the sibling-checkout convention.
+
+**`../socialnetwork_toolkit` has live credentials committed to its git history on every
+branch** — database, wiki admin, cPanel, FTP, a developer account, plus the production IP and
+SSH usernames. Never copy, quote, or summarize its contents anywhere, and never make it public.
+Rotation is tracked in `plans/ORG-TASKS.md`.
 
 A `/prime` command (`.claude/commands/prime.md`) exists for deeper session orientation — it reads
 the key research docs and confirms which sibling repos are present on the current host.
