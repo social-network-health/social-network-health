@@ -31,9 +31,23 @@ presentations/             one folder per talk; the PDF at a talk's top level IS
                            dwebcamp-berlin-2026/ (delivered 2026-07). Run a deck with
                            `just slides <folder>` (default: dwebcamp-berlin-2026/deck).
                            The old pnt-workshop deck lives in richbodo/pnt-workshop + git history.
+plans/                     ORG-LEVEL planning: TASKS.md (the live cross-repo task list) plus
+                           dated, append-only planning dumps (`YYYY-MM-DD-<topic>.md`).
+                           Read plans/README.md before adding anything.
 drafts/                    STUB ONLY — redirect README for old deep links; don't add content here
 RELATED_REPOS.md           single source of truth for sibling repos and external resources
 ```
+
+## Planning lives in three layers — don't mix them
+
+- `plans/` (this repo) — **cross-repo, org-level, long-horizon**. `plans/TASKS.md` is the live
+  list; the dated files are append-only thinking artifacts that nobody keeps current.
+- **A repo's own roadmap** — where that one repo is headed.
+- **A repo's GitHub issues** — the next concrete unit of work.
+
+When a task is only actionable inside one repo, it belongs in that repo's issues, not in
+`plans/TASKS.md`. Org-level tasks link down to repo work (`PNT#55`, `prm#66`, `fellows#296`).
+Never "update" a dated plan file — write a new one.
 
 ## The website
 

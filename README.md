@@ -47,6 +47,8 @@ The CLI tooling on offer lives in the
   the gitignored paper corpus
 - `tools/paper-resolver/` — tool for resolving papers to metadata + legal open-access full text
 - `presentations/` — talk preparation
+- `plans/` — org-level, cross-repo planning: the live [`TASKS.md`](plans/TASKS.md) list plus dated
+  planning dumps. Per-repo direction lives in each repo's own roadmap and issues.
 - `public/` + `ops/` — the static website and its droplet deploy
 
 ## Related repositories
