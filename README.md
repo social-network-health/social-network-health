@@ -59,3 +59,23 @@ The CLI tooling on offer lives in the
 The software (PNA toolkit, PRM, reference designs) lives in sibling repos — see
 [`RELATED_REPOS.md`](RELATED_REPOS.md) for the map. Convention: all related repos are checked out
 side by side, one level up from this repo root.
+
+## Org upkeep
+
+Some things have to stay identical across all eight repos — the shared `CLAUDE.md` block and the
+org's Claude Code skills. Each has a command that checks it, because a sync rule nobody can
+verify is a wish. Run these from this repo:
+
+| Command | |
+|---|---|
+| `just check-org` | run every check — the one to use when you're not sure |
+| `just check-conventions` | is the shared `CLAUDE.md` block identical in all eight repos? |
+| `just sync-conventions` | propagate the canonical block after editing it |
+| `just check-skills` | are the org skills symlinked, current, and unshadowed? |
+| `just install-skills` | create/repair the `~/.claude/skills` symlinks — **run once per workstation** |
+
+**New workstation?** Clone the repos side by side, then `just install-skills && just check-org`.
+
+Full procedure, and the reasoning behind symlinking skills rather than copying them:
+[`docs/org-upkeep.md`](docs/org-upkeep.md). `just` on its own lists every recipe, including the
+site deploy and provisioning ones.
