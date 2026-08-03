@@ -47,6 +47,11 @@ The CLI tooling on offer lives in the
   the gitignored paper corpus
 - `tools/paper-resolver/` — tool for resolving papers to metadata + legal open-access full text
 - `presentations/` — talk preparation
+- [`plan.md`](plan.md) — **the summary plan**: the M1/M2/M3 steps and what carries each. Start here.
+- [`docs/roadmap.md`](docs/roadmap.md) — where this repo (website, research docs, presentations) is headed
+- `plans/` — org-level, cross-repo planning: the live [`ORG-TASKS.md`](plans/ORG-TASKS.md) list plus
+  dated planning dumps. Per-repo direction lives in each repo's own roadmap and issues — see
+  [`plans/README.md`](plans/README.md) for how the four planning layers fit together.
 - `public/` + `ops/` — the static website and its droplet deploy
 
 ## Related repositories
