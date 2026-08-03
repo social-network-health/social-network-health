@@ -17,7 +17,7 @@ Repos carrying the block: `social-network-health`, `personal_network_toolkit`, `
 
 ---
 
-<!-- BEGIN SHARED: org-conventions v1 -->
+<!-- BEGIN SHARED: org-conventions v2 -->
 <!-- Canonical copy: social-network-health/docs/shared/org-conventions.md
      Do not edit this block in place. Edit the canonical copy and propagate. -->
 
@@ -31,6 +31,11 @@ relative to the repo root, never absolute — the parent directory differs per h
 **[`RELATED_REPOS.md`](https://github.com/social-network-health/social-network-health/blob/main/RELATED_REPOS.md)**
 in the hub repo is the single source of truth for what those repos are and what each is for.
 Don't restate the list in a repo's own docs — a second copy is a second thing to forget.
+
+The layout is a convention of the working environment; it could change, but it holds for now.
+It lives in `CLAUDE.md` rather than agent memory because **memory is keyed to the working
+directory** — a worktree at a different path starts with a fresh memory dir. A committed file
+is the only channel that reaches every worktree and every concurrent agent.
 
 ## Planning has four layers
 
@@ -76,4 +81,4 @@ Each of these was learned the hard way in one repo. They apply in all of them.
   fails or strands uncommitted work. Run `git worktree list` before starting. Repo-specific
   worktree setup and port serialization live in that repo's own sections.
 
-<!-- END SHARED: org-conventions v1 -->
+<!-- END SHARED: org-conventions v2 -->
