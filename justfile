@@ -29,3 +29,24 @@ ansible-deps:
 # run a Slidev deck from presentations/ locally (opens localhost:3030)
 slides deck="dwebcamp-berlin-2026/deck":
     cd presentations/{{deck}} && bun install && bun run dev
+
+# --- org upkeep (see docs/org-upkeep.md) ---------------------------------------
+
+# run every org consistency check — the one to run when you don't know which you need
+check-org: check-conventions check-skills
+
+# is the shared CLAUDE.md block identical in every org repo?
+check-conventions:
+    @./tools/org/sync_conventions.py
+
+# propagate the canonical shared block into every org repo (then commit each)
+sync-conventions:
+    @./tools/org/sync_conventions.py --write
+
+# are the org's shared skills symlinked, current, and unshadowed?
+check-skills:
+    @./tools/org/org_skills.py
+
+# create or repair the ~/.claude/skills symlinks (run once per workstation)
+install-skills:
+    @./tools/org/org_skills.py --install

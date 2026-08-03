@@ -78,9 +78,10 @@ with `just slides`). The delivered PDF stays as the record of what was actually 
 
 ## Later
 
-- **Link hygiene sweep.** In-repo docs still point at `github.com/richbodo/...` for repos that
-  now live under the `social-network-health` org. Redirects cover it, but it should be clean
-  before collaborators arrive. (Local git remotes were fixed 2026-08-03.)
+- **Link hygiene sweep.** *This repo is clean* — its only `github.com/richbodo/` links point at
+  `pnt-workshop`, which really does sit outside the org. The sibling repos still carry stale
+  org links; tracked in [`../plans/ORG-TASKS.md`](../plans/ORG-TASKS.md). (Local git remotes
+  were fixed 2026-08-03.)
 - **Research library surfacing.** How `snhdb` and the toolkit wiki's AI search show up on the
   site — depends on the wiki move, which is org-level.
 
