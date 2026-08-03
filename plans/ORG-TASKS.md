@@ -56,14 +56,16 @@ are links, deliberately without status claims. Do not restate progress here.*
 | What | Where |
 |---|---|
 | PNT graduation wave — the three PRM spec riders | PNT#64 |
-| PNT graduation wave — data-floor trio + EX-H7 fail-closed | *(to be filed)* |
+| PNT graduation wave — data-floor trio + EX-H7 fail-closed | PNT#119 |
+| PNT roadmap stale; three brainstorm links dead (second half blocked on the private repo) | PNT#120 |
 | `/pna-evaluate` audit UX | PNT#55 |
 | Plain-language validator for the Visual Validator | PNT#62 |
 | Papers → publication; ref-drift lint | PNT `docs/roadmap.md` Tier 2 |
-| PRM daily-driver gap — install/update by a non-technical user, + AI contact research | *(to be filed)* |
-| Fellows calendaring / EHF events registry — may surface a `fellows_local_db` rewrite before the feature lands | *(to be filed)* |
+| PRM daily-driver gap — install/update by a **non-technical** user, + AI contact research | *(Rich is testing the existing installer first; issue to follow)* |
+| Fellows calendaring / EHF events registry — may surface a `fellows_local_db` rewrite before the feature lands | fellows#302 |
+| `fellows_local_db/plans/personal_network_plan.md` superseded by PRM | fellows#303 |
 | snhdb multi-perspective research summaries | snhdb#3 |
-| snhdb corpus-repair Phase 5 guardrails | *(to be filed)* |
+| snhdb corpus-repair Phase 5 guardrails | snhdb#6 |
 | Hub repo: website redo, research restructure, M1/M2/M3 recast, talk video | [`../docs/roadmap.md`](../docs/roadmap.md) |
 
 ## Done
