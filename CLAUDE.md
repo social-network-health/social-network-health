@@ -50,7 +50,7 @@ research/plan.md           STUB ONLY — plan.md moved to the repo root (Aug 202
 RELATED_REPOS.md           single source of truth for sibling repos and external resources
 ```
 
-<!-- BEGIN SHARED: org-conventions v3 -->
+<!-- BEGIN SHARED: org-conventions v4 -->
 <!-- Canonical copy: social-network-health/docs/shared/org-conventions.md
      Do not edit this block in place. Edit the canonical copy and propagate. -->
 
@@ -116,6 +116,16 @@ Each of these was learned the hard way in one repo. They apply in all of them.
 - **A sync rule without a mechanical check is a wish.** Anything that must hold in more than
   one repo ships with a command that verifies it, and the rule names the command. Nobody
   eyeballs eight repos, so silent drift is the default outcome otherwise.
+- **Add a load-bearing document or module → update `.claude/commands/prime.md` in the same
+  PR.** Priming is how every agent gets its systems-level picture of a repo, and a prime that
+  misses the file where the invariants live sends every future session searching for it. This
+  is the same rule as "a user-visible change updates the users guide in the same PR", applied
+  to the agent's entry point. Prime is bespoke per repo, so no checksum catches this one —
+  the PR is the only gate.
+- **Prime is expensive; not priming is more expensive.** `CLAUDE.md` loads every session, so
+  it holds what is always true and stays short. Prime is opt-in and costs tokens, so it holds
+  the *reading list* — which files give systems-level understanding, and which to skim rather
+  than read. Keep prime curated: name the seams, never glob a directory.
 
 ## Changing this block
 
@@ -124,7 +134,7 @@ markers, run `just sync-conventions` from the hub repo, then open one PR per rep
 `just check-conventions` verifies every copy matches; `just check-org` runs every org check.
 Full procedure: hub `docs/org-upkeep.md`.
 
-<!-- END SHARED: org-conventions v3 -->
+<!-- END SHARED: org-conventions v4 -->
 
 This repo has its own layer-3 work (website, research docs, presentations) in
 [`docs/roadmap.md`](docs/roadmap.md). It has historically used **no issue tracker** — website
