@@ -14,5 +14,5 @@ To re-export a PDF after edits: `bunx slidev export` inside the deck folder
 (`playwright-chromium` is a dev dependency).
 
 Past material: the Personal Network Toolkit workshop deck (the starting point for the DWeb
-Camp deck) lives in the standalone [`richbodo/pnt-workshop`](https://github.com/richbodo/pnt-workshop)
-repo, and in this repo's git history under `presentations/pnt-workshop/`.
+Camp deck) lives in the archived [`richbodo/pnt-workshop`](https://github.com/richbodo/pnt-workshop)
+repo (archived 2026-08-04), and in this repo's git history under `presentations/pnt-workshop/`.

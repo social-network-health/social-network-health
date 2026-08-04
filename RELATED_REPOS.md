@@ -25,15 +25,13 @@ that are.
 
 ## Talks & workshop material
 
-All current talk material lives **in this repo** under `presentations/` (one folder per talk:
-delivered PDF at top level, Slidev source in `deck/`). The PNT workshop deck — the starting
-point for the DWeb Camp Berlin 2026 deck — was briefly imported here (July 2026) and then
-removed once that talk shipped; it remains in the standalone repo and in this repo's git
-history under `presentations/pnt-workshop/`:
+All current talk material lives **in this repo** under `presentations/` — one folder per talk,
+delivered PDF at top level, Slidev source in `deck/`.
 
-| Repo | Local path | Remote | Role |
-|---|---|---|---|
-| pnt-workshop | *(not checked out locally — clone to `../pnt-workshop` if needed)* | github.com/richbodo/pnt-workshop (candidate for archiving) | Slidev slide deck + talk notes for Personal Network Toolkit workshops. Superseded by the DWeb Camp Berlin 2026 deck. |
+The PNT workshop deck was the starting point for the DWeb Camp Berlin 2026 deck. It was briefly
+imported here (July 2026) and removed once that talk shipped. **`richbodo/pnt-workshop` was
+archived 2026-08-04** (read-only, outside the org); the deck also survives in this repo's git
+history under `presentations/pnt-workshop/`. Nothing needs to be checked out for it.
 
 ## Research infrastructure (active)
 

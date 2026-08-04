@@ -32,6 +32,14 @@ slides deck="dwebcamp-berlin-2026/deck":
 
 # --- org upkeep (see docs/org-upkeep.md) ---------------------------------------
 
+# clone/refresh every org repo + install skills. New workstation, or any time you want everything current
+bootstrap:
+    @./tools/org/bootstrap.py
+
+# show what bootstrap would do without changing anything
+bootstrap-dry:
+    @./tools/org/bootstrap.py --dry-run
+
 # every org consistency check + what is NOT checked. Run this when you come back to the project
 check-org:
     #!/usr/bin/env bash

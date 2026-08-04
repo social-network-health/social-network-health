@@ -62,7 +62,7 @@ side by side, one level up from this repo root.
 
 ## Org upkeep — what's automated here
 
-A few things have to stay identical across all eight repos. Those are machine-checked, so you
+A few things have to stay identical across every repo in the org. Those are machine-checked, so you
 don't have to remember them. **Run `just check-org`** — it verifies what can be verified and
 prints what it deliberately doesn't.
 
@@ -74,6 +74,7 @@ prints what it deliberately doesn't.
 | **Not checkable — habits** | see the shared block in any repo's `CLAUDE.md` |
 
 ```bash
+just bootstrap           # clone/refresh every org repo + install skills (safe any time)
 just check-org           # everything, plus the boundary of what it covers
 just check-conventions   # the shared block: disk AND main
 just sync-conventions    # propagate the canonical block after editing it
@@ -81,7 +82,10 @@ just check-skills        # org skills on this workstation
 just install-skills      # once per workstation
 ```
 
-**New workstation:** clone the repos side by side, then `just install-skills && just check-org`.
+**Starting from scratch?** Clone *this* repo, then `just bootstrap && just check-org` — that
+clones every other repo in the org side by side and sets up the Claude Code skills. It's also
+the routine "bring everything up to date" command: it never checks out, resets, stashes, or
+touches a dirty working tree, so it's safe to run whenever. `just bootstrap-dry` previews it.
 
 **If a check fails, it means something real** — these catch drift that is invisible any other
 way. Investigate rather than working around it; a check that has become brittle is a bug worth
