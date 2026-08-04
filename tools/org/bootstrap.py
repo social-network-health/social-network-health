@@ -32,8 +32,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-HUB = Path(__file__).resolve().parents[2]
-SRC = HUB.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _common import HUB, SRC, repos_from_canonical   # noqa: E402
+
 ORG = "social-network-health"
 
 
@@ -60,11 +61,7 @@ def repos_from_gh():
 
 
 def repos_from_doc():
-    doc = HUB / "docs" / "shared" / "org-conventions.md"
-    if not doc.exists():
-        return []
-    m = re.search(r"Repos carrying the block:(.+?)\n\n", doc.read_text(), re.S)
-    return [(n, False, "?") for n in re.findall(r"`([^`]+)`", m.group(1))] if m else []
+    return [(n, False, "?") for n in repos_from_canonical()]
 
 
 def handle(name, archived, dry):

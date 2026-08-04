@@ -25,8 +25,9 @@ import argparse
 import sys
 from pathlib import Path
 
-HUB = Path(__file__).resolve().parents[2]
-SRC = HUB.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _common import HUB, SRC, repos_from_canonical   # noqa: E402
+
 USER_SKILLS = Path.home() / ".claude" / "skills"
 
 # name -> path of the skill directory, relative to the sibling-checkout root.
@@ -71,14 +72,6 @@ def check_one(name: str, rel: str, install: bool):
     return f"{name:<18} NOT INSTALLED    (skill unavailable in your sessions)", False
 
 
-def org_repos():
-    """Only scan repos in this org — read the list from the canonical conventions doc."""
-    import re
-    doc = (HUB / "docs" / "shared" / "org-conventions.md").read_text()
-    m = re.search(r"Repos carrying the block:(.+?)\n\n", doc, re.S)
-    return re.findall(r"`([^`]+)`", m.group(1)) if m else [HUB.name]
-
-
 def find_shadows():
     """Repo-level skills that duplicate an org skill, or vendor a copy that will drift.
 
@@ -86,7 +79,7 @@ def find_shadows():
     Only copies, and links pointing somewhere else, are problems.
     """
     out = []
-    for repo in org_repos():
+    for repo in repos_from_canonical():
         skills_dir = SRC / repo / ".claude" / "skills"
         if not skills_dir.is_dir():
             continue
