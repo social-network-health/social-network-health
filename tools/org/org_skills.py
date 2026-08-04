@@ -36,6 +36,9 @@ ORG_SKILLS = {
     "pna-toolkit": "personal_network_toolkit/pna-toolkit",
     "snhdb": "snhdb/skill/snhdb",
     "paper-resolver": "social-network-health/tools/paper-resolver",
+    # Lives in the private repo because it writes there; developers without access will
+    # correctly see SOURCE MISSING rather than a skill that silently fails at write time.
+    "snhb": "snh-private/skills/snhb",
 }
 
 # Former names, so a stale vendored copy is recognised as a duplicate rather than
