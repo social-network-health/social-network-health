@@ -760,7 +760,7 @@ The cards are the index; answers cite the papers.
 `personal_network_toolkit/`<br>**`spec/PNA_Spec.md`**
 
 **The plan** — the three steps, and the research behind each:<br>
-`social-network-health/`<br>**`plan.md`**
+`social-network-health/`<br>**`software-plan.md`**
 
 Issues and PRs welcome — it's all *checked, not awarded*.
 
@@ -769,7 +769,7 @@ Issues and PRs welcome — it's all *checked, not awarded*.
 </div>
 
 <div class="text-xs opacity-70 mt-4 text-center">
-<a href="https://github.com/social-network-health/personal_network_toolkit" target="_blank">github.com/social-network-health/personal_network_toolkit</a> · <a href="https://github.com/social-network-health/snhdb" target="_blank">github.com/social-network-health/snhdb</a> · <a href="https://github.com/social-network-health/social-network-health/blob/main/plan.md" target="_blank">plan.md</a>
+<a href="https://github.com/social-network-health/personal_network_toolkit" target="_blank">github.com/social-network-health/personal_network_toolkit</a> · <a href="https://github.com/social-network-health/snhdb" target="_blank">github.com/social-network-health/snhdb</a> · <a href="https://github.com/social-network-health/social-network-health/blob/main/software-plan.md" target="_blank">software-plan.md</a>
 </div>
 
 <!--
@@ -787,5 +787,5 @@ cards; plain rg works too, no cloud, no vector store.
 
 Full links:
 - Spec: github.com/social-network-health/personal_network_toolkit/blob/main/spec/PNA_Spec.md
-- Plan: github.com/social-network-health/social-network-health/blob/main/plan.md
+- Plan: github.com/social-network-health/social-network-health/blob/main/software-plan.md
 -->

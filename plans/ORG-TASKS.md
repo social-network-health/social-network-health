@@ -77,3 +77,4 @@ are links, deliberately without status claims. Do not restate progress here.*
 - [x] ~~**[org]** Establish the four planning layers~~ (2026-08-03 — `plan.md` to root, `docs/roadmap.md` for the hub, org tasks reconciled against every repo)
 - [x] ~~**[org]** Move `research/plan.md` → repo root~~ (2026-08-03 — redirect stub left behind for the delivered deck's links)
 - [x] ~~**[infra]** Point all local git remotes at the `social-network-health` org~~ (2026-08-03 — 5 repos were still on `richbodo/*`)
+- [x] ~~**[org]** Rename `plan.md` → `software-plan.md`~~ (2026-08-04 — the name now says what it covers; the homepage never linked it, so no redeploy)

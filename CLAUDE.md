@@ -38,17 +38,17 @@ presentations/             one folder per talk; the PDF at a talk's top level IS
                            dwebcamp-berlin-2026/ (delivered 2026-07). Run a deck with
                            `just slides <folder>` (default: dwebcamp-berlin-2026/deck).
                            The old pnt-workshop deck lives in this repo's git history.
-plan.md                    summary plan for the SOFTWARE program (M1/M2/M3) — planning layer 1
+software-plan.md           summary plan for the SOFTWARE program (M1/M2/M3) — planning layer 1
 docs/roadmap.md            where THIS repo is headed — planning layer 3
 plans/                     ORG-LEVEL planning: ORG-TASKS.md (the live cross-repo task list)
                            plus dated, append-only planning dumps (`YYYY-MM-DD-<topic>.md`).
                            Read plans/README.md before adding anything.
 drafts/                    STUB ONLY — redirect README for old deep links; don't add content here
-research/plan.md           STUB ONLY — plan.md moved to the repo root (Aug 2026)
+research/plan.md           STUB ONLY — redirect to /software-plan.md
 RELATED_REPOS.md           single source of truth for sibling repos and external resources
 ```
 
-<!-- BEGIN SHARED: org-conventions v5 -->
+<!-- BEGIN SHARED: org-conventions v6 -->
 <!-- Canonical copy: social-network-health/docs/shared/org-conventions.md
      Do not edit this block in place. Edit the canonical copy and propagate. -->
 
@@ -81,7 +81,7 @@ is the only channel that reaches every worktree and every concurrent agent.
 
 | # | Question | Lives in |
 |---|---|---|
-| 1 | "What is the software program?" | hub [`plan.md`](https://github.com/social-network-health/social-network-health/blob/main/plan.md) — the M1/M2/M3 summary |
+| 1 | "What is the software program?" | hub [`software-plan.md`](https://github.com/social-network-health/social-network-health/blob/main/software-plan.md) — the M1/M2/M3 summary |
 | 2 | "What should the org be doing?" | hub [`plans/`](https://github.com/social-network-health/social-network-health/tree/main/plans) + `plans/ORG-TASKS.md` |
 | 3 | "Where is this repo headed?" | **this repo's** `docs/roadmap.md` |
 | 4 | "What's in flight?" | **this repo's** GitHub issues and active branches |
@@ -90,7 +90,7 @@ Record a thought at the layer matching its scope.
 
 **Layer 2 is org-only.** Work actionable inside one existing repo belongs in that repo;
 `ORG-TASKS.md` links down to it rather than restating its status. **Layer 1 is narrower than
-the organization** — `plan.md` summarizes the software and research program, not community
+the organization** — `software-plan.md` summarizes the software and research program, not community
 building, the toolkit wiki, or educational materials.
 
 Dated files under `plans/` are append-only thinking artifacts. Never update one; write a new
@@ -141,7 +141,7 @@ markers, run `just sync-conventions` from the hub repo, then open one PR per rep
 `just check-conventions` verifies every copy matches; `just check-org` runs every org check.
 Full procedure: hub `docs/org-upkeep.md`.
 
-<!-- END SHARED: org-conventions v5 -->
+<!-- END SHARED: org-conventions v6 -->
 
 This repo has its own layer-3 work (website, research docs, presentations) in
 [`docs/roadmap.md`](docs/roadmap.md). It has historically used **no issue tracker** — website

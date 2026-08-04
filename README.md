@@ -47,7 +47,7 @@ The CLI tooling on offer lives in the
   the gitignored paper corpus
 - `tools/paper-resolver/` — tool for resolving papers to metadata + legal open-access full text
 - `presentations/` — talk preparation
-- [`plan.md`](plan.md) — **the summary plan**: the M1/M2/M3 steps and what carries each. Start here.
+- [`software-plan.md`](software-plan.md) — **the summary plan**: the M1/M2/M3 steps and what carries each. Start here.
 - [`docs/roadmap.md`](docs/roadmap.md) — where this repo (website, research docs, presentations) is headed
 - `plans/` — org-level, cross-repo planning: the live [`ORG-TASKS.md`](plans/ORG-TASKS.md) list plus
   dated planning dumps. Per-repo direction lives in each repo's own roadmap and issues — see
@@ -59,6 +59,14 @@ The CLI tooling on offer lives in the
 The software (PNA toolkit, PRM, reference designs) lives in sibling repos — see
 [`RELATED_REPOS.md`](RELATED_REPOS.md) for the map. Convention: all related repos are checked out
 side by side, one level up from this repo root.
+
+## Day to day
+
+```bash
+just dashboard   # the org task list — what the whole org should be doing
+just prs         # every open PR across every repo, grouped, with links
+just prs-urls    # the same as bare URLs: `just prs-urls | xargs open`
+```
 
 ## Org upkeep — what's automated here
 

@@ -30,6 +30,20 @@ ansible-deps:
 slides deck="dwebcamp-berlin-2026/deck":
     cd presentations/{{deck}} && bun install && bun run dev
 
+# --- org at a glance -----------------------------------------------------------
+
+# the org task list (planning layer 2) — what the whole org should be doing
+dashboard:
+    @cat plans/ORG-TASKS.md
+
+# every open PR across every repo in the org, grouped, with links
+prs:
+    @./tools/org/open_prs.py
+
+# just the PR URLs, one per line — pipe somewhere, or `just prs-urls | xargs open`
+prs-urls:
+    @./tools/org/open_prs.py --urls
+
 # --- org upkeep (see docs/org-upkeep.md) ---------------------------------------
 
 # clone/refresh every org repo + install skills. New workstation, or any time you want everything current
