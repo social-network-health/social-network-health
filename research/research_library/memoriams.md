@@ -1,8 +1,9 @@
 # Memoriams — What Open-Source Communities' Memorials Teach About Prevention
 
 **Status:** v1.0 (2026-07-08), anonymized public summary. The named case records
-behind this document live in `memoriams_data/` (deliberately gitignored — see
-"Publication posture" below).
+behind this document are kept in the org's private repository — see "Publication
+posture" below. How this document's norms bind every other document in the org is
+set out in [`docs/publication-standards.md`](../../docs/publication-standards.md).
 
 *If you or someone you know is struggling: in the US, call or text **988**
 (Suicide & Crisis Lifeline); elsewhere, https://findahelpline.com.*
@@ -34,8 +35,8 @@ postvention practice norms and their defining resources, and explains our method
 - **Safe messaging:** the norms below are applied throughout — "died by suicide,"
   never method, no glamorizing, restraint in detail, crisis resources present.
 - **Privacy:** the named case records (six, spanning 2010–2021: four confirmed, two
-  cause-not-public) are kept as private working data in `memoriams_data/`, one file
-  per person, each carrying its verification provenance.
+  cause-not-public) are kept as private working data in the org's private
+  repository, one file per person, each carrying its verification provenance.
 
 ## What the memoriams said about causes (anonymized)
 
@@ -155,10 +156,17 @@ The guidance supports keeping a research record (norm 6's public-health framing;
 5's argument against erasure) while constraining it (norms 2–4, 8). Because no
 postvention literature we verified addresses *permanent research archives* specifically
 (the 30–60-day guidance targets active-grief memorial pages), we resolved the tension
-conservatively: **named case records stay private** (`memoriams_data/`, gitignored,
-safe-messaging rules inside), and **this anonymized summary is the public document** —
-methods, verified patterns, norms, and resources, with no information about the
-individuals. Contributors editing either layer must follow the norms above.
+conservatively: **named case records stay private** (held in the org's private
+repository, safe-messaging rules inside), and **this anonymized summary is the public
+document** — methods, verified patterns, norms, and resources, with no information about
+the individuals.
+
+That resolution still stands. What has changed since is its **scope**: it originally bound
+only these two layers, and a sibling document citing the same underlying material drifted
+to the opposite posture as a result. The norms above now bind **every document in every
+org repo** via [`docs/publication-standards.md`](../../docs/publication-standards.md),
+which also adds the release gate, the quotation rule, and an honest register of what the
+field has no answer for. Contributors editing any layer must follow it.
 
 ## Open questions
 
