@@ -31,12 +31,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-HUB = Path(__file__).resolve().parents[2]
-CANONICAL = HUB / "docs" / "shared" / "org-conventions.md"
-BLOCK_RE = re.compile(
-    r"<!-- BEGIN SHARED: org-conventions.*?<!-- END SHARED: org-conventions[^>]*-->",
-    re.S,
-)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _common import (BLOCK_RE, CANONICAL, HUB,   # noqa: E402
+                     extract_block, repo_root, repos_from_canonical)
 
 GUIDANCE = {
     "unshipped": (
@@ -59,20 +56,7 @@ def digest(text: str) -> str:
     return hashlib.sha256(text.encode()).hexdigest()[:12]
 
 
-def extract(text):
-    m = BLOCK_RE.search(text or "")
-    return m.group(0) if m else None
-
-
-def repos_from_canonical(text: str):
-    m = re.search(r"Repos carrying the block:(.+?)\n\n", text, re.S)
-    if not m:
-        sys.exit("error: canonical doc has no 'Repos carrying the block:' line")
-    return re.findall(r"`([^`]+)`", m.group(1))
-
-
-def repo_root(repo: str) -> Path:
-    return HUB if repo == HUB.name else HUB.parent / repo
+extract = extract_block
 
 
 def git(root: Path, *args):
@@ -125,6 +109,8 @@ def main() -> int:
     check_main = not (args.disk_only or args.write)
 
     print(f"canonical {version}  {want}   ({CANONICAL.relative_to(HUB)})")
+    print("(hashes are sha256 of the block text, first 12 chars — every repo showing the")
+    print(" same hash is the goal, not a coincidence. They are not git commits.)")
     if check_main and not args.no_fetch:
         print("fetching origin/main refs…")
     print()

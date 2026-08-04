@@ -18,11 +18,19 @@ reports it as `EDITED`.
 ports, `just` recipes, worktree helper scripts, language conventions — stays in that repo's
 own `CLAUDE.md` sections, outside the markers, where the tooling never touches it.
 
-Repos carrying the block: `social-network-health`, `personal_network_toolkit`, `prm`,
-`fellows_local_db`, `snhdb`, `prt`, `snhtoolkitmw`, `socialnetwork_toolkit`.
+*This table is the tooling's source of truth for which repos carry the block — add or remove
+a repo here when the org gains or loses one.*
 
-*(That list is the tooling's source of truth for which repos to sync — it is parsed from this
-line. Add or remove a repo here when the org gains or loses one.)*
+| Repo carrying the block |
+|---|
+| `social-network-health` |
+| `personal_network_toolkit` |
+| `prm` |
+| `fellows_local_db` |
+| `snhdb` |
+| `prt` |
+| `snhtoolkitmw` |
+| `socialnetwork_toolkit` |
 
 ---
 

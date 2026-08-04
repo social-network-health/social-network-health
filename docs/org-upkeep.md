@@ -69,6 +69,16 @@ teammate's.
 Anything repo-specific — ports, `just` recipes, worktree scripts, language conventions —
 stays outside the markers in that repo's own sections. `sync-conventions` never touches it.
 
+**Adding or removing a repo from the org:** edit the table in
+[`docs/shared/org-conventions.md`](shared/org-conventions.md). All three scripts parse that
+one table, so it's the only place to change. (`bootstrap` prefers `gh repo list`, which is
+self-updating, and falls back to the table.)
+
+**About the hashes** in `check-conventions` output: they're a sha256 of the block *text*,
+first 12 characters — not git commits. Identical text produces an identical hash, so **every
+repo showing the same value is the success condition**, not a coincidence. A differing hash
+means differing bytes.
+
 ## B — what the PR is the gate for
 
 No command catches these, because each is visible in the diff of the change that breaks it:

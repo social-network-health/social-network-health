@@ -29,3 +29,7 @@ ops/ansible/collections/ansible_collections/
 
 # memoriams: private named case records (public doc is memoriams.md)
 research/research_library/memoriams_data/
+
+# Python bytecode from the org tooling
+__pycache__/
+*.pyc
