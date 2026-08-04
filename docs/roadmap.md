@@ -8,7 +8,8 @@ research documents, and the presentations. Org-wide direction lives one layer up
 
 ## How work happens here
 
-Historically this repo has used **no issue tracker** — 46 PRs and zero issues. That wasn't an
+Historically this repo has used **no issue tracker** — 56 PRs and zero issues by the time the
+2026-08-04 rebuild reset both counters to zero (see `plans/ORG-TASKS.md`). That wasn't an
 oversight: the website work is a see-it-live loop, and a day of copy editing can be five or ten
 small PRs because you have to watch it running to know what it needs. That pattern stays.
 
