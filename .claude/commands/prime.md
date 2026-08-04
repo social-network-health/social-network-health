@@ -12,7 +12,7 @@ ls ..                   # which sibling repos are actually present on this host
 plan.md                 # layer 1: the software program in summary (M1/M2/M3)
 plans/ORG-TASKS.md      # layer 2: what the whole org should be doing now
 docs/roadmap.md         # layer 3: what THIS repo is doing (website, research, presentations)
-RELATED_REPOS.md        # the eight repos, what each is for, the localhost port registry
+RELATED_REPOS.md        # the org's repos, what each is for, the localhost port registry
 
 That stack is the point of this repo. `plan.md` is deliberately narrower than the
 organization — it covers the software and research program, not community work, the wiki, or

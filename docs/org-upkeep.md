@@ -1,6 +1,6 @@
 # Org upkeep — what's guaranteed, and what's on you
 
-Eight repos, one or two developers, a lot of agents. This is the whole maintenance story.
+Several repos, one or two developers, a lot of agents. This is the whole maintenance story.
 
 **If you read one line:** run `just check-org`. It verifies what can be verified and prints
 what it deliberately doesn't.
@@ -14,7 +14,7 @@ memory for cross-repo state produces silent drift.
 
 | | Failure mode | Guard | Examples |
 |---|---|---|---|
-| **A** | Invisible across repos. No single file or diff reveals it. | **A command.** Human attention doesn't scale to eight repos. | shared `CLAUDE.md` block; org skills installed and unshadowed |
+| **A** | Invisible across repos. No single file or diff reveals it. | **A command.** Human attention doesn't scale across repos. | shared `CLAUDE.md` block; org skills installed and unshadowed |
 | **B** | Visible in one diff. A reviewer can see the omission. | **The PR.** | `prime.md` not updated for a new load-bearing doc; users guide not updated for a UX change; a dated `plans/` file edited |
 | **C** | No artifact at all. The rule shapes an action or it doesn't. | **`CLAUDE.md`, and nothing else.** | `--body-file` over inline `--body`; triage reds before shipping; upstream `main` beats local plans; fail loudly |
 
@@ -41,8 +41,7 @@ They answer different questions, and only one of them is the truth:
 Checking only disk is how propagated-but-never-merged work hides. Not hypothetical: the block
 was synced locally and PRs were opened, but several merged *before* the follow-up commits
 were pushed to their branches — and GitHub does not reopen a merged PR when new commits
-arrive on it. Disk stayed green while `main` sat a version behind, invisibly, across seven
-repos.
+arrive on it. Disk stayed green while `main` sat a version behind, invisibly, across most of the org.
 
 The check reports both, and names the states:
 
@@ -108,14 +107,37 @@ The registry and the rename aliases are at the top of
 skill, or renames one. **Claude Code discovers skills at session start — restart after
 installing.**
 
-## Onboarding a workstation
+## Onboarding a workstation — and staying current
+
+One command does both. Clone this repo first, then:
 
 ```bash
-git clone <the org repos>   # all at one filesystem level — see RELATED_REPOS.md
-cd social-network-health
-just install-skills
-just check-org
+just bootstrap      # clone what's missing, refresh what isn't, install the skills
+just check-org      # verify
 ```
+
+`bootstrap` is **safe to run any time** — it's the new-machine setup *and* the routine
+"bring everything up to date" command. It gets the repo list from `gh repo list`, so a repo
+added to the org shows up without anyone editing a list. Without `gh` it falls back to the
+list in `docs/shared/org-conventions.md` and says so.
+
+### The safety contract
+
+`bootstrap` will **never** `checkout`, `reset`, `stash`, `merge`, or force anything, and it
+never touches a dirty working tree beyond fetching refs. Concretely:
+
+| Your repo | What happens |
+|---|---|
+| missing | cloned to `../<name>` |
+| clean, on `main` | fast-forwarded |
+| clean, on a feature branch | `main` ref fast-forwarded; **you stay on your branch** |
+| dirty | refs fetched, working tree untouched, reported as `DIRTY` |
+| private, no access | reported as `CLONE FAILED`; everything else still proceeds |
+
+The worst case is that `main` moves forward while you sit on a feature branch — which is what
+you wanted anyway. `just bootstrap-dry` shows what it would do without doing it.
+
+Restart Claude Code afterwards: skills are discovered at session start.
 
 ## When a check fails
 

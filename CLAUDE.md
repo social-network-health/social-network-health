@@ -20,8 +20,6 @@ hazards worth knowing before you touch a sibling:
   copy, quote, or summarize its contents anywhere, and never make it public.
 - **`../prt`** — being archived, with a harvest pass still pending. Don't start new work there.
 
-A ninth repo, `richbodo/pnt-workshop`, sits outside the org and is a candidate for archiving.
-
 ## Layout
 
 ```
@@ -39,7 +37,7 @@ presentations/             one folder per talk; the PDF at a talk's top level IS
                            Slidev source + notes live in its deck/ subdir. Currently:
                            dwebcamp-berlin-2026/ (delivered 2026-07). Run a deck with
                            `just slides <folder>` (default: dwebcamp-berlin-2026/deck).
-                           The old pnt-workshop deck lives in richbodo/pnt-workshop + git history.
+                           The old pnt-workshop deck lives in this repo's git history.
 plan.md                    summary plan for the SOFTWARE program (M1/M2/M3) — planning layer 1
 docs/roadmap.md            where THIS repo is headed — planning layer 3
 plans/                     ORG-LEVEL planning: ORG-TASKS.md (the live cross-repo task list)
@@ -50,16 +48,25 @@ research/plan.md           STUB ONLY — plan.md moved to the repo root (Aug 202
 RELATED_REPOS.md           single source of truth for sibling repos and external resources
 ```
 
-<!-- BEGIN SHARED: org-conventions v4 -->
+<!-- BEGIN SHARED: org-conventions v5 -->
 <!-- Canonical copy: social-network-health/docs/shared/org-conventions.md
      Do not edit this block in place. Edit the canonical copy and propagate. -->
 
+> **⚙ Shared, generated section — don't edit it here.** Everything from this line down to
+> *"Changing this block"* is identical in every repo in the org. Change it in the canonical
+> copy (hub `docs/shared/org-conventions.md`) and run `just sync-conventions`; an edit made
+> in place will be reported as `EDITED` and then overwritten. Repo-specific guidance belongs
+> in this file's *other* sections, which the tooling never touches.
+
 ## The organization
 
-Eight repos under the **[social-network-health](https://github.com/social-network-health)**
-GitHub org. A developer normally has them **all checked out side by side in one parent
-directory**, so from any repo root every other repo is at `../<name>`. Write cross-repo paths
-relative to the repo root, never absolute — the parent directory differs per host.
+The repos of the **[social-network-health](https://github.com/social-network-health)** GitHub
+org. A developer normally has them **all checked out side by side in one parent directory**,
+so from any repo root every other repo is at `../<name>`. Write cross-repo paths relative to
+the repo root, never absolute — the parent directory differs per host.
+
+The set changes as repos are added and archived, so no document states a count; ask the org
+(`gh repo list social-network-health`) or read `RELATED_REPOS.md`.
 
 **[`RELATED_REPOS.md`](https://github.com/social-network-health/social-network-health/blob/main/RELATED_REPOS.md)**
 in the hub repo is the single source of truth for what those repos are and what each is for.
@@ -115,7 +122,7 @@ Each of these was learned the hard way in one repo. They apply in all of them.
   worktree setup and port serialization live in that repo's own sections.
 - **A sync rule without a mechanical check is a wish.** Anything that must hold in more than
   one repo ships with a command that verifies it, and the rule names the command. Nobody
-  eyeballs eight repos, so silent drift is the default outcome otherwise.
+  eyeballs every repo by hand, so silent drift is the default outcome otherwise.
 - **Add a load-bearing document or module → update `.claude/commands/prime.md` in the same
   PR.** Priming is how every agent gets its systems-level picture of a repo, and a prime that
   misses the file where the invariants live sends every future session searching for it. This
@@ -134,7 +141,7 @@ markers, run `just sync-conventions` from the hub repo, then open one PR per rep
 `just check-conventions` verifies every copy matches; `just check-org` runs every org check.
 Full procedure: hub `docs/org-upkeep.md`.
 
-<!-- END SHARED: org-conventions v4 -->
+<!-- END SHARED: org-conventions v5 -->
 
 This repo has its own layer-3 work (website, research docs, presentations) in
 [`docs/roadmap.md`](docs/roadmap.md). It has historically used **no issue tracker** — website
