@@ -10,7 +10,7 @@ different horizon, and material should sit at the layer that matches its scope:
 
 | # | Question | Lives in | Horizon |
 |---|---|---|---|
-| 1 | "What is this project, in summary?" | [`/plan.md`](../plan.md) — repo root | years; the stable summary |
+| 1 | "What is the software program?" | [`/software-plan.md`](../software-plan.md) — repo root | years; the stable summary |
 | 2 | "What should the whole org be doing?" | **here** — `plans/` + [`ORG-TASKS.md`](ORG-TASKS.md) | months; revisited occasionally |
 | 3 | "Where is this one repo headed?" | that repo's `docs/roadmap.md` | weeks–months |
 | 4 | "What's being worked on right now?" | that repo's **GitHub issues** and active branches | days |

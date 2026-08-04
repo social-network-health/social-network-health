@@ -4,7 +4,7 @@
 
 This repo is both the org's home and a working repo with its own surfaces: the website, the
 research documents, and the presentations. Org-wide direction lives one layer up in
-[`../plans/ORG-TASKS.md`](../plans/ORG-TASKS.md); the summary plan is [`../plan.md`](../plan.md).
+[`../plans/ORG-TASKS.md`](../plans/ORG-TASKS.md); the summary plan is [`../software-plan.md`](../software-plan.md).
 
 ## How work happens here
 
@@ -30,8 +30,8 @@ Already done: the inactive discussion list was dropped and the footer simplified
 
 **Constraint:** the homepage deep-links files in `research/` by full GitHub URL. Any research
 file that moves or gets renamed breaks the site silently. Update the HTML and `just deploy` in
-the same change. (`plan.md` moved to the root in Aug 2026 — the homepage never linked it, so
-that one was free.)
+the same change. (`software-plan.md` moved to the root in Aug 2026 and was renamed 2026-08-04 — the
+homepage never linked it, so both were free.)
 
 ### Finish the research/ restructure
 
@@ -50,7 +50,7 @@ Both change paths the homepage links to. See the constraint above.
 
 ### Recast the plan's steps as processes with milestones
 
-`plan.md` presents Steps 1–3 as if they were deliverables. They're **ongoing processes that hit
+`software-plan.md` presents Steps 1–3 as if they were deliverables. They're **ongoing processes that hit
 milestones**. Each step needs its process, its cadence, and its milestone test stated. Honest
 status for the recast:
 
