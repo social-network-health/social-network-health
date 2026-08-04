@@ -32,18 +32,42 @@ slides deck="dwebcamp-berlin-2026/deck":
 
 # --- org upkeep (see docs/org-upkeep.md) ---------------------------------------
 
-# run every org consistency check — the one to run when you don't know which you need
-check-org: check-conventions check-skills
+# every org consistency check + what is NOT checked. Run this when you come back to the project
+check-org:
+    #!/usr/bin/env bash
+    # Deliberately NOT `check-org: check-conventions check-skills` — just aborts on a failed
+    # dependency, and the boundary note below matters most when something has failed.
+    rc=0
+    ./tools/org/sync_conventions.py || rc=1
+    echo
+    ./tools/org/org_skills.py || rc=1
+    echo
+    echo "--- what these checks do and don't cover ---------------------------------"
+    echo "CHECKED   the shared CLAUDE.md block, on disk AND on each repo's origin/main"
+    echo "CHECKED   org skills symlinked and unshadowed (this workstation only)"
+    echo
+    echo "NOT CHECKED - the PR is the gate:"
+    echo "  * prime.md updated when a load-bearing doc or module lands"
+    echo "  * the users guide updated when user-visible behavior changes"
+    echo "  * dated files under plans/ left alone (append-only)"
+    echo
+    echo "NOT CHECKABLE - habits; they live in CLAUDE.md and nowhere else:"
+    echo "  * --body-file over inline --body    * triage reds before shipping"
+    echo "  * upstream main beats local plans   * fail loudly, honest deferrals"
+    echo
+    echo "A failing check above is a real signal - investigate it."
+    echo "Full map: docs/org-upkeep.md"
+    exit $rc
 
-# is the shared CLAUDE.md block identical in every org repo?
+# is the shared CLAUDE.md block identical everywhere — on disk AND on main? (--disk-only skips network)
 check-conventions:
     @./tools/org/sync_conventions.py
 
-# propagate the canonical shared block into every org repo (then commit each)
+# propagate the canonical shared block to every working tree (then commit + PR each)
 sync-conventions:
     @./tools/org/sync_conventions.py --write
 
-# are the org's shared skills symlinked, current, and unshadowed?
+# are the org's shared skills symlinked, current, and unshadowed on THIS workstation?
 check-skills:
     @./tools/org/org_skills.py
 
