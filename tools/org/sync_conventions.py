@@ -14,6 +14,12 @@ Checking only disk is how propagated-but-never-merged work hides: sync locally, 
 a PR, the PR merges before your commit is pushed, and disk stays green while main
 sits a version behind. That happened. Hence both, by default.
 
+main is the truth; disk is the workstation. When origin/main already carries the
+current block but the working tree doesn't — because it sits on a branch cut before
+the block landed — nothing in the org is broken. That's reported as a `stale`
+WARNING and does not fail the check. The one exception: a disk copy claiming the
+CURRENT version with different text is an in-place edit, which is always an error.
+
   ./tools/org/sync_conventions.py              # check disk and main
   ./tools/org/sync_conventions.py --disk-only  # skip the network
   ./tools/org/sync_conventions.py --write      # propagate the canonical block to disk
@@ -49,6 +55,11 @@ GUIDANCE = {
     ),
     "missing": "has no SHARED block — add it to CLAUDE.md by hand; position matters.",
     "norepo": "not checked out at ../<name>.",
+    "stale": (
+        "warning, not a failure — origin/main already has the current block; the\n"
+        "      working tree is just on a branch cut before it landed. Nothing to fix\n"
+        "      org-wide: `git switch main` (or rebase) when you next work there."
+    ),
 }
 
 
@@ -75,13 +86,25 @@ def main_copy(root: Path, fetch: bool):
     return extract(git(root, "show", "origin/main:CLAUDE.md"))
 
 
+def block_version(block):
+    m = re.search(r"BEGIN SHARED: org-conventions (\S+)", block or "")
+    return m.group(1) if m else None
+
+
 def classify(disk, mainb, canon, check_main):
-    if disk is None:
-        return "missing"
     if disk == canon:
         if not check_main or mainb == canon:
             return "ok"
         return "unshipped"
+    if check_main and mainb == canon:
+        # What shipped is current; only this working tree is behind. An older
+        # version (or no block) means a branch cut before the block landed —
+        # stale, a warning. Same-version-different-text is an in-place edit.
+        if disk is not None and block_version(disk) == block_version(canon):
+            return "edited"
+        return "stale"
+    if disk is None:
+        return "missing"
     if check_main and mainb is not None and disk != mainb:
         return "edited"
     return "behind"
@@ -116,7 +139,7 @@ def main() -> int:
     print()
     print(f"  {'repo':<28} {'disk':<14} {'main':<14} state")
 
-    problems, wrote = {}, []
+    problems, warnings, wrote = {}, {}, []
     for repo in repos_from_canonical(canon_text):
         root = repo_root(repo)
         if not (root / "CLAUDE.md").exists():
@@ -143,9 +166,14 @@ def main() -> int:
         state = classify(disk, mainb, canon, check_main)
         d = digest(disk) if disk else "—"
         m = (digest(mainb) if mainb else "none") if check_main else "not checked"
-        print(f"  {repo:<28} {d:<14} {m:<14} {'ok' if state == 'ok' else state.upper()}")
-        if state != "ok":
-            problems.setdefault(state, []).append(repo)
+        if state == "stale":
+            branch = (git(root, "branch", "--show-current") or "").strip() or "(detached)"
+            print(f"  {repo:<28} {d:<14} {m:<14} stale (on {branch})")
+            warnings.setdefault(state, []).append(f"{repo} [{branch}]")
+        else:
+            print(f"  {repo:<28} {d:<14} {m:<14} {'ok' if state == 'ok' else state.upper()}")
+            if state != "ok":
+                problems.setdefault(state, []).append(repo)
 
     print()
     if args.write:
@@ -154,9 +182,19 @@ def main() -> int:
         print("being right is not the same as it having shipped.")
         return 1 if problems else 0
 
+    for state, repos in warnings.items():
+        print(f"{state}: {', '.join(repos)}")
+        print(f"      {GUIDANCE[state]}")
+        print()
+
     if not problems:
-        scope = "on disk and on main" if check_main else "on disk (main NOT checked)"
-        print(f"All copies match the canonical block {scope}.")
+        scope = "on main" if check_main else "on disk (main NOT checked)"
+        if warnings:
+            print(f"Shipped state is green — every repo matches the canonical block {scope}.")
+            print("Stale working trees above are warnings and do not fail the check.")
+        else:
+            scope = "on disk and on main" if check_main else scope
+            print(f"All copies match the canonical block {scope}.")
         return 0
 
     for state, repos in problems.items():

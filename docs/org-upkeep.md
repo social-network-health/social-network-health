@@ -48,10 +48,14 @@ The check reports both, and names the states:
 | State | Meaning |
 |---|---|
 | `ok` | disk and main both match canonical |
+| `stale` | **warning, exit 0** — main is current; the working tree sits on a branch cut before the block landed. Switch/rebase when you next work there |
 | `UNSHIPPED` | correct on disk, not on main — PR open, or **stranded behind an already-merged PR** |
 | `BEHIND` | this repo hasn't taken the current version — run `sync-conventions` |
-| `EDITED` | the copy was edited in place, which is never correct |
-| `MISSING` | no block in that `CLAUDE.md` |
+| `EDITED` | the copy was edited in place, which is never correct — including a disk copy claiming the current version with different text while main is green |
+| `MISSING` | no block in that `CLAUDE.md`, and main doesn't have the current one either |
+
+`main` is the truth; disk is the workstation. Only states where what *shipped* is wrong
+(or where disk claims something false) fail the check.
 
 `check-skills` is **workstation-scoped** — skills install to `~/.claude/skills`, so there is
 no `main` to compare against. Green means *your* machine is set up; it says nothing about a
