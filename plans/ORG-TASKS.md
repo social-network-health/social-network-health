@@ -26,9 +26,12 @@ filed down and now appear only under [Watching](#watching).*
 ### infra
 
 - [ ] **Rotate the wiki credentials** - `socialnetwork_toolkit` has plaintext live credentials in its README (database, wiki admin, cPanel, FTP, a named developer's account) plus the production IP and SSH usernames; more in `C2_S3_Config/` (restic password, S3/B2 keys) and both `LocalSettings.php` files (`$wgDBpassword`, `$wgSecretKey`, `$wgUpgradeKey`). All of it is in git history on every branch, so deleting files achieves nothing — this is rotation, not scrubbing. ~2 years exposed. Order: **rotate → verify services → retire the repo**. The repo stays private; "make it public" is off the table
-- [ ] **Replace the credential-sharing channel with the MediaWiki developer** - the secrets were checked in precisely to share them with the developer who built the MediaWiki mods. Needs a real mechanism (shared secret store / age-encrypted file / password manager sharing) before or alongside rotation, or the same thing happens again
-- [ ] **Rebuild the toolkit wiki on DigitalOcean** - `socialnetwork_toolkit` + `snhtoolkitmw` reactivation (dormant since 2024-08-06). Significant cost saving over the current host. Neither repo has ever contained provisioning automation — `.gitmodules.safe` (61 submodules: 55 extensions, 4 skins, vendor) plus a manual README procedure is the whole deploy story, and `C2_S3_Config/backup.sh` is the only script. This repo's own Ansible + Caddy setup in `ops/` is the obvious template. `snhtoolkitmw` is already the sanitized successor, so the payload/secrets split is done — retire `socialnetwork_toolkit` rather than refactor it
-- [ ] **Make the wiki Claude-editable and administrable** - agent-run wiki ops; big speedup for toolkit content. Follows the move
+- [ ] **Replace the credential-sharing channel with the MediaWiki developer** - the secrets were checked in precisely to share them with the developer who built the MediaWiki mods. **Mechanism now chosen** — see [`../docs/secrets.md`](../docs/secrets.md): machine secrets live in `age`-encrypted files in `snh-private`, so granting access is adding a public key rather than transmitting a secret. Wiki editing needs no sharing at all, because each person mints their own MediaWiki bot password against their own account. Designed, not yet implemented
+- [ ] **Rebuild the toolkit wiki on DigitalOcean** - `socialnetwork_toolkit` + `snhtoolkitmw` reactivation (dormant since 2024-08-06). Significant cost saving over the current host. **The plan now lives in the repo** — see `snhtoolkitmw/docs/migration.md`; this stays at org level only because it ends by retiring `socialnetwork_toolkit`
+- [ ] **Make the wiki Claude-editable and administrable** - agent-run wiki ops; big speedup for toolkit content. Follows the move. Scope and mechanism are Phase 7 of `snhtoolkitmw/docs/migration.md`; the capability roadmap (editing now, administration later) is in that repo's `docs/roadmap.md`
+- [ ] **Retrofit `fellows_local_db` to the secret convention** - its env file is written by a script rather than by the playbook, and Ansible only corrects the file's ownership *if it already exists* — so the droplet is the only place those values live and a rebuild loses them. This is the concrete cause of "env vars I have to reset once in a while". Also stop hand-managing its two regenerable secrets entirely. See [`../docs/secrets.md`](../docs/secrets.md)
+- [ ] **Add `just check-secrets` to every droplet repo** - assert each required key is present, non-empty, and correctly owned on the box, printing names and never values. Today a missing Postmark token is discovered when mail silently stops. The org rule is that a cross-repo rule without a mechanical check is a wish
+- [ ] **Resolve the Ansible connection inconsistency** - the hub connects as `root`; `fellows_local_db` connects as `rsb` with `--ask-become-pass`; the wiki starts as `root` for build-out and is meant to be revisited. Converge on one, or write down why each differs
 - [ ] **Point remaining doc links at the org** - local git remotes were fixed 2026-08-03, but in-repo markdown across several repos still says `github.com/richbodo/...`. Redirects cover it; clean it up before collaborators arrive
 
 ### designs
@@ -45,7 +48,7 @@ filed down and now appear only under [Watching](#watching).*
 - [ ] **[community] Weekly-prep automation** - Cowork scheduled task: prep newsletter, YouTube check-in, outreach + a low-stress agenda for the weekly meeting (initially Rich + 1–2 helpers); feed it Signal meeting minutes via signal-cli bots. Set up once the meeting/venue exists
 - [ ] **[community] EHF yearly fellows newsletter** - opt-in; gauge interest by contacting all fellows; run it if enough opt in
 - [ ] **[org] Ideas repo: public or private?** - then create it
-- [ ] **[infra] Toolkit-site AI search** - `snhdb` powering search on toolkit.socialnetwork.health; depends on the wiki move
+- [ ] **[infra] Toolkit-site AI search** - `snhdb` powering search on toolkit.socialnetwork.health; depends on the wiki move. Now carries more weight: the move **drops CirrusSearch/Elasticsearch** (a JVM and a 4GB droplet to serve 10 articles), falling back to MediaWiki's built-in search. That is a real downgrade — no stemming, no relevance ranking — and this item is the intended answer to it
 
 ## Watching
 
@@ -66,6 +69,8 @@ are links, deliberately without status claims. Do not restate progress here.*
 | snhdb multi-perspective research summaries | snhdb#3 |
 | snhdb corpus-repair Phase 5 guardrails | snhdb#6 |
 | Hub repo: website redo, research restructure, M1/M2/M3 recast, talk video | [`../docs/roadmap.md`](../docs/roadmap.md) |
+| Toolkit wiki move to DigitalOcean — 8 phases, incl. the 1.42→1.43 LTS upgrade | `snhtoolkitmw/docs/migration.md` |
+| Toolkit wiki: recover pdfcite; MediaWiki 1.47 LTS hop; revisit root-SSH provisioning | `snhtoolkitmw/docs/roadmap.md` |
 
 ## Done
 
