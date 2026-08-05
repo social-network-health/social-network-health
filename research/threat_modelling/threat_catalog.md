@@ -1151,7 +1151,7 @@ stressor)**. No separate K ID; cross-linked.
   anchor: 51% diagnosed vs ~19% US adults — OSMI Mental Health in Tech Survey 2016 **[118]**
   (n≈1,400 self-selected).
 - **Source handling:** the contributor's age, the project, and the account's death-descriptive passages
-  are deliberately withheld under [`docs/publication-standards.md`](../../docs/publication-standards.md)
+  are deliberately withheld under [`docs/publication-standards/identifiable-people.md`](../../docs/publication-standards/identifiable-people.md)
   (§A2–A4). The source's own wording is not reproduced: it frames suicide in terms of achievement and
   uses outbreak metaphor, both excluded by our safe-messaging norms (§A5). The reference is retained so
   the claim stays checkable (§A6).
@@ -1286,7 +1286,7 @@ stressor)**. No separate K ID; cross-linked.
   **[83]**. A project lead's reflective account observes that the community's last exchanges with a
   contributor who later died were purely technical, and raises that as a possible contributing factor —
   jackpot51 2021 **[116]** (n=1 reflective account; death-descriptive wording withheld per
-  [`docs/publication-standards.md`](../../docs/publication-standards.md) §A4).
+  [`docs/publication-standards/identifiable-people.md`](../../docs/publication-standards/identifiable-people.md) §A4).
 - **Bites:** PROTO, METRICS, FACIL.
 - **Mitigation seed:** Specify **richer-channel response (voice/async voice notes)** as standard; text
   only for initial ack; treat text signals as **imprecise triggers for richer follow-up, not

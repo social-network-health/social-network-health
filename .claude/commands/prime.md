@@ -19,6 +19,7 @@ organization — it covers the software and research program, not community work
 educational materials. Those live at layer 2.
 
 ## Read — only if the task calls for it
+docs/publication-standards/identifiable-people.md           # BEFORE writing about any real person
 research/research_library/planning/knowledge-base-plan.md   # before any corpus work
 docs/org-upkeep.md                                          # before changing a shared convention
 plans/*.md                                                  # dated, append-only; history, not status
@@ -35,6 +36,11 @@ them: `research/threat_modelling/threat_catalog.md`, `research/measurement/*.md`
   research file breaks the live site silently. Update the HTML and redeploy in the same change.
 - **`../socialnetwork_toolkit` has live credentials in its git history.** Never copy, quote, or
   summarize its contents anywhere. `../prt` is mid-archive — don't start work there.
+- **Writing about a real, identifiable person is governed** by
+  `docs/publication-standards/identifiable-people.md` — org-wide, binding every repo and every
+  surface. It covers indirect identification too, so it applies more often than it looks. Read it
+  before the change, not after: several of its rules are about what you must *not* publish, and they
+  do not help retroactively.
 - **Org consistency is machine-checked.** `just check-org` verifies the shared `CLAUDE.md`
   block (on disk *and* on each repo's `origin/main`) and the org skills, then prints what it
   doesn't cover. Run it if the task touches shared conventions, or if you're unsure what's in

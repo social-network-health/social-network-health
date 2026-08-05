@@ -3,7 +3,7 @@
 **Status:** v1.0 (2026-07-08), anonymized public summary. The named case records
 behind this document are kept in the org's private repository — see "Publication
 posture" below. How this document's norms bind every other document in the org is
-set out in [`docs/publication-standards.md`](../../docs/publication-standards.md).
+set out in [`docs/publication-standards/identifiable-people.md`](../../docs/publication-standards/identifiable-people.md).
 
 *If you or someone you know is struggling: in the US, call or text **988**
 (Suicide & Crisis Lifeline); elsewhere, https://findahelpline.com.*
@@ -164,7 +164,7 @@ the individuals.
 That resolution still stands. What has changed since is its **scope**: it originally bound
 only these two layers, and a sibling document citing the same underlying material drifted
 to the opposite posture as a result. The norms above now bind **every document in every
-org repo** via [`docs/publication-standards.md`](../../docs/publication-standards.md),
+org repo** via [`docs/publication-standards/identifiable-people.md`](../../docs/publication-standards/identifiable-people.md),
 which also adds the release gate, the quotation rule, and an honest register of what the
 field has no answer for. Contributors editing any layer must follow it.
 

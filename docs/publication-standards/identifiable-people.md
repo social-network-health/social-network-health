@@ -1,7 +1,10 @@
-# SNH publication standards — writing about identifiable people
+# Writing about identifiable people
+
+*One of the org's [publication standards](README.md).*
 
 **Status:** v1.0 (2026-08-05). Org-wide. Binds **every document in every repo** in the
-[social-network-health](https://github.com/social-network-health) organization.
+[social-network-health](https://github.com/social-network-health) organization, and every surface
+the org publishes on — research documents, the toolkit wiki, and video alike.
 
 *If you or someone you know is struggling: in the US, call or text **988** (Suicide & Crisis
 Lifeline); elsewhere, https://findahelpline.com.*
@@ -12,7 +15,7 @@ Lifeline); elsewhere, https://findahelpline.com.*
 
 Social network health research cannot avoid studying harm to real people. Erasing the subject is
 not an option — the parity principle in
-[`memoriams.md`](../research/research_library/memoriams.md) is an argument *against* erasure, and a
+[`memoriams.md`](../../research/research_library/memoriams.md) is an argument *against* erasure, and a
 threat model with no evidence behind it is worthless. The question was never whether to study this.
 It is how to present it.
 
@@ -272,4 +275,4 @@ discovered rule.
 
 Sourcing for every claim above is held in the org's private research staging area. The underlying
 postvention norms, with their defining sources, are in
-[`memoriams.md`](../research/research_library/memoriams.md).
+[`memoriams.md`](../../research/research_library/memoriams.md).
