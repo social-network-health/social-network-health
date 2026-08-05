@@ -94,6 +94,22 @@ usually identifies the fourth.
 So: carry the detail your analysis actually needs, and no more. If a detail is not doing analytic
 work, it is doing identifying work.
 
+### The n=1 problem
+
+**When a group has exactly one instance, describing the group describes the individual.** Reporting
+that "this project's memorial page states a cause" is a statement about a page when the page has
+twenty entries. When it has one, the same sentence is a statement about a person — and every
+protection in A3 has been bypassed without anyone deciding to bypass it.
+
+This is easy to miss precisely because the sentence *looks* aggregate. Aggregate framing is not a
+property of the wording; it is a property of the denominator. Check the denominator before relying
+on the framing.
+
+The rule: **before characterising a group, community, page, or dataset, confirm n > 1. If n = 1,
+either suppress the observation or seek a release under Part B — it is individual-level reporting
+whatever the sentence looks like.** The same applies when a filter reduces a large group to one:
+"the only project that…" is n=1 no matter how large the population it was drawn from.
+
 ## A4. Quotation
 
 Distinguish two cases:
