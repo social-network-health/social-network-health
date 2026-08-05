@@ -1139,15 +1139,22 @@ stressor)**. No separate K ID; cross-linked.
   normalcy until a sudden discontinuity; members and gatekeepers calibrate risk on recent output and
   **systematically miss the deterioration underneath**. The "capable contributor" profile is
   *anti-predictive* of safety — defeating any output- or distress-cue-based detection.
-- **Evidence:** reflective project-lead account after a prolific 18-year-old contributor's suicide:
-  "How could such a prolific contributor… feel that death was preferable to life? This was a person who
-  was boundlessly competent" — jackpot51 2021 **[116]** (n=1 fatality reflective account). Independent
-  peer-reviewed corroboration of the high-capability/elevated-risk inversion: autistic individuals with
-  exceptional cognitive ability show *elevated* suicidal ideation — Cassidy et al. 2022/2023 **[117]**.
-  Prevalence anchor: 51% diagnosed vs ~19% US adults — OSMI Mental Health in Tech Survey 2016 **[118]**
-  (n≈1,400 self-selected). **Quote:** *"To succeed [at suicide] is to overcome extreme subconscious
-  desires. This means that, for suicide, often the smartest and most capable people are able to succeed.
-  This anti-selection of capable people is a terrifying epidemic."*
+- **Evidence:** a project lead's published reflective account following a contributor's death —
+  jackpot51 2021 **[116]** (n=1 reflective account). The source attributes the death to suicide as the
+  author's stated belief; no cause was publicly established, and this catalog does not assert one. Its
+  detection-relevant observation is that the contributor's visible competence and sustained output left
+  the community with nothing observable to act on. The source names the broader pattern
+  *anti-selection* — the claim that capability is inversely related to safety rather than protective;
+  that claim rests on this account alone and is marked low-confidence below. Independent peer-reviewed
+  corroboration of the high-capability/elevated-risk inversion: autistic individuals with exceptional
+  cognitive ability show *elevated* suicidal ideation — Cassidy et al. 2022/2023 **[117]**. Prevalence
+  anchor: 51% diagnosed vs ~19% US adults — OSMI Mental Health in Tech Survey 2016 **[118]**
+  (n≈1,400 self-selected).
+- **Source handling:** the contributor's age, the project, and the account's death-descriptive passages
+  are deliberately withheld under [`docs/publication-standards/identifiable-people.md`](../../docs/publication-standards/identifiable-people.md)
+  (§A2–A4). The source's own wording is not reproduced: it frames suicide in terms of achievement and
+  uses outbreak metaphor, both excluded by our safe-messaging norms (§A5). The reference is retained so
+  the claim stays checkable (§A6).
 - **Bites:** APP, FACIL, LEAD.
 - **Mitigation seed:** Do **not** rely on visible distress cues or productivity drops as primary risk
   indicators; build check-in/belonging infrastructure for high-performers; gatekeeper/peer training must
@@ -1276,8 +1283,10 @@ stressor)**. No separate K ID; cross-linked.
 - **Evidence:** senders predicted ~78% tone-decode, actual ~56% (≈chance) — Kruger, Epley, Parker & Ng
   2005 **[80]**. Voice humanizes vs text — Schroeder, Kardas & Epley 2017 **[81]**. Eye-contact >
   anonymity for disinhibition — Lapidot-Lefler & Barak 2012 **[82]**. Online disinhibition — Suler 2004
-  **[83]**. "This communication was purely technical… perhaps this was a factor in his decision to
-  choose death" — jackpot51 2021 **[116]** (n=1 fatality).
+  **[83]**. A project lead's reflective account observes that the community's last exchanges with a
+  contributor who later died were purely technical, and raises that as a possible contributing factor —
+  jackpot51 2021 **[116]** (n=1 reflective account; death-descriptive wording withheld per
+  [`docs/publication-standards/identifiable-people.md`](../../docs/publication-standards/identifiable-people.md) §A4).
 - **Bites:** PROTO, METRICS, FACIL.
 - **Mitigation seed:** Specify **richer-channel response (voice/async voice notes)** as standard; text
   only for initial ack; treat text signals as **imprecise triggers for richer follow-up, not
@@ -1615,9 +1624,9 @@ stressor)**. No separate K ID; cross-linked.
   → mitigates **K1, D6, I3**.
 - **Peer storytelling by credible peers** (OSMI) breaks stigma, triggers disclosure [118]. → mitigates
   **G1, B4, H4, K1**.
-- **Public norm-change after tragedy** ("we will no longer value contributors by the code they crank
-  out," Redox OS) — durable artifact subordinating output to wellbeing [116]. → mitigates **D7, H4, D2,
-  D6**.
+- **Public norm-change after a death** ("we will no longer value contributors by the code they crank
+  out" — a project lead's published commitment) — durable artifact subordinating output to wellbeing
+  [116]. → mitigates **D7, H4, D2, D6**.
 - **Flexible/low-expectation contribution norms** (no weekend-work expectation) reduce burnout/silent
   dropout (Raghunathan [175]; GitHub). → mitigates **K9, K10, I3**.
 
