@@ -173,8 +173,17 @@ field has no answer for. Contributors editing any layer must follow it.
 1. Do other major communities (Linux kernel, Python, security/crypto, conferences'
    in-memoriam sessions) maintain formal memorial practices comparable to those
    studied, and are there further cases meeting the confirmation standard?
-2. Is there postvention literature specifically addressing permanent archival/research
-   records versus active-grief memorial pages?
+2. ~~Is there postvention literature specifically addressing permanent archival/research
+   records versus active-grief memorial pages?~~ **Answered 2026-08-05: no, and we looked
+   properly.** A survey of the WHO / Samaritans / Mindframe / Reporting on Suicide corpus,
+   the AoIR / BPS / NESH internet-research-ethics corpus, and the CARE / ICMJE / COPE
+   case-report corpus found no guidance on permanent research archives — the 30–60-day
+   rule does target active-grief pages, as this question suspected — and **no guidance at
+   all on quoting the text of a memoriam**. #chatsafe put memorial-page questions to an
+   expert panel and reached no consensus in either direction. The gap, and the position we
+   adopted in its absence, are recorded in
+   [`docs/publication-standards/identifiable-people.md`](../../docs/publication-standards/identifiable-people.md)
+   Part C.
 3. Beyond the one first-person community analysis we verified, is there peer-reviewed
    work linking OSS-specific conditions (maintainer burnout, harassment, legal
    pressure, isolation) to suicide risk? (The snhdb corpus's suicide-prevention stream
