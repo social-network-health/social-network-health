@@ -8,13 +8,18 @@ research documents, and the presentations. Org-wide direction lives one layer up
 
 ## How work happens here
 
-Historically this repo has used **no issue tracker** — 56 PRs and zero issues by the time the
-2026-08-04 rebuild reset both counters to zero (see `plans/ORG-TASKS.md`). That wasn't an
+This repo ran on **pull requests alone** for its whole first year — 56 PRs and zero issues by the
+time the 2026-08-04 rebuild reset both counters (see `plans/ORG-TASKS.md`). That wasn't an
 oversight: the website work is a see-it-live loop, and a day of copy editing can be five or ten
-small PRs because you have to watch it running to know what it needs. That pattern stays.
+small PRs because you have to watch it running to know what it needs. **That pattern stays.**
 
-What changes is that the *durable* work — the things that survive a single editing session —
-gets written down here instead of living in someone's head or drifting into the org task list.
+Issues are now used, sparingly, for the one thing a PR and a roadmap both handle badly: **an audit
+with a per-item checklist that outlives any single sitting.** The first was 2026-08-05, sweeping the
+corpus against the publication standard. If the work is a stream of small edits it is still a PR; if
+it is direction it belongs in this file; an issue is for a bounded list someone has to tick off.
+
+Either way the *durable* work — the things that survive a single editing session — gets written down
+rather than living in someone's head or drifting into the org task list.
 
 ## Now
 
