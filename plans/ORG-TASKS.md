@@ -66,8 +66,9 @@ are links, deliberately without status claims. Do not restate progress here.*
 | PRM daily-driver gap — install/update by a **non-technical** user, + AI contact research | *(Rich is testing the existing installer first; issue to follow)* |
 | Fellows calendaring / EHF events registry — may surface a `fellows_local_db` rewrite before the feature lands | fellows#302 |
 | `fellows_local_db/plans/personal_network_plan.md` superseded by PRM | fellows#303 |
+| snhdb **unified program plan** — research library · curriculum · portable stack (the single active plan; supersedes the three 2026-08 drafts, which are archived beside it) | `snhdb/docs/plans/PROGRAM_PLAN.md` |
 | snhdb multi-perspective research summaries | snhdb#3 |
-| snhdb corpus-repair Phase 5 guardrails | snhdb#6 |
+| snhdb corpus-repair Phase 5 guardrails (absorbed into the program plan's §12) | snhdb#6 |
 | Hub repo: website redo, research restructure, M1/M2/M3 recast, talk video | [`../docs/roadmap.md`](../docs/roadmap.md) |
 | Toolkit wiki move to DigitalOcean — 8 phases, incl. the 1.42→1.43 LTS upgrade | `snhtoolkitmw/docs/migration.md` |
 | Toolkit wiki: recover pdfcite; MediaWiki 1.47 LTS hop; revisit root-SSH provisioning | `snhtoolkitmw/docs/roadmap.md` |
