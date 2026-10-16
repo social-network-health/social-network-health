@@ -30,3 +30,6 @@
       tags: ["bootstrap", "caddy"]
     - role: caddy
       tags: ["bootstrap", "caddy"]
+    # Rebuilds the dashboard from snh-aios main every hour (needs `just dashboard-sync-key` once).
+    - role: dashboard_sync
+      tags: ["bootstrap", "dashboard_sync"]
