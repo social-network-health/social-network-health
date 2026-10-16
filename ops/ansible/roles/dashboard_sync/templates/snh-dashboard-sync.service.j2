@@ -1,0 +1,20 @@
+# Managed by Ansible (ops/ansible roles/dashboard_sync). Do not edit by hand.
+[Unit]
+Description=Rebuild the SNH team dashboard from snh-aios main
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User={{ operator_user }}
+Group={{ operator_user }}
+UMask=0022
+ExecStart=/usr/local/bin/snh-dashboard-sync
+TimeoutStartSec=10min
+# It needs only its checkout, the dashboard root, and the network.
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths={{ dashboard_root }} /home/{{ operator_user }}
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectControlGroups=true

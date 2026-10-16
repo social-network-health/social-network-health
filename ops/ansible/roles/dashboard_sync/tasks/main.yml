@@ -1,0 +1,54 @@
+---
+- name: Packages the dashboard build needs (snh-aios tools/*.py need only PyYAML)
+  ansible.builtin.apt:
+    name: [git, python3-yaml, rsync]
+    state: present
+
+- name: Operator's SSH directory
+  ansible.builtin.file:
+    path: "/home/{{ operator_user }}/.ssh"
+    state: directory
+    owner: "{{ operator_user }}"
+    group: "{{ operator_user }}"
+    mode: "0700"
+
+# Generated here so the private half never leaves the droplet. Register the public half on
+# snh-aios, read-only, with `just dashboard-sync-key`.
+- name: Deploy key for reading snh-aios
+  ansible.builtin.command:
+    cmd: >-
+      ssh-keygen -q -t ed25519 -N ""
+      -C "snh-dashboard-sync@{{ inventory_hostname }}" -f {{ dashboard_sync_key }}
+    creates: "{{ dashboard_sync_key }}"
+  become_user: "{{ operator_user }}"
+
+- name: Trust GitHub's published host key
+  ansible.builtin.known_hosts:
+    path: "/home/{{ operator_user }}/.ssh/known_hosts"
+    name: github.com
+    key: "{{ github_ssh_host_key }}"
+  become_user: "{{ operator_user }}"
+
+- name: Sync script
+  ansible.builtin.template:
+    src: snh-dashboard-sync.sh.j2
+    dest: /usr/local/bin/snh-dashboard-sync
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: systemd service and hourly timer
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: [snh-dashboard-sync.service, snh-dashboard-sync.timer]
+
+- name: Hourly timer enabled and running
+  ansible.builtin.systemd_service:
+    name: snh-dashboard-sync.timer
+    enabled: true
+    state: started
+    daemon_reload: true

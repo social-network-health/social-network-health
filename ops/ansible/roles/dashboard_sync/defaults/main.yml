@@ -1,0 +1,8 @@
+# Rebuild the team dashboard from snh-aios main every hour and publish it into dashboard_root.
+# Runs as the operator, who already owns dashboard_root. Its only GitHub credential is a read-only
+# deploy key on snh-aios (register it with `just dashboard-sync-key`); the build sends no token.
+dashboard_sync_repo: git@github.com:social-network-health/snh-aios.git
+dashboard_sync_checkout: "/home/{{ operator_user }}/snh-aios"
+dashboard_sync_key: "/home/{{ operator_user }}/.ssh/snh-aios-deploy"
+# GitHub's published SSH host key (https://api.github.com/meta, checked 2026-10-17).
+github_ssh_host_key: "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"

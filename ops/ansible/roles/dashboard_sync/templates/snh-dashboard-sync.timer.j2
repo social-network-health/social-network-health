@@ -1,0 +1,12 @@
+# Managed by Ansible (ops/ansible roles/dashboard_sync). Do not edit by hand.
+# On the hour: snh-aios tools/build.py tells readers the next sync is at the top of the next hour.
+[Unit]
+Description=Rebuild the SNH team dashboard every hour
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

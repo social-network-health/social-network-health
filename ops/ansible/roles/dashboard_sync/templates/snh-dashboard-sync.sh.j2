@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Managed by Ansible (ops/ansible roles/dashboard_sync). Do not edit by hand.
+#
+# Rebuild the team dashboard from snh-aios main and publish it into {{ dashboard_root }}.
+# Run every hour, on the hour, by snh-dashboard-sync.timer as {{ operator_user }}; the operator can
+# also run it by hand. A failed check or GitHub sync publishes nothing, so the last good page
+# stays up, and that page says when its next sync was due.
+set -euo pipefail
+
+repo={{ dashboard_sync_checkout }}
+exec 9>"$repo.lock"
+flock -n 9 || { echo "A sync is already running."; exit 0; }
+
+export GIT_SSH_COMMAND="ssh -i {{ dashboard_sync_key }} -o IdentitiesOnly=yes"
+[ -d "$repo/.git" ] || git clone -q {{ dashboard_sync_repo }} "$repo"
+git -C "$repo" fetch -q origin main
+git -C "$repo" reset -q --hard origin/main
+git -C "$repo" clean -q -fdx
+
+cd "$repo"
+python3 tools/check.py
+python3 tools/build.py --require-live
+chmod 755 build && chmod 644 build/*
+rsync -a --delete build/ {{ dashboard_root }}/
+echo "Published snh-aios $(git rev-parse --short HEAD) to {{ dashboard_root }}"

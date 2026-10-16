@@ -31,6 +31,28 @@ dashboard-oauth json:
 dashboard-password user="snh":
     ./ops/dashboard-password.sh {{user}}
 
+# install or update the team dashboard's hourly rebuild from snh-aios main
+provision-dashboard-sync:
+    cd ops/ansible && ansible-playbook site.yml --tags dashboard_sync
+
+# register the droplet's deploy key on snh-aios, read-only (once, after provision-dashboard-sync)
+dashboard-sync-key:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    key="$(ssh "${SNH_HOST:-rsb@170.64.248.173}" cat .ssh/snh-aios-deploy.pub)"
+    if gh repo deploy-key list --repo social-network-health/snh-aios --json key --jq '.[].key' \
+        | grep -qF "$(cut -d' ' -f2 <<<"$key")"; then
+      echo "Already registered."
+    else
+      tmp="$(mktemp)"; trap 'rm -f "$tmp"' EXIT
+      echo "$key" > "$tmp"
+      gh repo deploy-key add "$tmp" --repo social-network-health/snh-aios --title "droplet: hourly dashboard sync"
+    fi
+
+# when the dashboard last synced, when it next will, and the last run's output
+dashboard-sync-status:
+    ssh "${SNH_HOST:-rsb@170.64.248.173}" 'systemctl list-timers snh-dashboard-sync.timer --no-pager; journalctl -u snh-dashboard-sync -n 15 --no-pager -q'
+
 # install the Ansible collections the playbook needs (one-time setup)
 ansible-deps:
     cd ops/ansible && ansible-galaxy collection install -r collections/requirements.yml -p collections
