@@ -1,0 +1,11 @@
+# oauth2-proxy: Google sign-in in front of the team dashboard. Caddy asks it, on localhost,
+# whether each request is signed in (forward_auth); it never faces the internet directly.
+oauth2_proxy_version: v7.15.5
+oauth2_proxy_sha256: f63f94bf72c5f46ab002a0a275aa8b3cf19b4d828aed08a13978cb9a62c3a1fd
+oauth2_proxy_listen: 127.0.0.1:4180
+
+# Who may sign in: anyone with an account in these Workspace domains...
+dashboard_allowed_domains: ["socialnetwork.health"]
+# ...plus these individual Google accounts. Personal addresses don't belong in this public repo,
+# so the real list lives in the gitignored ops/ansible/secrets/dashboard-oauth.yml.
+dashboard_allowed_emails: []

@@ -1,0 +1,19 @@
+# Managed by Ansible (ops/ansible roles/oauth2_proxy).
+[Unit]
+Description=oauth2-proxy — Google sign-in for {{ dashboard_domain }}
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=oauth2-proxy
+Group=oauth2-proxy
+ExecStart=/usr/local/bin/oauth2-proxy --config=/etc/oauth2-proxy/dashboard.cfg
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+
+[Install]
+WantedBy=multi-user.target

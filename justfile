@@ -22,6 +22,10 @@ provision:
 provision-caddy:
     cd ops/ansible && ansible-playbook site.yml --tags caddy
 
+# set up Google sign-in for the team dashboard from a downloaded OAuth client JSON; then provision-caddy
+dashboard-oauth json:
+    ./ops/dashboard-oauth.sh {{json}}
+
 # set the team dashboard's shared password (stores only a hash, gitignored); then run provision-caddy
 dashboard-password user="snh":
     ./ops/dashboard-password.sh {{user}}
