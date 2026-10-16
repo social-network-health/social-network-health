@@ -5,9 +5,11 @@ site. Independent of `fellows_local_db` (no shared Ansible roles, no cross-repo
 dependencies) so this site can be moved or retired without touching anything
 else.
 
-The entire live site is two files from `../public/`:
+The entire live site is three files from `../public/`:
 
 - `socialnetwork-health.html` → served as `index.html`
+- `privacy.html` → served at `/privacy`. It states what the site and the dashboard's sign-in
+  record and how long the journal keeps it; change those and update the page.
 - `78e65dce-3229-46b0-be38-02da250aaddc.svg` → favicon/logo, referenced at web root
 
 Caddy serves them with automatic HTTPS (Let's Encrypt). No app build, no Node.
@@ -16,7 +18,7 @@ Caddy serves them with automatic HTTPS (Let's Encrypt). No app build, no Node.
 
 ```
 ops/
-  deploy.sh                 # rsync the two static files to the droplet (run as operator)
+  deploy.sh                 # rsync the static files to the droplet (run as operator)
   ansible/
     ansible.cfg
     site.yml                # bootstrap (common + caddy roles)

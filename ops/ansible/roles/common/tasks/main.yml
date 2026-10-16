@@ -89,6 +89,32 @@
 # We deliberately do NOT move the SSH port here: on socket-activated sshd a
 # custom Port in sshd_config races ssh.socket for the port and can lock you out.
 
+# The dashboard's sign-in log holds email and IP addresses, and public/privacy.html promises
+# they're deleted after 30 days. Old entries go at each daily file rotation, so nothing outlives
+# 29 days plus one file. Apply alone with: ansible-playbook site.yml --tags logs
+- name: Ensure journald drop-in directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/journald.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags: ["logs"]
+
+- name: Limit journal retention to 30 days
+  ansible.builtin.copy:
+    dest: /etc/systemd/journald.conf.d/50-snh-retention.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      # Managed by Ansible (ops/ansible roles/common). Do not edit by hand.
+      [Journal]
+      MaxRetentionSec=29day
+      MaxFileSec=1day
+  notify: Restart journald
+  tags: ["logs"]
+
 # fail2ban reads the journal (Ubuntu 24.04 has no /var/log/auth.log by default).
 - name: Configure fail2ban sshd jail
   ansible.builtin.copy:

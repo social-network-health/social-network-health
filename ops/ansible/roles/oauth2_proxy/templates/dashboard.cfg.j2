@@ -17,6 +17,11 @@ whitelist_domains = ["{{ dashboard_domain }}"]
 # forward_auth mode: Caddy serves the files; oauth2-proxy only answers "signed in or not".
 upstreams = ["static://202"]
 skip_provider_button = true
+# Ask Google for the email address only, not name or photo. public/privacy.html says so.
+scope = "openid email"
+# Log sign-ins (the auth log) but not every page request. The journal keeps them for 30 days
+# (common role); public/privacy.html says so.
+request_logging = false
 
 # Allowed: any account in these domains, plus the accounts listed in the file.
 email_domains = {{ dashboard_allowed_domains | to_json }}
