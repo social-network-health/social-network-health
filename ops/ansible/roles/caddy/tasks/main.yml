@@ -35,6 +35,21 @@
     group: "{{ operator_user }}"
     mode: "0755"
 
+- name: Ensure dashboard root exists (operator-owned; snh-aios publishes into it)
+  ansible.builtin.file:
+    path: "{{ dashboard_root }}"
+    state: directory
+    owner: "{{ operator_user }}"
+    group: "{{ operator_user }}"
+    mode: "0755"
+
+# Gitignored and optional. When it's absent the dashboard block fails closed (503) rather than
+# serving without a password. Create it with `just dashboard-password`.
+- name: Load dashboard credentials if present
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/secrets/dashboard.yml"
+  when: lookup('ansible.builtin.fileglob', playbook_dir ~ '/secrets/dashboard.yml') | length > 0
+
 - name: Deploy Caddy site config
   ansible.builtin.template:
     src: Caddyfile.j2

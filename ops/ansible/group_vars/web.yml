@@ -5,6 +5,12 @@
 site_domain: socialnetwork.health
 site_root: /var/www/socialnetwork.health
 
+# Team dashboard, built and published by the private snh-aios repo (`just publish` there rsyncs
+# into dashboard_root as the operator). Its password hash is NOT here: it lives in the gitignored
+# ops/ansible/secrets/dashboard.yml (`just dashboard-password`). Without it, Caddy serves a 503.
+dashboard_domain: dashboard.socialnetwork.health
+dashboard_root: /var/www/dashboard.socialnetwork.health
+
 # Let's Encrypt / ACME registration address (not a sending address).
 caddy_admin_email: richbodo@gmail.com
 
