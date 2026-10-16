@@ -88,17 +88,30 @@ and published there with `just publish` (rsync into `/var/www/dashboard.socialne
 `rsb`, the same pattern as `ops/deploy.sh`). This repo only provides the Caddy block and the
 directory.
 
-It is team-only, so it **fails closed**: Caddy serves it behind a shared password, and if the
-password hash is missing it serves a 503 instead of the files. To set or change the password:
+It is team-only, so it **fails closed**. In order of preference, Caddy uses:
+
+1. **Google sign-in** — any @socialnetwork.health account, plus individually listed Google
+   accounts. `oauth2-proxy` (role `oauth2_proxy`, pinned and checksum-verified) listens on
+   localhost; Caddy asks it about every request (`forward_auth`) and sends anyone not signed in to
+   Google.
+2. **A shared password** (user `snh`), if no Google client is configured.
+3. **Nothing** — a 503 — if neither is.
+
+Both live in gitignored files under `ops/ansible/secrets/`, on the machine that runs Ansible:
 
 ```bash
-just dashboard-password      # prompts twice; writes ops/ansible/secrets/dashboard.yml (gitignored)
-just provision-caddy         # applies it (restarts Caddy: a brief blip for the main site too)
+just dashboard-oauth ~/Downloads/client_secret_….json   # Google sign-in (see below)
+just dashboard-password                                 # or: the shared password
+just provision-caddy                                    # apply (restarts Caddy: brief blip)
 ```
 
-The hash file stays on the machine that runs Ansible; the password itself is stored nowhere.
-DNS: an **A** record for `dashboard` → the Reserved IP, grey-cloud, like the apex. The shared
-password is a bridge until Google sign-in for socialnetwork.health accounts.
+**The Google client** lives in its own Cloud project, `snh-dashboard-login`, with an **External**
+audience (published; it asks only for name and email, so no review), because an Internal app would
+shut out team members without a socialnetwork.health account. It's a *Web application* client
+whose redirect URI is `https://dashboard.socialnetwork.health/oauth2/callback`. Only domain accounts
+and the accounts you list can actually get in; everyone else is refused after signing in.
+
+DNS: an **A** record for `dashboard` → the Reserved IP, grey-cloud, like the apex.
 
 ## SSH access & the scanner flood
 

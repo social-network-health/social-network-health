@@ -1,0 +1,23 @@
+# Managed by Ansible (ops/ansible roles/oauth2_proxy). Secrets come from the gitignored
+# ops/ansible/secrets/dashboard-oauth.yml on the machine that ran Ansible.
+provider = "google"
+client_id = "{{ dashboard_oauth_client_id }}"
+client_secret = "{{ dashboard_oauth_client_secret }}"
+cookie_secret = "{{ dashboard_oauth_cookie_secret }}"
+cookie_name = "_snh_dashboard"
+cookie_secure = true
+cookie_expire = "168h"
+
+http_address = "{{ oauth2_proxy_listen }}"
+reverse_proxy = true
+# Only Caddy, on this machine, may supply X-Forwarded-* headers.
+trusted_proxy_ips = ["127.0.0.1/32", "::1/128"]
+redirect_url = "https://{{ dashboard_domain }}/oauth2/callback"
+whitelist_domains = ["{{ dashboard_domain }}"]
+# forward_auth mode: Caddy serves the files; oauth2-proxy only answers "signed in or not".
+upstreams = ["static://202"]
+skip_provider_button = true
+
+# Allowed: any account in these domains, plus the accounts listed in the file.
+email_domains = {{ dashboard_allowed_domains | to_json }}
+authenticated_emails_file = "/etc/oauth2-proxy/dashboard-allowed-emails.txt"

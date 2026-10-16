@@ -12,8 +12,21 @@
 - name: socialnetwork.health static site
   hosts: web
   gather_facts: true
+  # Gitignored secrets (ops/ansible/secrets/*.yml): the dashboard password hash and the dashboard's
+  # Google sign-in client. Each is optional; without them the dashboard fails closed (503).
+  pre_tasks:
+    - name: Load gitignored secrets if present
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+      loop: "{{ lookup('ansible.builtin.fileglob', playbook_dir ~ '/secrets/*.yml', wantlist=True) }}"
+      no_log: true
+      tags: ["always"]
   roles:
     - role: common
       tags: ["bootstrap"]
+    # Before caddy, so the sign-in service is up when Caddy starts pointing at it.
+    - role: oauth2_proxy
+      when: dashboard_oauth_client_id is defined
+      tags: ["bootstrap", "caddy"]
     - role: caddy
       tags: ["bootstrap", "caddy"]
