@@ -22,6 +22,10 @@ provision:
 provision-caddy:
     cd ops/ansible && ansible-playbook site.yml --tags caddy
 
+# set the team dashboard's shared password (stores only a hash, gitignored); then run provision-caddy
+dashboard-password user="snh":
+    ./ops/dashboard-password.sh {{user}}
+
 # install the Ansible collections the playbook needs (one-time setup)
 ansible-deps:
     cd ops/ansible && ansible-galaxy collection install -r collections/requirements.yml -p collections
