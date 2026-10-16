@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Deploy the socialnetwork.health static site to the droplet.
 #
-# The site is exactly two files from public/:
+# The site is exactly three files from public/:
 #   socialnetwork-health.html                  -> index.html (served at /)
+#   privacy.html                               -> privacy.html (served at /privacy)
 #   78e65dce-3229-46b0-be38-02da250aaddc.svg   -> favicon/logo (referenced at web root)
 #
 # The site root and operator ownership are provisioned by ops/ansible (caddy
@@ -25,11 +26,12 @@ fi
 
 cd "$(dirname "$0")/.."   # repo root
 
-# Stage the two files under their served names, then rsync --delete so the site
-# root contains exactly these two files.
+# Stage the files under their served names, then rsync --delete so the site
+# root contains exactly these files.
 stage="$(mktemp -d)"
 trap 'rm -rf "$stage"' EXIT
 cp public/socialnetwork-health.html "$stage/index.html"
+cp public/privacy.html "$stage/"
 cp public/78e65dce-3229-46b0-be38-02da250aaddc.svg "$stage/"
 
 # Force sane perms on the staged tree so rsync -a propagates them to the site

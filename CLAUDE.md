@@ -23,7 +23,7 @@ hazards worth knowing before you touch a sibling:
 ## Layout
 
 ```
-public/                    the ENTIRE live site: one HTML file + one SVG logo
+public/                    the ENTIRE live site: the homepage, the privacy page, one SVG logo
 ops/                       Ansible + Caddy provisioning/deploy for the site (DigitalOcean droplet)
 research/                  organized BY TOPIC:
   measurement/             community-network-health-explainer.md, egocentric→community note, social_cohesion.md
@@ -161,9 +161,10 @@ propagate — never edit a copy in place.
 
 ## The website
 
-The live site is `public/socialnetwork-health.html` (self-contained HTML + inline CSS) plus the SVG
-logo — served verbatim by Caddy on a droplet. To change the site, edit that file and run
-`just deploy` (rsyncs the two files; needs the droplet SSH setup described in `ops/README.md`).
+The live site is `public/socialnetwork-health.html` (self-contained HTML + inline CSS), the
+privacy page `public/privacy.html`, and the SVG logo — served verbatim by Caddy on a droplet. To
+change the site, edit those files and run `just deploy` (rsyncs the three files; needs the droplet
+SSH setup described in `ops/README.md`).
 Admin/devops tasks run through the root `justfile` — `just` lists the recipes (deploy,
 verify-live, provision, provision-caddy, ansible-deps). Provisioning is `ops/ansible/site.yml`;
 the real `hosts.ini` is gitignored.

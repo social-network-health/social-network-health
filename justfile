@@ -13,6 +13,7 @@ deploy:
 verify-live:
     curl -sI https://socialnetwork.health/ | head -n1
     curl -s https://socialnetwork.health/ | grep -o '<title>[^<]*</title>'
+    curl -s https://socialnetwork.health/privacy | grep -o '<title>[^<]*</title>'
 
 # full droplet bootstrap via Ansible (needs ops/ansible/inventory/hosts.ini — see ops/README.md)
 provision:

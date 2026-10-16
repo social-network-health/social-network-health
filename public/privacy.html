@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy · Social Network Health</title>
+  <meta name="description" content="What socialnetwork.health and the Social Network Health team dashboard collect, and what we do with it.">
+  <link rel="icon" type="image/svg+xml" href="/78e65dce-3229-46b0-be38-02da250aaddc.svg">
+
+  <!-- Same look as the homepage (socialnetwork-health.html); keep the two in step. -->
+  <style>
+    :root {
+      --bg: #fdfcf9;
+      --ink: #1a1a1a;
+      --ink-soft: #4a4a4a;
+      --ink-muted: #7a7a7a;
+      --rule: #e6e2d8;
+      --link: #2C7AB1;
+      --maxw: 720px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #15140f;
+        --ink: #eae6da;
+        --ink-soft: #b3aea0;
+        --ink-muted: #807a6c;
+        --rule: #2c2a23;
+        --link: #6fb1de;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 0 24px 80px;
+    }
+
+    main, header, footer { max-width: var(--maxw); margin: 0 auto; }
+
+    header {
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .brand img { width: 36px; height: 36px; display: block; }
+    .brand .name { font-size: 18px; font-weight: 600; letter-spacing: -0.005em; }
+    .brand:hover .name { text-decoration: underline; text-underline-offset: 4px; }
+
+    h1 { font-size: 28px; line-height: 1.25; margin: 40px 0 4px; }
+    .updated { color: var(--ink-muted); font-size: 14px; margin: 0 0 24px; }
+    h2 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin: 36px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+    p, li { max-width: 62ch; }
+    p { margin: 0 0 14px; }
+    ul { padding-left: 20px; margin: 0 0 14px; }
+    li { margin: 0 0 10px; }
+    a { color: var(--link); text-underline-offset: 3px; }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid var(--rule);
+      font-size: 13px;
+      color: var(--ink-muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--link); text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="brand" aria-label="Social Network Health — home">
+    <img src="/78e65dce-3229-46b0-be38-02da250aaddc.svg" alt="">
+    <span class="name">Social Network Health</span>
+  </a>
+</header>
+
+<main>
+  <h1>Privacy</h1>
+  <p class="updated">Updated 17 October 2026</p>
+
+  <p>
+    This page covers two sites run by the Social Network Health project: this website,
+    socialnetwork.health, and the team dashboard at dashboard.socialnetwork.health.
+  </p>
+
+  <h2>This website</h2>
+  <ul>
+    <li>No cookies, no analytics and no tracking. Nothing on the page loads from another site.</li>
+    <li>Our server keeps no log of visits.</li>
+    <li>Links to GitHub, YouTube, Google Drive and other services take you to sites with their own
+      privacy policies.</li>
+  </ul>
+
+  <h2>The team dashboard</h2>
+  <p>The dashboard is for the project team. You sign in to it with your Google account.</p>
+  <ul>
+    <li><strong>What Google sends us.</strong> Your email address and an ID number for your Google
+      account. We don't ask for your name, photo, contacts, files or anything else in your
+      account.</li>
+    <li><strong>What we use it for.</strong> Only to check that you're on the team: you have a
+      socialnetwork.health address, or we've added your address to the dashboard's list.</li>
+    <li><strong>What we keep.</strong> Your browser keeps an encrypted sign-in cookie for up to
+      seven days, so you don't have to sign in on every visit. Our server records each sign-in, and
+      each refused one, with the email address, IP address and time. It deletes those records after
+      30 days. We use them only to keep the dashboard secure.</li>
+    <li><strong>Who can see it.</strong> The records stay on our server, which DigitalOcean hosts.
+      Only the people who run the server can read them. We don't sell or share them, and we don't
+      use them for advertising or to train AI.</li>
+    <li><strong>Your Google account</strong> itself is covered by
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy
+      policy</a>.</li>
+  </ul>
+
+  <h2>Questions</h2>
+  <p>
+    Email <a href="mailto:rich@socialnetwork.health">rich@socialnetwork.health</a>, including if
+    you'd like your sign-in records deleted before the 30 days are up.
+  </p>
+
+  <h2>Changes</h2>
+  <p>
+    When this policy changes, we update this page and its date. Its full history is
+    <a href="https://github.com/social-network-health/social-network-health/commits/main/public/privacy.html" target="_blank" rel="noopener">public
+    on GitHub</a>.
+  </p>
+</main>
+
+<footer>
+  <a href="/">socialnetwork.health</a>
+</footer>
+
+</body>
+</html>

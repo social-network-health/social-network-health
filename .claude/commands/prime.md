@@ -29,8 +29,10 @@ them: `research/threat_modelling/threat_catalog.md`, `research/measurement/*.md`
 `research/protocols/*.md`.
 
 ## Know before you change anything
-- **The website is one file:** `public/socialnetwork-health.html` (self-contained HTML + inline
-  CSS) plus one SVG. Edit it and `just deploy`. There is no framework, no package manager, and
+- **The website is two pages:** `public/socialnetwork-health.html` (self-contained HTML + inline
+  CSS, plus one SVG) and `public/privacy.html`, which states what the site and the dashboard's
+  sign-in record. Change what they record and you change that page. Edit the pages and
+  `just deploy`. There is no framework, no package manager, and
   **no test runner** — never claim tests pass.
 - **The homepage deep-links `research/` files by full GitHub URL.** Moving or renaming a
   research file breaks the live site silently. Update the HTML and redeploy in the same change.
