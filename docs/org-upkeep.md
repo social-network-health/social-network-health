@@ -164,6 +164,18 @@ you wanted anyway. `just bootstrap-dry` shows what it would do without doing it.
 
 Restart your agents afterwards: skills are discovered at session start.
 
+## The agents on a workstation
+
+Every repo's `AGENTS.md` and prime skill work in all four of these (verified 2026-10-17), and
+`just install-skills` links the org skills for each. Re-run it after installing a new agent.
+
+| Agent | Install, then sign in | Notes |
+|---|---|---|
+| Claude Code | — | Reads `AGENTS.md` through the one-line `CLAUDE.md`. `/prime` |
+| Codex | `brew install --cask codex` (or `npm install -g @openai/codex`); `codex login` with a ChatGPT account | `$prime`. Headless: `codex exec -s read-only '$prime'` |
+| Antigravity CLI (`agy`) | Google's installer puts it in `~/.local/bin`; sign in with a Google account | `/prime`. Headless (`agy -p`) can't run shell commands until they're allowed in its `settings.json` (`permissions.allow`, e.g. `command(git status -sb)`) |
+| OpenCode on Ollama | `brew install opencode`; Ollama 0.15 or later, and a local model | Agents need a 64k context; Ollama gives 32k on a 32 GB Mac and less on smaller ones. Make a 64k alias — a Modelfile with `FROM <model>` and `PARAMETER num_ctx 65536`, then `ollama create <alias> -f Modelfile` — and add an `ollama` provider for it to `~/.config/opencode/opencode.json` (base URL `http://localhost:11434/v1`). Small models (4B) follow the files but get details wrong; prefer 20–30B if memory allows |
+
 ## When a check fails
 
 **Investigate it.** These checks exist because the drift they catch is otherwise invisible, so
