@@ -18,7 +18,9 @@ Around it, each repo in the canonical doc's table keeps:
   ./tools/org/agent_files.py --no-fetch    # use local origin/main refs as they are
 
 The block's text is sync_conventions.py's job; this checks the files around it. Like that
-script, it checks main because main is what shipped, and disk because that's where you work.
+script, it checks main because main is what shipped, and disk because that's where you work —
+and when main is right but the working tree isn't, the tree is just on a branch cut before the
+change landed: a `stale` warning, not a failure.
 
 Stdlib only.
 """
@@ -182,7 +184,7 @@ def main() -> int:
 
     print(f"agent files: {INSTRUCTIONS} + one-line CLAUDE.md + skills in {SKILLS}\n")
     print(f"  {'repo':<28} {'disk':<10} {'main':<10}")
-    failed = {}
+    failed, stale = {}, {}
     for repo in repos_from_canonical():
         root = repo_root(repo)
         if not root.is_dir():
@@ -198,14 +200,24 @@ def main() -> int:
             main_problems = check(Main(root))
             main_state = "ok" if not main_problems else f"{len(main_problems)} issue(s)"
         disk_state = "ok" if not disk else f"{len(disk)} issue(s)"
+        if disk and not args.disk_only and not main_problems:
+            branch = (git(root, "branch", "--show-current") or "").strip() or "(detached)"
+            stale[repo] = branch
+            print(f"  {repo:<28} {'stale':<10} {main_state:<10} (on {branch})")
+            continue
         print(f"  {repo:<28} {disk_state:<10} {main_state:<10}")
         lines = [f"disk: {p}" for p in disk] + [f"main: {p}" for p in main_problems]
         if lines:
             failed[repo] = lines
 
     print()
+    if stale:
+        print("stale: " + ", ".join(f"{r} [{b}]" for r, b in stale.items()))
+        print("      warning, not a failure — main is right; the working tree is on a branch cut")
+        print("      before the change. `git switch main` (or rebase) when you next work there.")
+        print()
     if not failed:
-        scope = "on disk" if args.disk_only else "on disk and on main"
+        scope = "on disk" if args.disk_only else "on main" if stale else "on disk and on main"
         print(f"Every repo keeps its agent files right {scope}.")
         return 0
     for repo, lines in failed.items():
