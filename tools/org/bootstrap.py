@@ -149,7 +149,7 @@ def main() -> int:
         print("Dry run complete. Re-run without --dry-run to apply.")
         return 0
 
-    print("Bootstrap complete. Restart Claude Code so it picks up newly installed skills.")
+    print("Bootstrap complete. Restart your agents (Claude Code, Codex, …) so they pick up newly installed skills.")
     print("Now run `just check-org` to verify org consistency.")
     return 0
 
