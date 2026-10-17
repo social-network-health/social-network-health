@@ -17,8 +17,10 @@ M2 schema hook (prm#110), import enhancements (prm#111), an at-rest-encryption d
 note (prm#112), backup save-slots UX (prm#113), search improvements (prm#114), and an
 INV-14 "usable with no LLM" principle (prm#115).
 
-Toolkit-bound: a design note on scanner path-set coverage drift (separate PNT PR).
-prt's README already carries the successor note; GitHub archival is the remaining step.
+Toolkit-bound: a design note on scanner path-set coverage drift (PNT#127).
+prt's README says the repo is retired, but it points to PNT rather than prm and still says
+it is being harvested. The remaining steps: make the README name prm as the successor, then
+archive the repo on GitHub.
 
 ## CRT-concept deltas against the protocols research
 
