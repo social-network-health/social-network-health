@@ -12,8 +12,10 @@ filed down and now appear only under [Watching](#watching).*
 ### community
 
 - [ ] **Write the collaborator ask** - not funding: OSS orgs doing the same research + community members for weekly test-and-build sessions
-- [ ] **Pick a lower-friction discussion venue** - Signal group is the leading candidate (open source, API — signal-cli bots could capture meeting minutes to feed weekly planning); Bluesky / Matrix as alternatives
-- [ ] **Ship SNH newsletter #1** - weekly cadence target thereafter
+- [ ] **Pick a lower-friction discussion venue** - Signal group is the leading candidate (open source, API — signal-cli bots could capture meeting minutes to feed weekly planning); Bluesky / Matrix as alternatives. Invite people once the daily summary covers the group ([snh-aios#2](https://github.com/social-network-health/snh-aios/issues/2))
+- [ ] **Daily summary for Rich** - one email, sent only when something changed: dashboard changes (issues, PRs, org tasks), email to the project's published addresses, research alerts, and the Signal group once it exists. Comes before inviting people to Signal. Plan: [snh-aios#2](https://github.com/social-network-health/snh-aios/issues/2)
+- [ ] **Ship SNH newsletter #1** - monthly for now: the first issue in the first week of November 2026, with a signup form on socialnetwork.health. Plan: [snh-aios#2](https://github.com/social-network-health/snh-aios/issues/2)
+- [ ] **Monthly team update** - for everyone who can sign in to the dashboard; the first in the first week of November 2026. Plan: [snh-aios#2](https://github.com/social-network-health/snh-aios/issues/2)
 - [ ] **Weekly YouTube check-in** - recurring; sync with the video editor on updates
 
 ### org
