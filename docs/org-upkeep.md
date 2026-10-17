@@ -14,9 +14,9 @@ memory for cross-repo state produces silent drift.
 
 | | Failure mode | Guard | Examples |
 |---|---|---|---|
-| **A** | Invisible across repos. No single file or diff reveals it. | **A command.** Human attention doesn't scale across repos. | shared `CLAUDE.md` block; org skills installed and unshadowed |
-| **B** | Visible in one diff. A reviewer can see the omission. | **The PR.** | `prime.md` not updated for a new load-bearing doc; users guide not updated for a UX change; a dated `plans/` file edited |
-| **C** | No artifact at all. The rule shapes an action or it doesn't. | **`CLAUDE.md`, and nothing else.** | `--body-file` over inline `--body`; triage reds before shipping; upstream `main` beats local plans; fail loudly |
+| **A** | Invisible across repos. No single file or diff reveals it. | **A command.** Human attention doesn't scale across repos. | the shared block in every `AGENTS.md`; the agent files around it; org skills installed and unshadowed |
+| **B** | Visible in one diff. A reviewer can see the omission. | **The PR.** | the prime skill not updated for a new load-bearing doc; users guide not updated for a UX change; a dated `plans/` file edited |
+| **C** | No artifact at all. The rule shapes an action or it doesn't. | **`AGENTS.md`, and nothing else.** | `--body-file` over inline `--body`; triage reds before shipping; upstream `main` beats local plans; fail loudly |
 
 **Do not build checks for C.** There is nothing to observe. A check that cannot fail is worse
 than no check — it manufactures confidence.
@@ -25,9 +25,10 @@ than no check — it manufactures confidence.
 
 ```bash
 just check-org           # everything, plus what it doesn't cover
-just check-conventions   # the shared block: on disk AND on origin/main
+just check-conventions   # the shared block in each AGENTS.md: on disk AND on origin/main
 just sync-conventions    # propagate the canonical block to working trees
-just check-skills        # org skills on this workstation
+just check-agent-files   # AGENTS.md size, the one-line CLAUDE.md, skills and their links
+just check-skills        # org skills on this workstation, for every agent
 just install-skills      # create/repair the symlinks — once per workstation
 ```
 
@@ -52,13 +53,19 @@ The check reports both, and names the states:
 | `UNSHIPPED` | correct on disk, not on main — PR open, or **stranded behind an already-merged PR** |
 | `BEHIND` | this repo hasn't taken the current version — run `sync-conventions` |
 | `EDITED` | the copy was edited in place, which is never correct — including a disk copy claiming the current version with different text while main is green |
-| `MISSING` | no block in that `CLAUDE.md`, and main doesn't have the current one either |
+| `MISSING` | no block in that `AGENTS.md`, and main doesn't have the current one either |
 
 `main` is the truth; disk is the workstation. Only states where what *shipped* is wrong
 (or where disk claims something false) fail the check.
 
-`check-skills` is **workstation-scoped** — skills install to `~/.claude/skills`, so there is
-no `main` to compare against. Green means *your* machine is set up; it says nothing about a
+`check-agent-files` reads disk and `main` the same way, for the files around the block: every
+repo's `AGENTS.md` under 24,000 bytes, a one-line `CLAUDE.md` (`@AGENTS.md`), a prime skill,
+spec-only skill frontmatter, and a `.claude/skills` link for every skill in `.agents/skills`.
+The layout and its reasons are at the top of the canonical doc.
+
+`check-skills` is **workstation-scoped** — skills install into each agent's user folder
+(`~/.claude/skills`, `~/.agents/skills`, and Antigravity's when it's installed), so there is no
+`main` to compare against. Green means *your* machine is set up; it says nothing about a
 teammate's.
 
 ### Changing a convention
@@ -75,7 +82,8 @@ stays outside the markers in that repo's own sections. `sync-conventions` never 
 
 **Adding or removing a repo from the org:** edit the table in
 [`docs/shared/org-conventions.md`](shared/org-conventions.md). All three scripts parse that
-one table, so it's the only place to change. (`bootstrap` prefers `gh repo list`, which is
+one table, so it's the only place to change. A repo being archived leaves the table rather than
+take new versions, so its frozen copy never fails the check. (`bootstrap` prefers `gh repo list`, which is
 self-updating, and falls back to the table.)
 
 **About the hashes** in `check-conventions` output: they're a sha256 of the block *text*,
@@ -87,7 +95,7 @@ means differing bytes.
 
 No command catches these, because each is visible in the diff of the change that breaks it:
 
-- **`prime.md` updated when a load-bearing document or module lands.** Prime is bespoke per
+- **The prime skill updated when a load-bearing document or module lands.** Prime is bespoke per
   repo, so no checksum applies — but a prime that misses the file where the invariants live
   sends every future session searching for it.
 - **The users guide updated when user-visible behavior changes.** Each app repo already
@@ -95,7 +103,7 @@ No command catches these, because each is visible in the diff of the change that
 - **Dated files under `plans/` left alone.** They're append-only thinking artifacts; a diff to
   an old one is the violation, and it's visible.
 
-## C — what lives only in CLAUDE.md
+## C — what lives only in AGENTS.md
 
 The cross-repo working rules in the shared block. They're there because a committed file is
 the only channel that reaches every worktree and every concurrent agent — agent memory is
@@ -103,13 +111,16 @@ keyed to the working directory, so a worktree at a different path starts empty.
 
 ## Shared skills: symlink, never copy
 
-Claude Code has user-level and repo-level skills. There is **no org level**, so an org skill
-is built from one of those:
+Agents have user-level and repo-level skills. There is **no org level**, so an org skill is
+built from one of those:
 
 | Mechanism | Drifts? | Use for |
 |---|---|---|
-| **Symlink** `~/.claude/skills/<name>` → the owning repo | never — it *is* upstream | **the default** |
-| **Vendored copy** in a repo's `.claude/skills/` | silently, and fast | only with a pinned commit and a re-sync plan |
+| **Symlink** from each agent's user folder (`~/.agents/skills/<name>`, `~/.claude/skills/<name>`, …) → the owning repo | never — it *is* upstream | **the default** |
+| **Vendored copy** in a repo's `.agents/skills/` | silently, and fast | only with a pinned commit and a re-sync plan |
+
+A repo's *own* skills — its prime, say — are different: they live in that repo's
+`.agents/skills/` and nowhere else, with a `.claude/skills` link for Claude Code.
 
 Learned the expensive way: `fellows_local_db` vendored the PNA Toolkit skill with a provenance
 note honestly predicting drift. It drifted — ten commits behind, a rename behind, and a whole
@@ -117,9 +128,9 @@ flow behind — so a session there offered two skills with near-identical trigge
 stale, and nothing said which to prefer.
 
 The registry and the rename aliases are at the top of
-[`tools/org/org_skills.py`](../tools/org/org_skills.py). Add a row when the org publishes a
-skill, or renames one. **Claude Code discovers skills at session start — restart after
-installing.**
+[`tools/org/org_skills.py`](../tools/org/org_skills.py), with the folders each agent reads
+(`TARGETS`). Add a row when the org publishes a skill, or renames one. **Agents discover skills
+at session start — restart them after installing.**
 
 ## Onboarding a workstation — and staying current
 
@@ -151,7 +162,7 @@ never touches a dirty working tree beyond fetching refs. Concretely:
 The worst case is that `main` moves forward while you sit on a feature branch — which is what
 you wanted anyway. `just bootstrap-dry` shows what it would do without doing it.
 
-Restart Claude Code afterwards: skills are discovered at session start.
+Restart your agents afterwards: skills are discovered at session start.
 
 ## When a check fails
 

@@ -24,6 +24,11 @@ BLOCK_RE = re.compile(
 
 TABLE_ANCHOR = "source of truth for which repos"
 
+# Every block-carrying repo's instructions file, read natively by every agent we use. It holds
+# the shared block; CLAUDE.md is a one-line import of it (see the canonical doc).
+INSTRUCTIONS = "AGENTS.md"
+CLAUDE_STUB = "@AGENTS.md"
+
 
 def extract_block(text):
     """The shared block, or None. Matches only real line-start markers."""
