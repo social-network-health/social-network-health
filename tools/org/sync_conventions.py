@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Check or propagate the shared org-conventions block across the org's repos.
 
-The block lives between BEGIN/END SHARED markers in every repo's CLAUDE.md. The
-canonical copy is docs/shared/org-conventions.md in this repo; every other copy is
-generated from it and must match byte for byte.
+The block lives between BEGIN/END SHARED markers in every repo's AGENTS.md (since v8;
+CLAUDE.md is a one-line import of it). The canonical copy is docs/shared/org-conventions.md
+in this repo; every other copy is generated from it and must match byte for byte. The files
+around the block are agent_files.py's job.
 
 Checks TWO things, because they fail differently:
 
@@ -38,7 +39,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import (BLOCK_RE, CANONICAL, HUB,   # noqa: E402
+from _common import (BLOCK_RE, CANONICAL, HUB, INSTRUCTIONS,   # noqa: E402
                      extract_block, repo_root, repos_from_canonical)
 
 GUIDANCE = {
@@ -53,7 +54,7 @@ GUIDANCE = {
         "      Put the change in docs/shared/org-conventions.md instead, then re-run\n"
         "      `just sync-conventions`."
     ),
-    "missing": "has no SHARED block — add it to CLAUDE.md by hand; position matters.",
+    "missing": f"has no SHARED block — add it to {INSTRUCTIONS} by hand; position matters.",
     "norepo": "not checked out at ../<name>.",
     "stale": (
         "warning, not a failure — origin/main already has the current block; the\n"
@@ -83,7 +84,7 @@ def main_copy(root: Path, fetch: bool):
     """The block as it exists on origin/main — i.e. what actually shipped."""
     if fetch:
         git(root, "fetch", "--quiet", "origin", "main")
-    return extract(git(root, "show", "origin/main:CLAUDE.md"))
+    return extract(git(root, "show", f"origin/main:{INSTRUCTIONS}"))
 
 
 def block_version(block):
@@ -142,17 +143,18 @@ def main() -> int:
     problems, warnings, wrote = {}, {}, []
     for repo in repos_from_canonical(canon_text):
         root = repo_root(repo)
-        if not (root / "CLAUDE.md").exists():
+        if not root.is_dir():
             print(f"  {repo:<28} {'—':<14} {'—':<14} NOT CHECKED OUT")
             problems.setdefault("norepo", []).append(repo)
             continue
 
-        text = (root / "CLAUDE.md").read_text()
+        path = root / INSTRUCTIONS
+        text = path.read_text() if path.exists() else ""
         disk = extract(text)
 
         if args.write:
             if disk is not None and disk != canon:
-                (root / "CLAUDE.md").write_text(BLOCK_RE.sub(lambda _: canon, text, count=1))
+                path.write_text(BLOCK_RE.sub(lambda _: canon, text, count=1))
                 print(f"  {repo:<28} {digest(disk):<14} {'':<14} UPDATED -> {want}")
                 wrote.append(repo)
             elif disk is None:

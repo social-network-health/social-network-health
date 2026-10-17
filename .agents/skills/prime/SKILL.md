@@ -1,3 +1,8 @@
+---
+name: prime
+description: Orient a new session in social-network-health — read its reading list for a systems-level picture, then summarize. Read-only. Use when the user asks to prime or orient.
+---
+
 # Prime — social-network-health (the hub)
 > Read-only orientation: understand the org and this repo, then summarize. Do NOT switch
 > branches or pull while priming — just orient.
@@ -43,9 +48,9 @@ them: `research/threat_modelling/threat_catalog.md`, `research/measurement/*.md`
   surface. It covers indirect identification too, so it applies more often than it looks. Read it
   before the change, not after: several of its rules are about what you must *not* publish, and they
   do not help retroactively.
-- **Org consistency is machine-checked.** `just check-org` verifies the shared `CLAUDE.md`
-  block (on disk *and* on each repo's `origin/main`) and the org skills, then prints what it
-  doesn't cover. Run it if the task touches shared conventions, or if you're unsure what's in
+- **Org consistency is machine-checked.** `just check-org` verifies the shared block in every
+  `AGENTS.md` (on disk *and* on each repo's `origin/main`), the agent files around it, and the
+  org skills, then prints what it doesn't cover. Run it if the task touches shared conventions, or if you're unsure what's in
   place. A failure there is a real signal.
 
 ## Before summarizing

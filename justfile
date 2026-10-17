@@ -93,18 +93,21 @@ check-org:
     rc=0
     ./tools/org/sync_conventions.py || rc=1
     echo
+    ./tools/org/agent_files.py --no-fetch || rc=1
+    echo
     ./tools/org/org_skills.py || rc=1
     echo
     echo "--- what these checks do and don't cover ---------------------------------"
-    echo "CHECKED   the shared CLAUDE.md block, on disk AND on each repo's origin/main"
-    echo "CHECKED   org skills symlinked and unshadowed (this workstation only)"
+    echo "CHECKED   the shared block in each AGENTS.md, on disk AND on each repo's origin/main"
+    echo "CHECKED   AGENTS.md size, the one-line CLAUDE.md, skills and their links (disk + main)"
+    echo "CHECKED   org skills symlinked for every agent and unshadowed (this workstation only)"
     echo
     echo "NOT CHECKED - the PR is the gate:"
-    echo "  * prime.md updated when a load-bearing doc or module lands"
+    echo "  * the prime skill updated when a load-bearing doc or module lands"
     echo "  * the users guide updated when user-visible behavior changes"
     echo "  * dated files under plans/ left alone (append-only)"
     echo
-    echo "NOT CHECKABLE - habits; they live in CLAUDE.md and nowhere else:"
+    echo "NOT CHECKABLE - habits; they live in AGENTS.md and nowhere else:"
     echo "  * --body-file over inline --body    * triage reds before shipping"
     echo "  * upstream main beats local plans   * fail loudly, honest deferrals"
     echo
@@ -112,7 +115,7 @@ check-org:
     echo "Full map: docs/org-upkeep.md"
     exit $rc
 
-# is the shared CLAUDE.md block identical everywhere — on disk AND on main? (--disk-only skips network)
+# is the shared block identical in every AGENTS.md — on disk AND on main? (--disk-only skips network)
 check-conventions:
     @./tools/org/sync_conventions.py
 
@@ -120,10 +123,14 @@ check-conventions:
 sync-conventions:
     @./tools/org/sync_conventions.py --write
 
+# does every repo keep its agent files right — AGENTS.md, the one-line CLAUDE.md, skill links?
+check-agent-files:
+    @./tools/org/agent_files.py
+
 # are the org's shared skills symlinked, current, and unshadowed on THIS workstation?
 check-skills:
     @./tools/org/org_skills.py
 
-# create or repair the ~/.claude/skills symlinks (run once per workstation)
+# create or repair the org skill symlinks for every agent (run once per workstation)
 install-skills:
     @./tools/org/org_skills.py --install

@@ -76,10 +76,10 @@ prints what it deliberately doesn't.
 
 | | |
 |---|---|
-| **Checked** | the shared `CLAUDE.md` block, on disk **and** on each repo's `origin/main` |
-| **Checked** | org Claude Code skills — symlinked, current, unshadowed (this workstation) |
-| **Not checked — the PR is the gate** | `prime.md` updated when a load-bearing doc lands; users guide updated for user-visible changes; dated `plans/` files left alone |
-| **Not checkable — habits** | see the shared block in any repo's `CLAUDE.md` |
+| **Checked** | the shared block in each `AGENTS.md`, on disk **and** on each repo's `origin/main`; the agent files around it |
+| **Checked** | org skills — symlinked for every agent, current, unshadowed (this workstation) |
+| **Not checked — the PR is the gate** | the prime skill updated when a load-bearing doc lands; users guide updated for user-visible changes; dated `plans/` files left alone |
+| **Not checkable — habits** | see the shared block in any repo's `AGENTS.md` |
 
 ```bash
 just bootstrap           # clone/refresh every org repo + install skills (safe any time)

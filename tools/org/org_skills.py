@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Check or install the org's shared Claude Code skills.
+"""Check or install the org's shared skills, for every agent we use.
 
-Org skills are installed as SYMLINKS from ~/.claude/skills/<name> into the repo that
-owns the skill. A symlink follows upstream automatically; a copy drifts silently and
+Org skills are installed as SYMLINKS from each agent's user skills folder into the repo
+that owns the skill. A symlink follows upstream automatically; a copy drifts silently and
 already has (fellows_local_db vendored the PNA Toolkit skill and fell a rename and
 several flows behind).
+
+Agents look in different folders (TARGETS below): ~/.agents/skills is the cross-tool one
+(Codex, OpenCode, Cursor, Copilot, Goose, …); Claude Code still needs ~/.claude/skills; and
+Antigravity CLI has its own, linked only when Antigravity is installed.
 
   ./tools/org/org_skills.py             # check (default) — exit 1 if anything is off
   ./tools/org/org_skills.py --install   # create or repair the symlinks
@@ -13,7 +17,7 @@ Also flags vendored copies inside repos that SHADOW an org skill, because two sk
 with near-identical trigger text is worse than one — the model may pick the stale one.
 
 SCOPE — this checks THIS WORKSTATION, not what shipped. Skills are installed per
-machine (~/.claude/skills), so there is no origin/main equivalent to compare against;
+machine (the folders in TARGETS), so there is no origin/main equivalent to compare against;
 green here means your machine is set up, not that a teammate's is. Each developer runs
 `just install-skills` once. The vendored-copy scan reads working trees, so it can miss a
 copy that exists on main but not locally.
@@ -28,7 +32,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _common import HUB, SRC, repos_from_canonical   # noqa: E402
 
-USER_SKILLS = Path.home() / ".claude" / "skills"
+HOME = Path.home()
+# (who reads it, folder, the folder that must exist first or None to always install)
+TARGETS = [
+    ("Claude Code", HOME / ".claude" / "skills", None),
+    ("Codex, OpenCode and others", HOME / ".agents" / "skills", None),
+    ("Antigravity CLI", HOME / ".gemini" / "antigravity-cli" / "skills",
+     HOME / ".gemini" / "antigravity-cli"),
+]
 
 # name -> path of the skill directory, relative to the sibling-checkout root.
 # Add a row when the org publishes a new shared skill.
@@ -48,9 +59,9 @@ ALIASES = {
 }
 
 
-def check_one(name: str, rel: str, install: bool):
+def check_one(name: str, rel: str, user_skills: Path, install: bool):
     src = SRC / rel
-    dst = USER_SKILLS / name
+    dst = user_skills / name
 
     if not src.exists():
         return f"{name:<18} SOURCE MISSING   {src} (is the repo checked out?)", False
@@ -76,40 +87,40 @@ def check_one(name: str, rel: str, install: bool):
 
 
 def find_shadows():
-    """Repo-level skills that duplicate an org skill, or vendor a copy that will drift.
+    """Repo-level skills that duplicate an org skill, as a copy or a link elsewhere.
 
-    A repo-level SYMLINK to the same source an org skill uses is fine — it can't drift.
-    Only copies, and links pointing somewhere else, are problems.
+    A repo's own skills (prime, say) are normal: they live in .agents/skills with a
+    .claude/skills link, and agent_files.py checks that layout. A repo-level SYMLINK to the
+    same source an org skill uses is fine too — it can't drift. Only an org skill copied into
+    a repo, or linked somewhere else, is a problem: two skills with near-identical trigger text
+    and the model may pick the stale one.
     """
     out = []
     for repo in repos_from_canonical():
-        skills_dir = SRC / repo / ".claude" / "skills"
-        if not skills_dir.is_dir():
-            continue
-        for entry in sorted(skills_dir.iterdir()):
-            if not (entry / "SKILL.md").is_file():
+        for folder in (".agents/skills", ".claude/skills"):
+            skills_dir = SRC / repo / folder
+            if not skills_dir.is_dir():
                 continue
-            declared = ""
-            for line in (entry / "SKILL.md").read_text().splitlines()[:6]:
-                if line.startswith("name:"):
-                    declared = line.split(":", 1)[1].strip()
-                    break
-            owner = next((r for r in ORG_SKILLS if r in (entry.name, declared)), None)
-            if owner is None:
-                owner = ALIASES.get(entry.name) or ALIASES.get(declared)
-            where = f"{repo}/.claude/skills/{entry.name}"
-
-            if entry.is_symlink():
-                # same source as the registry entry -> harmless, skip
-                if owner and entry.resolve() == (SRC / ORG_SKILLS[owner]).resolve():
+            for entry in sorted(skills_dir.iterdir()):
+                if not (entry / "SKILL.md").is_file():
                     continue
-                out.append(f"  {where} -> {entry.resolve()} (symlink outside the registry)")
-            elif owner:
-                renamed = "" if entry.name == owner else f" (renamed upstream to '{owner}')"
-                out.append(f"  {where} COPY duplicates org skill '{owner}'{renamed} — delete it; "
-                           f"the user-level symlink already covers this repo")
-            else:
-                out.append(f"  {where} COPY (declares '{declared}') — vendored, will drift")
+                declared = ""
+                for line in (entry / "SKILL.md").read_text().splitlines()[:6]:
+                    if line.startswith("name:"):
+                        declared = line.split(":", 1)[1].strip()
+                        break
+                owner = next((r for r in ORG_SKILLS if r in (entry.name, declared)), None)
+                if owner is None:
+                    owner = ALIASES.get(entry.name) or ALIASES.get(declared)
+                if owner is None or entry.resolve() == (SRC / ORG_SKILLS[owner]).resolve():
+                    continue   # the repo's own skill, or a link to the org skill's source
+                where = f"{repo}/{folder}/{entry.name}"
+                if entry.is_symlink():
+                    out.append(f"  {where} -> {entry.resolve()} (not the org skill's source)")
+                else:
+                    renamed = "" if entry.name == owner else f" (renamed upstream to '{owner}')"
+                    out.append(f"  {where} COPY duplicates org skill '{owner}'{renamed} — delete "
+                               f"it; the user-level symlink already covers this repo")
     return out
 
 
@@ -120,12 +131,17 @@ def main() -> int:
                     help="create or repair the symlinks instead of only checking")
     args = ap.parse_args()
 
-    print(f"user skills dir: {USER_SKILLS}\n")
     ok = True
-    for name, rel in ORG_SKILLS.items():
-        line, good = check_one(name, rel, args.install)
-        print("  " + line)
-        ok = ok and good
+    for who, user_skills, needs in TARGETS:
+        if needs is not None and not needs.is_dir():
+            print(f"{user_skills}  ({who}) — skipped: not installed\n")
+            continue
+        print(f"{user_skills}  ({who})")
+        for name, rel in ORG_SKILLS.items():
+            line, good = check_one(name, rel, user_skills, args.install)
+            print("  " + line)
+            ok = ok and good
+        print()
 
     shadows = find_shadows()
     if shadows:
@@ -135,10 +151,9 @@ def main() -> int:
         print("  delete the copy, or re-sync it deliberately and record the pinned commit.")
         ok = False
 
-    print()
     if not ok:
         print("Fix what's flagged, then re-run. `--install` handles the symlinks.")
-        print("Note: Claude Code discovers skills at session start — restart after installing.")
+        print("Note: agents discover skills at session start — restart them after installing.")
         print("A failing check here is a real signal — investigate rather than route around it.")
         return 1
     print("All org skills are symlinked and unshadowed ON THIS WORKSTATION.")

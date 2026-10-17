@@ -37,7 +37,7 @@ history under `presentations/pnt-workshop/`. Nothing needs to be checked out for
 
 | Repo | Local path | Remote | Role |
 |---|---|---|---|
-| snhdb | `../snhdb` | github.com/social-network-health/snhdb | Public research-paper library: PDFs, markdown conversions, YAML metadata cards, and `card-schema.yaml` (the pilot refinement of the card format drafted in `research/research_library/planning/knowledge-base-plan.md`). Ships a user-wide Claude Code skill (`/snhdb <question>` — install per its README) for cited corpus search from any session. Will sync with the Google Drive research corpus and power the AI search engine planned for toolkit.socialnetwork.health. New 2026-07. |
+| snhdb | `../snhdb` | github.com/social-network-health/snhdb | **Private.** Research-paper library: PDFs, markdown conversions, YAML metadata cards, and `card-schema.yaml` (the pilot refinement of the card format drafted in `research/research_library/planning/knowledge-base-plan.md`). Ships a user-wide Claude Code skill (`/snhdb <question>` — install per its README) for cited corpus search from any session. Will sync with the Google Drive research corpus and power the AI search engine planned for toolkit.socialnetwork.health. New 2026-07. |
 
 ## Websites & educational materials
 
@@ -67,12 +67,12 @@ exists so a **new** repo doesn't claim one that's already taken — check here b
 | 8796 | `snh-aios` | dashboard preview (`just serve`) |
 
 Within a repo, worktrees isolate the filesystem but **not** these ports — server-based runs
-must be serialized across worktrees. See that repo's `CLAUDE.md` for its specifics.
+must be serialized across worktrees. See that repo's `AGENTS.md` for its specifics.
 
 ## Non-repo resources
 
 - **Toolkit wiki (live):** https://toolkit.socialnetwork.health — MediaWiki of best practices and research findings; the primary body of published SNH work.
-- **Paper corpus (Google Drive, public):** https://drive.google.com/drive/u/0/folders/1CQIZnHCojqnvGuiOmn9UR7Jbf9nGlICD — full papers & metadata behind `research/threat_modelling/references/references.md`.
+- **Paper corpus (Google Drive, shared with named collaborators — not public):** https://drive.google.com/drive/u/0/folders/1CQIZnHCojqnvGuiOmn9UR7Jbf9nGlICD — full papers & metadata behind `research/threat_modelling/references/references.md`.
 - **SNH GPT — Researcher (retired):** custom GPT grounded in the corpus (kept linked from the homepage's Research library card until fully removed).
 - **Search with Claude Desktop (instructions):** https://docs.google.com/document/d/1QlV5VQE1dEqhYEget6jJUSHRhCDfgrynyYdgXm6BoWU — the most-used how-to for querying the library with AI tools.
 - **Video archive:** https://www.youtube.com/@SocialNetworkHealth

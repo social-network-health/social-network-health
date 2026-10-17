@@ -1,7 +1,7 @@
 # Shared org conventions — canonical copy
 
-**This file is the source of truth for the shared block.** Every repo in the
-`social-network-health` org carries an identical copy of it, pasted into its `CLAUDE.md`.
+**This file is the source of truth for the shared block.** Every repo in the table below
+carries an identical copy of it in its `AGENTS.md`.
 
 **Where does the block start?** At the horizontal rule below — **everything after that line
 is the block.** It's delimited by `<!-- BEGIN SHARED … -->` / `<!-- END SHARED … -->`, but
@@ -16,7 +16,19 @@ reports it as `EDITED`.
 
 **What belongs in the block:** facts and rules true in *every* repo. Anything repo-specific —
 ports, `just` recipes, worktree helper scripts, language conventions — stays in that repo's
-own `CLAUDE.md` sections, outside the markers, where the tooling never touches it.
+own `AGENTS.md` sections, outside the markers, where the tooling never touches it.
+
+**The files every repo in the table keeps** (checked by `just check-agent-files`):
+
+- `AGENTS.md` — the repo's instructions, with this block in it. Under 24,000 bytes, because
+  Antigravity CLI truncates longer files and Codex caps them at 32 KiB.
+- `CLAUDE.md` — one line, `@AGENTS.md`, plus only lines that make sense for Claude alone.
+  Claude Code reads `AGENTS.md` by itself only when no `CLAUDE.md` exists; the import makes it
+  read the same file everywhere, including the Agent SDK.
+- `.agents/skills/<name>/SKILL.md` — the repo's skills, in the cross-tool layout that Codex,
+  Antigravity, OpenCode and most other agents read. Every repo has a `prime` skill.
+- `.claude/skills/<name>` — a symlink to `../../.agents/skills/<name>`, because Claude Code
+  doesn't read `.agents/skills` yet. No Claude-only skills.
 
 *This table is the tooling's source of truth for which repos carry the block — add or remove
 a repo here when the org gains or loses one.*
@@ -28,21 +40,53 @@ a repo here when the org gains or loses one.*
 | `prm` |
 | `fellows_local_db` |
 | `snhdb` |
-| `prt` |
 | `snhtoolkitmw` |
-| `socialnetwork_toolkit` |
+| `snh-aios` |
+
+**Not in the table, on purpose:** `snh-private` is a private data store, not a code repo.
+Repos being archived leave the table rather than take new versions: `prt` keeps the v7 block it
+already has until it's archived.
 
 ---
 
-<!-- BEGIN SHARED: org-conventions v7 -->
+<!-- BEGIN SHARED: org-conventions v8 -->
 <!-- Canonical copy: social-network-health/docs/shared/org-conventions.md
      Do not edit this block in place. Edit the canonical copy and propagate. -->
 
 > **⚙ Shared, generated section — don't edit it here.** Everything from this line down to
-> *"Changing this block"* is identical in every repo in the org. Change it in the canonical
-> copy (hub `docs/shared/org-conventions.md`) and run `just sync-conventions`; an edit made
-> in place will be reported as `EDITED` and then overwritten. Repo-specific guidance belongs
-> in this file's *other* sections, which the tooling never touches.
+> *"Changing this block"* is identical in every repo that carries it (listed in the hub's
+> `docs/shared/org-conventions.md`). Change it in the canonical copy and run
+> `just sync-conventions`; an edit made in place will be reported as `EDITED` and then
+> overwritten. Repo-specific guidance belongs in this file's *other* sections, which the
+> tooling never touches.
+
+## The project
+
+**Social Network Health (SNH)** studies the health of the social networks people live in, and
+how a community can keep them healthy. It works in two strands:
+
+- **Field studies**, about one a year, each run with a collaborator in a different setting.
+  Field Study 1 studied Networks of Support's training work in schools and the military; its
+  key findings are on the toolkit wiki, https://toolkit.socialnetwork.health. Each later field
+  study publishes its own.
+- **Software**: Personal Network Applications (PNAs) — user-owned apps for relationship data,
+  built as reference designs and specs, first for remote, digitally connected communities.
+  Most of these repos are that work.
+
+A **key finding** is one that all three of these attest: a **practitioner** says it is a key
+finding; **participants** in an intervention experienced it and can describe it; a
+**researcher** states it is a key finding in social network health. Missing any one, call it a
+finding. A finding from one setting doesn't automatically apply in another.
+
+Anything about a real person — in code, docs, issues, commit messages, or video text — follows
+the hub's
+[publication standard](https://github.com/social-network-health/social-network-health/blob/main/docs/publication-standards/identifiable-people.md).
+
+Where to look: findings → the toolkit wiki; research evidence → `snhdb`, the research library;
+videos → https://www.youtube.com/@SocialNetworkHealth; every repo → the hub's
+`RELATED_REPOS.md`. **Team members:** give your agent the project brief too — `snh-brief.md`,
+from the team dashboard (https://dashboard.socialnetwork.health, *For AIs*) or the private
+`snh-aios` repo.
 
 ## The organization
 
@@ -59,9 +103,24 @@ in the hub repo is the single source of truth for what those repos are and what 
 Don't restate the list in a repo's own docs — a second copy is a second thing to forget.
 
 The layout is a convention of the working environment; it could change, but it holds for now.
-It lives in `CLAUDE.md` rather than agent memory because **memory is keyed to the working
+It lives in `AGENTS.md` rather than agent memory because **memory is keyed to the working
 directory** — a worktree at a different path starts with a fresh memory dir. A committed file
 is the only channel that reaches every worktree and every concurrent agent.
+
+## Agents, instructions, and skills
+
+We work with several agents — Claude Code, OpenAI Codex, Gemini (Antigravity CLI), and local
+models (OpenCode on Ollama) — so everything here is written for any of them:
+
+- **`AGENTS.md` is the instructions file**, read natively by every agent above. `CLAUDE.md` is
+  one line, `@AGENTS.md`, so Claude Code reads the same file. Nothing Claude-only goes in
+  `AGENTS.md`.
+- **Skills live in `.agents/skills/<name>/SKILL.md`**, with a `.claude/skills/<name>` link for
+  Claude Code. Frontmatter is the open Agent Skills spec's: `name` and `description`, nothing
+  tool-specific. The org's shared skills (such as `snhb` and `snhdb`) are installed for every
+  agent by `just install-skills` in the hub.
+- **Every repo has a `prime` skill**: its reading list for a new session (`/prime` in Claude
+  Code, `$prime` in Codex).
 
 ## Planning has four layers
 
@@ -109,13 +168,13 @@ Each of these was learned the hard way in one repo. They apply in all of them.
 - **A sync rule without a mechanical check is a wish.** Anything that must hold in more than
   one repo ships with a command that verifies it, and the rule names the command. Nobody
   eyeballs every repo by hand, so silent drift is the default outcome otherwise.
-- **Add a load-bearing document or module → update `.claude/commands/prime.md` in the same
-  PR.** Priming is how every agent gets its systems-level picture of a repo, and a prime that
-  misses the file where the invariants live sends every future session searching for it. This
-  is the same rule as "a user-visible change updates the users guide in the same PR", applied
-  to the agent's entry point. Prime is bespoke per repo, so no checksum catches this one —
-  the PR is the only gate.
-- **Prime is expensive; not priming is more expensive.** `CLAUDE.md` loads every session, so
+- **Add a load-bearing document or module → update the `prime` skill
+  (`.agents/skills/prime/SKILL.md`) in the same PR.** Priming is how every agent gets its
+  systems-level picture of a repo, and a prime that misses the file where the invariants live
+  sends every future session searching for it. This is the same rule as "a user-visible change
+  updates the users guide in the same PR", applied to the agent's entry point. Prime is bespoke
+  per repo, so no checksum catches this one — the PR is the only gate.
+- **Prime is expensive; not priming is more expensive.** `AGENTS.md` loads every session, so
   it holds what is always true and stays short. Prime is opt-in and costs tokens, so it holds
   the *reading list* — which files give systems-level understanding, and which to skim rather
   than read. Keep prime curated: name the seams, never glob a directory.
@@ -134,4 +193,4 @@ markers, run `just sync-conventions` from the hub repo, then open one PR per rep
 `just check-conventions` verifies every copy matches; `just check-org` runs every org check.
 Full procedure: hub `docs/org-upkeep.md`.
 
-<!-- END SHARED: org-conventions v7 -->
+<!-- END SHARED: org-conventions v8 -->
