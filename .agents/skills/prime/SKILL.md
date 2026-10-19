@@ -42,7 +42,7 @@ them: `research/threat_modelling/threat_catalog.md`, `research/measurement/*.md`
 - **The homepage deep-links `research/` files by full GitHub URL.** Moving or renaming a
   research file breaks the live site silently. Update the HTML and redeploy in the same change.
 - **`../socialnetwork_toolkit` has live credentials in its git history.** Never copy, quote, or
-  summarize its contents anywhere. `../prt` is mid-archive — don't start work there.
+  summarize its contents anywhere. `../prt` is archived (prm is its successor) — don't start work there.
 - **Writing about a real, identifiable person is governed** by
   `docs/publication-standards/identifiable-people.md` — org-wide, binding every repo and every
   surface. It covers indirect identification too, so it applies more often than it looks. Read it

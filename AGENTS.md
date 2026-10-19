@@ -19,8 +19,8 @@ hazards worth knowing before you touch a sibling:
 
 - **`../socialnetwork_toolkit`** — live credentials in git history on every branch. Never
   copy, quote, or summarize its contents anywhere, and never make it public.
-- **`../prt`** — being archived. The harvest is done; what remains is in `plans/ORG-TASKS.md`.
-  Don't start new work there.
+- **`../prt`** — archived on GitHub (2026-10-19), read-only; prm is its successor. Don't start
+  work there.
 
 ## Layout
 
