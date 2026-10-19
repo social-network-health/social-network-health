@@ -44,8 +44,8 @@ a repo here when the org gains or loses one.*
 | `snh-aios` |
 
 **Not in the table, on purpose:** `snh-private` is a private data store, not a code repo.
-Repos being archived leave the table rather than take new versions: `prt` keeps the v7 block it
-already has until it's archived.
+Archived repos leave the table rather than take new versions: `prt` (archived 2026-10-19) keeps
+the v7 block it had.
 
 ---
 

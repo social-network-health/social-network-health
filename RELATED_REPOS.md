@@ -21,7 +21,7 @@ that are.
 | personal_network_toolkit | `../personal_network_toolkit` | github.com/social-network-health/personal_network_toolkit | The PNA Toolkit — spec, contracts, skill, MCP servers, and lints for building/validating **Personal Network Applications**. The central toolkit; the PNA Spec and positioning paper live in its `spec/` and `docs/`. |
 | prm | `../prm` | github.com/social-network-health/prm | Personal Relationship Manager — local web app, PNA reference design (attested at Toolkit v0.2). |
 | fellows_local_db | `../fellows_local_db` | github.com/social-network-health/fellows_local_db | EHF Fellows Local Directory — local-first SQLite + PWA directory app; the toolkit's first reference design; hosts three v1 MCP servers. |
-| prt | `../prt` | github.com/social-network-health/prt | Personal Relationship Toolkit — Python TUI relationship manager; earlier generation, basis for prm (listed as archived on the website). |
+| prt | `../prt` | github.com/social-network-health/prt | Personal Relationship Toolkit — Python TUI relationship manager; earlier generation, basis for prm. Archived on GitHub 2026-10-19; prm is its successor. |
 
 ## Talks & workshop material
 

@@ -21,7 +21,6 @@ filed down and now appear only under [Watching](#watching).*
 ### org
 
 - [ ] **Write the positioning / vision doc** - so collaborators orient to Rich's focus; supportive of other directions, clear about his own. Deliverable lands in the hub repo's new `positioning/` folder — see [`../docs/roadmap.md`](../docs/roadmap.md)
-- [ ] **Formally archive prt — harvest done, archive remaining** - the three-pass harvest (open issues, code, `ROADMAP.md`) completed 2026-08-16: sixteen issues filed on prm (prm#100–#115) plus one PNT design note (PNT#127) — see [`2026-08-16-prt-harvest-crt-deltas.md`](2026-08-16-prt-harvest-crt-deltas.md) for the full landing map and the CRT-concept diff. (The earlier "prt#147 captured nowhere else" caveat was stale — the notification-protocol concepts live on in `research/protocols/`.) Remaining: prt's README says it is retired but points to PNT and still says it is being harvested — make it name prm as the successor, then archive the repo on GitHub. Substantive work stopped 2026-01-12
 - [ ] **Repo-by-repo consistency review** - walk each live repo with Rich: are its roadmap and issues current and mutually consistent? Then prioritize across the org. Known drift going in: PNT's `docs/roadmap.md` snapshot is dated 2026-06-27 and misses the July waves; `fellows_local_db/ROADMAP.md` is 4 dead lines while real planning lives in its `plans/`; root-`ROADMAP.md`-vs-`docs/roadmap.md` is inconsistent across the org (both root ones are dead, both `docs/` ones are alive)
 
 ### infra
@@ -74,6 +73,7 @@ are links, deliberately without status claims. Do not restate progress here.*
 
 ## Done
 
+- [x] ~~**[org]** Formally archive prt~~ (2026-10-19 — harvest completed 2026-08-16: sixteen issues on prm (prm#100–#115) and PNT#127; record in [`2026-08-16-prt-harvest-crt-deltas.md`](2026-08-16-prt-harvest-crt-deltas.md). prt#164 named prm as the successor in the README; the repo is archived, read-only)
 - [x] ~~**[org]** Org context v8: `AGENTS.md` in every repo, a project section, skills for every agent~~ (2026-10-17 — block v8 and the agent files on `main` in all seven repos, `just check-org` green; Claude Code, Codex, Antigravity CLI and OpenCode on Ollama each load a repo's `AGENTS.md` and run its prime skill. Setup per agent: `docs/org-upkeep.md`)
 - [x] ~~**[infra]** Rotate the wiki credentials, then retire `socialnetwork_toolkit`~~ (2026-10-17 — rotated in `snhtoolkitmw` migration Phase 4, 2026-08-07; the old host is decommissioned and the repo archived, private and read-only)
 - [x] ~~Decide where org planning lives~~ (2026-07-24 — public, in the hub repo; brainstorms stay private)
