@@ -134,3 +134,7 @@ check-skills:
 # create or repair the org skill symlinks for every agent (run once per workstation)
 install-skills:
     @./tools/org/org_skills.py --install
+
+# validate stable organization task IDs and state/checkbox consistency
+check-tasks:
+    python3 tools/org/check_task_ids.py
