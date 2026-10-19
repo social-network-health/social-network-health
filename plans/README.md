@@ -40,11 +40,24 @@ exception; see below.
   write a new one. Old plans are reflection material, not living documents.
 - The workflow: plan anywhere → dump here → pull the one or two genuinely interesting
   tasks into `ORG-TASKS.md` (or a repo issue) → leave the rest alone.
-- `plans/ORG-TASKS.md` is the live org-level task list — the one file here that *is* kept
-  current. Named `ORG-` so it's never mistaken for a repo-level task list. Sections:
-  Active / Waiting On / Someday / Done. Task format:
-  `- [ ] **[area] Title** - context, links`. Areas:
-  `[web] [community] [infra] [designs] [toolkit] [research] [org]`.
+- `plans/ORG-TASKS.md` is the live org-level task list. Each task carries an immutable
+  `<!-- task: SNH-ORG-0001 -->` marker. Preserve it when renaming, moving or completing a
+  task; never reuse a removed ID. Allocate the next unused number and run `just check-tasks`.
+  The `org-task-register: 1` marker opts the whole file into strict identity validation.
+- Section meanings:
+  - **Active:** accepted current work. An unchecked box does not prove execution has started.
+  - **Waiting On:** accepted work waiting for an identified reply, event or dependency.
+  - **Needs review:** untriaged possibilities. No commitment, priority or timing is inferred.
+    This replaces the undefined Someday label without changing the underlying tasks.
+  - **Watching:** references to work owned elsewhere. Follow the linked source for status;
+    these are not extra org tasks and must not be counted as such.
+  - **Done:** explicitly completed work, checked off and retained with the same ID.
+  - **Cancelled** (when needed): explicitly declined or stopped work, retained with its ID.
+  - **Deferred** (when needed): deliberately postponed work; record a reason and a review
+    date or condition. It is not a bucket for untriaged ideas.
+- `###` headings (community, org, infrastructure, designs) describe topics, not states.
+  Stable IDs are independent of either section or topic. Missing owner/due dates remain
+  unknown. Do not infer goal completion from the number of checked tasks.
 - Per-repo work lives in that repo's issues and plans — tasks here link to them
   (`PNT#55`, `prm#66`, `fellows#296`). This list holds only cross-repo, org-level state.
 - Uncurated or sensitive brainstorms do **not** go here — they live in the private

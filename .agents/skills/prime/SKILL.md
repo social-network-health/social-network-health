@@ -15,6 +15,7 @@ ls ..                   # which sibling repos are actually present on this host
 
 ## Read — the planning stack, top down
 software-plan.md        # layer 1: the software program in summary (M1/M2/M3)
+plans/README.md        # task ownership, stable IDs, state meanings; just check-tasks
 plans/ORG-TASKS.md      # layer 2: what the whole org should be doing now
 docs/roadmap.md         # layer 3: what THIS repo is doing (website, research, presentations)
 RELATED_REPOS.md        # the org's repos, what each is for, the localhost port registry
