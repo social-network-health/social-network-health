@@ -1,0 +1,19 @@
+# Managed by Ansible (ops/ansible roles/listmonk). Do not edit by hand.
+# Only the listen address and the database live here. Everything else — the root URL, Postmark's
+# SMTP login, privacy, bounces — is kept in listmonk's database and set in its admin.
+[app]
+address = "{{ listmonk_listen }}"
+
+[db]
+# The local socket with peer authentication, so no password: listmonk leaves empty fields out of
+# the connection string, and PostgreSQL admits the listmonk system user as the listmonk role.
+host = "/var/run/postgresql"
+port = 5432
+user = "listmonk"
+password = ""
+database = "listmonk"
+ssl_mode = "disable"
+max_open = 10
+max_idle = 5
+max_lifetime = "300s"
+params = ""

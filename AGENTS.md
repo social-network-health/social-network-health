@@ -26,7 +26,7 @@ hazards worth knowing before you touch a sibling:
 
 ```
 public/                    the ENTIRE live site: the homepage, the privacy page, one SVG logo
-ops/                       Ansible + Caddy provisioning/deploy for the site (DigitalOcean droplet)
+ops/                       Ansible + Caddy for the droplet: the site, the team dashboard, listmonk (the monthly update)
 research/                  organized BY TOPIC:
   measurement/             community-network-health-explainer.md, egocentric→community note, social_cohesion.md
   threat_modelling/        threat_catalog.md + references/references.md (its bibliography)

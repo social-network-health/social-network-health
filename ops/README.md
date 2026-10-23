@@ -31,6 +31,7 @@ ops/
       caddy/                # official Caddy apt repo, install, site config
       oauth2_proxy/         # Google sign-in for the dashboard (when its client is configured)
       dashboard_sync/       # hourly rebuild of the dashboard from snh-aios main
+      listmonk/             # the monthly update at updates.socialnetwork.health, + PostgreSQL
 ```
 
 ## One-time: create the droplet (manual, in the DigitalOcean UI)
@@ -129,6 +130,72 @@ whose redirect URI is `https://dashboard.socialnetwork.health/oauth2/callback`. 
 and the accounts you list can actually get in; everyone else is refused after signing in.
 
 DNS: an **A** record for `dashboard` → the Reserved IP, grey-cloud, like the apex.
+
+## The monthly update (updates.socialnetwork.health)
+
+A third site on the droplet: **listmonk** (role `listmonk`), the subscriber list and sender for
+the monthly SNH update. The plan behind it is in snh-aios,
+`docs/plans/daily-summary-and-monthly-updates.md`.
+
+- **The service:** one Go binary, pinned and checksum-verified, runs as the `listmonk` system user
+  on localhost:9000.
+- **The database:** its own PostgreSQL database on the droplet. It uses peer authentication on
+  the local socket, so there is no database password.
+- **Backups:** a nightly `pg_dump` (03:30) keeps 14 days in `/var/backups/listmonk`, and the
+  droplet's daily backups carry them off the box.
+- **Swap:** a 1 GB swap file, because PostgreSQL now shares the droplet's 1 GB of memory.
+
+**Public, through Caddy:**
+- signup;
+- opt-in confirmation;
+- subscription preferences;
+- the archive (`/` redirects there);
+- uploaded media;
+- Postmark's bounce webhook.
+
+**Not public:** the admin and its API, for which Caddy answers 404. That way nobody can claim
+the admin account that listmonk offers on first visit, or try passwords. Reach the admin through
+SSH, as the operator:
+
+```bash
+just provision-updates   # install or update (restarts Caddy: brief blip)
+just updates-admin       # the tunnel; then open http://localhost:9000/admin
+just updates-status      # running?, the last backup, the last log lines
+```
+
+**Sending** goes through Postmark's broadcast stream, by SMTP on port **2525**. DigitalOcean
+blocks outgoing 25 and 587 from droplets (checked 2026-10-24). In Postmark, the domain has its
+DKIM record and the `pm-bounces` Return-Path.
+
+**First run, in the admin.** These settings live in listmonk's database, not in Ansible.
+
+1. **The admin account:** listmonk asks for one on first visit. Keep it in the password manager.
+2. **Settings → General:**
+   - Root URL: `https://updates.socialnetwork.health`.
+   - From address: `update@socialnetwork.health`. The display name is still open.
+   - Turn on the public subscription page and the public archive.
+3. **Settings → SMTP:**
+   - Host `smtp-broadcasts.postmarkapp.com`, port 2525, STARTTLS, auth `plain`.
+   - Username and password: an **SMTP token** for the *Default Broadcast Stream*, from Postmark →
+     the server → the stream → Settings. Postmark shows its secret only once.
+   - Use the stream's token, not the server API token: it can only send through that stream.
+4. **Settings → Privacy:** individual subscriber tracking off. Then, in **Campaigns →
+   Templates**, delete `{{ TrackView }}` from the default template, so issues carry no tracking
+   pixel.
+5. **Settings → Security:** a captcha on the signup form, so bots can't use it to send
+   confirmation mail. Use ALTCHA: it's built in and uses no third party.
+6. **Bounces:**
+   - In listmonk, **Settings → Bounces**: bounce processing on, bounce webhooks on, and
+     Postmark on, with a username and password of your choosing.
+   - In Postmark, on the broadcast stream, **Webhooks → Add webhook**: URL
+     `https://<user>:<password>@updates.socialnetwork.health/webhooks/service/postmark`, events
+     *Bounce* and *Spam complaint*.
+7. **Lists:** delete the sample lists, subscribers and campaign that the install creates. Then
+   make one public, double opt-in list for the update.
+8. **Unsubscribes:** until Postmark turns on self-managed unsubscribes for the stream (asked
+   2026-10-24), Postmark adds its own unsubscribe link and suppression list alongside listmonk's.
+
+Before the signup form goes on the homepage, `public/privacy.html` needs a section on the list.
 
 ## SSH access & the scanner flood
 
