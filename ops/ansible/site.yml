@@ -1,5 +1,6 @@
 ---
-# Provision a single-purpose static-site droplet for socialnetwork.health.
+# Provision the socialnetwork.health droplet: the static site, the team dashboard, and listmonk
+# for the monthly update (updates.socialnetwork.health).
 # Independent of fellows_local_db — no shared roles, no cross-repo deps.
 #
 #   cd ops/ansible
@@ -28,6 +29,9 @@
     - role: oauth2_proxy
       when: dashboard_oauth_client_id is defined
       tags: ["bootstrap", "caddy"]
+    # Before caddy, so listmonk is up when Caddy starts proxying updates_domain to it.
+    - role: listmonk
+      tags: ["bootstrap", "listmonk"]
     - role: caddy
       tags: ["bootstrap", "caddy"]
     # Rebuilds the dashboard from snh-aios main every hour (needs `just dashboard-sync-key` once).

@@ -1,5 +1,5 @@
 # Managed by Ansible (ops/ansible) — Caddy for {{ site_domain }} (Let's Encrypt).
-# Apex serves the static site; www redirects to apex; dashboard is password-protected.
+# Apex serves the static site; www redirects to apex; dashboard is team-only; updates is listmonk.
 {
 	email {{ caddy_admin_email }}
 	# Disable the unauthenticated localhost admin API (default :2019). Config is
@@ -74,4 +74,24 @@ www.{{ site_domain }} {
 	# Fail closed: no sign-in configured in ops/ansible/secrets/ on the machine that ran Ansible.
 	respond "Dashboard not configured" 503
 {% endif %}
+}
+
+# The monthly update (listmonk). Its public pages are proxied: signup, opt-in confirmation,
+# subscription preferences, the archive, Postmark's bounce webhook. Its admin and API are not, so
+# they never face the internet and nobody can claim the first-run admin account or try passwords;
+# the admin is reached through an SSH tunnel (`just updates-admin`).
+{{ updates_domain }} {
+	encode gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+	@admin {
+		path /admin /admin/* /api/* /auth/* /webhooks/bounce
+		not path /api/public/*
+	}
+	respond @admin 404
+	redir / /archive
+	reverse_proxy {{ listmonk_listen | default('127.0.0.1:9000') }}
 }

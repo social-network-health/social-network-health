@@ -1,0 +1,27 @@
+# Managed by Ansible (ops/ansible roles/listmonk).
+[Unit]
+Description=listmonk — subscriber list and sender for {{ updates_domain }}
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+User=listmonk
+Group=listmonk
+WorkingDirectory={{ listmonk_home }}
+# Applies the database migrations a new version brings; does nothing when there are none.
+ExecStartPre=/usr/local/bin/listmonk --config /etc/listmonk/config.toml --upgrade --yes
+ExecStart=/usr/local/bin/listmonk --config /etc/listmonk/config.toml
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths={{ listmonk_home }}
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

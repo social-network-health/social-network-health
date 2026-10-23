@@ -1,0 +1,16 @@
+# listmonk (https://listmonk.app): the monthly update's subscriber list and sender, served at
+# updates_domain. It sends through Postmark's broadcast stream — DigitalOcean blocks outgoing 25
+# and 587 from droplets, so port 2525 — and is configured in its own admin (see ops/README.md).
+listmonk_version: 6.2.0
+listmonk_sha256: ce78c89d8aac0df3ffe0e110b008e7bb5dae13e6ad0c57b43aa7094971e8698e
+# Localhost only: Caddy proxies the public pages, and the admin is reached by SSH tunnel.
+listmonk_listen: 127.0.0.1:9000
+# Its working directory; media uploaded in the admin land in ./uploads.
+listmonk_home: /var/lib/listmonk
+
+# A nightly pg_dump, kept this many days. DigitalOcean's droplet backups then carry it off the box.
+listmonk_backup_dir: /var/backups/listmonk
+listmonk_backup_keep_days: 14
+
+# The droplet has 1 GB of memory and no swap; PostgreSQL joins Caddy and oauth2-proxy on it.
+swap_mb: 1024

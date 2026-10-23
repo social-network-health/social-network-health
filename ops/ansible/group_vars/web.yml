@@ -11,6 +11,9 @@ site_root: /var/www/socialnetwork.health
 dashboard_domain: dashboard.socialnetwork.health
 dashboard_root: /var/www/dashboard.socialnetwork.health
 
+# The monthly update: listmonk's public pages (role listmonk). Its admin is reached by SSH tunnel.
+updates_domain: updates.socialnetwork.health
+
 # Let's Encrypt / ACME registration address (not a sending address).
 caddy_admin_email: richbodo@gmail.com
 

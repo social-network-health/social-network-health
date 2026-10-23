@@ -53,6 +53,19 @@ dashboard-sync-key:
 dashboard-sync-status:
     ssh "${SNH_HOST:-rsb@170.64.248.173}" 'systemctl list-timers snh-dashboard-sync.timer --no-pager; journalctl -u snh-dashboard-sync -n 15 --no-pager -q'
 
+# install or update listmonk (updates.socialnetwork.health) and its Caddy site (restarts Caddy: brief blip)
+provision-updates:
+    cd ops/ansible && ansible-playbook site.yml --tags listmonk,caddy
+
+# listmonk's admin, through an SSH tunnel (it never faces the internet); Ctrl-C closes it
+updates-admin:
+    @echo "listmonk admin: http://localhost:9000/admin — Ctrl-C closes the tunnel"
+    ssh -N -L 9000:127.0.0.1:9000 "${SNH_HOST:-rsb@170.64.248.173}"
+
+# whether listmonk and its nightly backup are running, and listmonk's last log lines
+updates-status:
+    ssh "${SNH_ROOT:-root@170.64.248.173}" 'systemctl is-active listmonk; systemctl list-timers listmonk-backup.timer --no-pager; ls -lh /var/backups/listmonk | tail -3; journalctl -u listmonk -n 15 --no-pager -q'
+
 # install the Ansible collections the playbook needs (one-time setup)
 ansible-deps:
     cd ops/ansible && ansible-galaxy collection install -r collections/requirements.yml -p collections

@@ -1,0 +1,157 @@
+---
+- name: Swap file
+  ansible.builtin.command: fallocate -l {{ swap_mb }}M /swapfile
+  args:
+    creates: /swapfile
+  register: swapfile
+
+- name: Format and enable the swap file
+  ansible.builtin.shell: chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
+  when: swapfile.changed
+
+- name: Swap on at boot
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    line: /swapfile none swap sw 0 0
+
+- name: Use swap only under memory pressure
+  ansible.posix.sysctl:
+    name: vm.swappiness
+    value: "10"
+
+- name: PostgreSQL (Ubuntu's)
+  ansible.builtin.apt:
+    name: postgresql
+    state: present
+
+- name: PostgreSQL enabled and running
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: true
+
+- name: listmonk system user
+  ansible.builtin.user:
+    name: listmonk
+    system: true
+    home: "{{ listmonk_home }}"
+    create_home: false
+    shell: /usr/sbin/nologin
+
+- name: listmonk working directory
+  ansible.builtin.file:
+    path: "{{ listmonk_home }}"
+    state: directory
+    owner: listmonk
+    group: listmonk
+    mode: "0750"
+
+# Peer authentication over the local socket: PostgreSQL lets the listmonk system user in as the
+# listmonk role and nobody else, so there is no database password to keep.
+- name: listmonk database role
+  ansible.builtin.command: createuser listmonk
+  become_user: postgres
+  register: createuser
+  changed_when: createuser.rc == 0
+  failed_when: createuser.rc != 0 and 'already exists' not in createuser.stderr
+
+- name: listmonk database
+  ansible.builtin.command: createdb --owner listmonk listmonk
+  become_user: postgres
+  register: createdb
+  changed_when: createdb.rc == 0
+  failed_when: createdb.rc != 0 and 'already exists' not in createdb.stderr
+
+- name: Download listmonk (pinned version, checksum-verified)
+  ansible.builtin.get_url:
+    url: "https://github.com/knadh/listmonk/releases/download/v{{ listmonk_version }}/listmonk_{{ listmonk_version }}_linux_amd64.tar.gz"
+    dest: "/opt/listmonk-{{ listmonk_version }}.tar.gz"
+    checksum: "sha256:{{ listmonk_sha256 }}"
+    mode: "0644"
+
+- name: Directory for this version
+  ansible.builtin.file:
+    path: "/opt/listmonk-{{ listmonk_version }}"
+    state: directory
+    mode: "0755"
+
+- name: Unpack listmonk
+  ansible.builtin.unarchive:
+    src: "/opt/listmonk-{{ listmonk_version }}.tar.gz"
+    dest: "/opt/listmonk-{{ listmonk_version }}"
+    remote_src: true
+    creates: "/opt/listmonk-{{ listmonk_version }}/listmonk"
+
+- name: Point /usr/local/bin/listmonk at the pinned version
+  ansible.builtin.file:
+    src: "/opt/listmonk-{{ listmonk_version }}/listmonk"
+    dest: /usr/local/bin/listmonk
+    state: link
+  notify: Restart listmonk
+
+- name: Config directory (readable by listmonk only)
+  ansible.builtin.file:
+    path: /etc/listmonk
+    state: directory
+    owner: root
+    group: listmonk
+    mode: "0750"
+
+- name: Config (the listen address and the database; no secrets)
+  ansible.builtin.template:
+    src: config.toml.j2
+    dest: /etc/listmonk/config.toml
+    owner: root
+    group: listmonk
+    mode: "0640"
+  notify: Restart listmonk
+
+# Creates the tables and listmonk's sample list, subscribers and campaign, but no admin account:
+# the admin asks for one on first visit, which only the SSH tunnel can reach (ops/README.md).
+- name: Database schema (first run only; --idempotent leaves a set-up database alone)
+  ansible.builtin.command:
+    cmd: /usr/local/bin/listmonk --config /etc/listmonk/config.toml --install --idempotent --yes
+    chdir: "{{ listmonk_home }}"
+  become_user: listmonk
+  register: install
+  changed_when: "'already setup' not in install.stdout + install.stderr"
+
+- name: systemd unit
+  ansible.builtin.template:
+    src: listmonk.service.j2
+    dest: /etc/systemd/system/listmonk.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart listmonk
+
+- name: Nightly backup service and timer
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: [listmonk-backup.service, listmonk-backup.timer]
+
+- name: Backup directory (listmonk's own, since it owns the database it dumps)
+  ansible.builtin.file:
+    path: "{{ listmonk_backup_dir }}"
+    state: directory
+    owner: listmonk
+    group: listmonk
+    mode: "0700"
+
+- name: listmonk enabled and running
+  ansible.builtin.systemd_service:
+    name: listmonk
+    enabled: true
+    state: started
+    daemon_reload: true
+
+- name: Nightly backup timer enabled and running
+  ansible.builtin.systemd_service:
+    name: listmonk-backup.timer
+    enabled: true
+    state: started
+    daemon_reload: true
